@@ -1,0 +1,264 @@
+/* You can add global styles to this file, and also import other style files */
+
+#navbar {
+    font-size: 1.3em !important;
+}
+
+body {
+    padding: 70px 0 70px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#brand {
+    font-family: "Comic Sans MS";
+    font-style: italic;
+}
+
+.margin-right {
+    margin-right: 5px ;
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 30px;
+}
+
+.input-margin {
+    margin-bottom: 10px;
+}
+
+.navbar-nav>li>a.profile-image {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div.white-bg {
+    background-color: #ffffff;
+}
+
+div.well-rating {
+    margin-bottom: 0;
+}
+
+div.well>div.progress {
+    height: 21px;
+}
+
+div.well>div.progress>div.progress-bar {
+    line-height: 21px;
+    font-size: 13px;
+}
+
+#date {
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.no-margin-padding-bottom {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#inputContainer {
+    padding: 0;
+}
+
+.glyphicon-star {
+    color: orange;
+}
+
+.like {
+    color: #3498DB;
+}
+
+.dislike {
+    color: red;
+}
+
+div.well-follower-list {
+    padding-bottom: 0;
+    padding-top: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+div.media-body>.well-sm {
+    max-height: 30px;
+}
+
+.well-margin-bottom {
+    margin-bottom: 4px;
+}
+
+div.well.margin-bottom {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+img.profile-picture {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.selected-profile-image {
+    border: 3px solid #2C3E50 !important;
+    margin-bottom: 15px;
+}
+
+fieldset {
+    margin-top: 30px;
+}
+
+legend.user {
+    margin-left: 15px;
+}
+
+button.form  {
+    margin-left: 15px;
+}
+
+.top-label {
+    margin-top: 40px;
+}
+
+div.media>div.media-left>a>img {
+    max-width: 100px;
+    max-height: 100px;
+    border-right: 2px solid #2C3E50;
+}
+
+.message-panel {
+    border: 2px solid #2C3E50;
+    border-radius: 3px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 15px;
+    background: #ECF0F1;
+}
+
+a {
+    color: #2C3E50;
+}
+
+h4>a:hover {
+    color: white;
+}
+
+.message-footer {
+    padding: 5px 3px 3px 3px;
+    border-top: 2px solid lightgray;
+}
+
+div.message>div.media>div.media-body {
+    background: #ECF0F1;
+    padding-bottom: 0px !important;
+}
+
+.message-content {
+    padding-right: 3px;
+    min-height: 38px;
+}
+
+.message-config {
+    padding-left: 0;
+}
+
+.media-heading {
+    background: #83ABB8;
+    border-bottom: 2px solid black;
+    padding: 3px 15px;
+    margin-bottom: 2px;
+}
+
+.media-left {
+    padding: 0 !important;
+    background: #ECF0F1;
+}
+
+#dislikeSpan {
+    color: black !important;
+}
+
+.follow-lists-border {
+    border: 1px solid #2C3E50;
+    border-radius: 5px;
+}
+
+.glyphicon-remove-color {
+    color: lightgray;
+}
+
+.glyphicon-pencil {
+    color: lightblue;
+}
+
+.btn-padding {
+    padding: 5px 5px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.btn-follow {
+
+    color: #18bc9c;
+    background-color: #ECF0F1;
+    border-color: #18bc9c;
+    border-radius: 5px;
+}
+
+.btn-follow:hover {
+    color: white;
+    background-color: #18bc9c;
+    border-color: #18bc9c;
+}
+
+.btn-unfollow {
+    color: #D62C1A;
+    background-color: #ECF0F1;
+    border-color: #D62C1A;
+    border-radius: 5px;
+}
+
+.btn-unfollow:hover {
+    color: white;
+    background-color: #D62C1A;
+    border-color: #D62C1A;
+}
+
+.btn-loadMoreMessage {
+    background-color: #ECF0F1;
+    font-size: 1.2em;
+    color: #18bc9c;
+    height: 50px;
+    width: 150px;
+    border: 2px dashed #18bc9c;
+    border-radius: 30px;
+}
+
+.btn-loadMoreMessage:hover {
+    background-color: white;
+}
