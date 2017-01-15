@@ -1,0 +1,35 @@
+<fieldset class="col-md-6 col-md-offset-3">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="user-addon"><i class="fa fa-user"></i></span>
+            <input formControlName="username" type="text" id="username" aria-describedby="user-addon" class="form-control" placeholder="Username" required>
+        </div>
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="email-addon"><i class="fa fa-at"></i></span>
+            <input formControlName="email" type="text" id="email" class="form-control" aria-describedby="email-addon" placeholder="Email" required>
+        </div>
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="password-addon"><i class="fa fa-key"></i></span>
+            <input formControlName="password" type="password" id="password" class="form-control" aria-describedby="password-addon" placeholder="Password" required>
+        </div>
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="firstName-addon"><i class="fa fa-male"></i></span>
+            <input formControlName="firstName" type="text" id="firstName" aria-describedby="firstName-addon" class="form-control" placeholder="Firstname" required>
+        </div>
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="lastName-addon"><i class="fa fa-male"></i></span>
+            <input formControlName="lastName" type="text" id="lastName" aria-describedby="lastName-addon" class="form-control" placeholder="Lastname" required>
+        </div>
+
+        <div class="input-group margin-bottom">
+            <span class="input-group-addon" id="city-addon"><i class="fa fa-home"></i></span>
+            <input formControlName="city" type="text" id="city" aria-describedby="city-addon" class="form-control" placeholder="City" required>
+        </div>
+        <button type="submit margin-bottom" class="btn btn-primary" [disabled]="!signupForm.valid">Sign Up</button>
+    </form>
+</fieldset>

@@ -1,0 +1,56 @@
+<div *ngIf="!isOwnProfile()">
+    <my-follow [isFollowed]="isFollowed" (change)="onFollowChange($event)"></my-follow>
+</div>
+
+<div class="row col-md-6 col-lg-6 margin-right">
+
+    <fieldset>
+        <legend class="user">
+            <i class="glyphicon glyphicon-user"></i> User
+        </legend>
+
+        <div class="col-md-5 col-sm-5 left-align">
+            <img class="selected-profile-image img-responsive img-rounded" [src]="selectedUser.pictureUrl" >
+        </div>
+
+        <div class="col-md-6 col-md-offset-1 col-sm-6 col-sm-offset-1 left-align">
+
+            <label for="username">Username</label>
+            <div class="well well-sm white-bg" id="username">{{ selectedUser.username }}</div>
+
+            <label for="email">Email</label>
+            <div class="well well-sm white-bg" id="email">{{ selectedUser.email }}</div>
+
+            <label for="city">City</label>
+            <div class="well well-sm white-bg" id="city">{{ selectedUser.city }}</div>
+        </div>
+
+        <div class="col-md-12">
+
+            <label for="firstName">Firstname</label>
+            <div class="well well-sm white-bg" id="firstName">{{ selectedUser.name.first }}</div>
+            <label for="lastName">Lastname</label>
+            <div class="well well-sm white-bg" id="lastName">{{ selectedUser.name.last }}</div>
+        </div>
+
+    </fieldset>
+    <button *ngIf="isOwnProfile()" (click)="editProfile()" class="btn btn-success form">Edit</button>
+</div>
+
+<div class="row col-md-6 col-lg-6">
+    <fieldset>
+        <legend>
+            <i class="glyphicon glyphicon-tasks"></i> Statistics
+        </legend>
+        <label for="messages">Messages</label>
+        <div class="well well-sm white-bg" id="messages">{{ selectedUser.messages.length }}</div>
+
+        <label for="followers">Followers</label>
+        <div class="well well-sm white-bg" id="followers">{{ selectedUser.relations.followers.length }}</div>
+
+        <label for="following">Following</label>
+        <div class="well well-sm white-bg" id="following">{{ selectedUser.relations.following.length }}</div>
+
+        <my-ratio [ratings]="selectedUser.ratings"></my-ratio>
+    </fieldset>
+</div>
