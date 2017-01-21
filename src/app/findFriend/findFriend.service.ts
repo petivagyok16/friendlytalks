@@ -1,9 +1,9 @@
 import { Injectable }                           from '@angular/core';
 import { Http, Headers, Response }              from '@angular/http';
+import { Observable }                           from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
-import { Observable }                           from 'rxjs';
 
 import { Profile }                              from '../profile/profile';
 
@@ -18,17 +18,17 @@ export class FindFriendService {
         return this._http.get(this._url + '/' + username + this._token)
             .map((response: Response) => {
                 const DATA = response.json().obj;
+                const objs: any[] = [];
 
-                let objs: any[] = [];
                 for (let i = 0; i < DATA.length; i++) {
-                    let foundUser = new Profile(DATA[i].username, DATA[i]._id, DATA[i].messages, DATA[i].email, DATA[i].pictureUrl, DATA[i].city);
+                    const foundUser = new Profile(DATA[i].username, DATA[i]._id, DATA[i].messages, DATA[i].email,
+                    DATA[i].pictureUrl, DATA[i].city);
                     foundUser.name = DATA[i].name;
 
                     objs.push(foundUser);
                 }
             return objs;
             })
-            .catch((error: Response) => Observable.throw(error.json()));;
+            .catch((error: Response) => Observable.throw(error.json()));
     }
-    
 }
