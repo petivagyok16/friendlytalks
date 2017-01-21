@@ -10,7 +10,7 @@ import { Message }                  from '../message/message';
 
 @Injectable()
 export class ProfileService {
-    private _url: string = 'http://localhost:3000/profile';
+    private _url: string = 'https://friendlytalks.herokuapp.com/profile';
     private _token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
 
     constructor(private _http: Http) {}

@@ -9,7 +9,7 @@ import { Profile }                              from '../profile/profile';
 
 @Injectable()
 export class FindFriendService {
-    private _url: string = 'http://localhost:3000/find';
+    private _url: string = 'https://friendlytalks.herokuapp.com/find';
     private _token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
 
     constructor(private _http: Http) {}

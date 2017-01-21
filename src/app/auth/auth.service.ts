@@ -10,7 +10,7 @@ import { User }                               from './user';
 @Injectable()
 export class AuthService {
 
-    private _url = 'http://localhost:3000/user';
+    private _url = 'https://friendlytalks.herokuapp.com/user';
 
     constructor(private _http: Http) {}
 
