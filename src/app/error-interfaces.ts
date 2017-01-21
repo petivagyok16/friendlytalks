@@ -1,4 +1,4 @@
-//Compiler errors in webstorm IDE-->
+// Compiler errors in webstorm IDE-->
 
 declare interface Storage {
     setItem(key, value): void;

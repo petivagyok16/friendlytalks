@@ -28,6 +28,4 @@ import { SharedModule }                     from '../shared/shared.module';
         ProfileService
     ]
 })
-export class MessageModule {
-
-}
+export class MessageModule {}

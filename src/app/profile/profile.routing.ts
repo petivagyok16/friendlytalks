@@ -11,7 +11,7 @@ const profileRoutes: Routes = [
 
     { path: 'profile/:userId', children: [
         { path: '', component: SelectedProfileComponent },
-        //{ path: 'update-profile-form', component: ProfileUpdateFormComponent },
+        // { path: 'update-profile-form', component: ProfileUpdateFormComponent },
         { path: 'followers', component: FollowersComponent },
         { path: 'following', component: FollowingComponent },
     ],component: ProfileComponent },

@@ -20,18 +20,18 @@ import { ActivatedRoute, Router, Params }   from '@angular/router';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     userId;
-    subscription;
+    // subscription;
     constructor(private _route: ActivatedRoute, private _router: Router) { }
 
     ngOnInit() {
-        //getting the userId from URL param
+        // getting the userId from URL param
          this._route.params
             .forEach((params: Params) =>
              this.userId = params['userId']);
     }
 
     ngOnDestroy() {
-        //this.subscription.unsubscribe();
+        // this.subscription.unsubscribe();
     }
 
 }

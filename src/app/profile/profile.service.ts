@@ -15,7 +15,7 @@ export class ProfileService {
 
     constructor(private _http: Http) {}
 
-    //Finding the requested user profiles
+    // Finding the requested user profiles
     find(userId) {
         return this._http.get(this._url + '/' + userId + this._token)
             .map((response: Response) => {
@@ -31,10 +31,10 @@ export class ProfileService {
             .catch((error: Response) => Observable.throw(error.json()));
     }
 
-    //by sending the followed and follower user's IDs i can set it server-side to
-    //change both user's relation states in one http request
+    // by sending the followed and follower user's IDs i can set it server-side to
+    // change both user's relation states in one http request
     follow(userId, toFollowId, state) {
-        //console.log('userId: ' + userId, 'toFollowId: ' + toFollowId, 'following state: ' + state);
+        // console.log('userId: ' + userId, 'toFollowId: ' + toFollowId, 'following state: ' + state);
         const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state});
         const HEADERS = new Headers({'Content-Type' : 'application/json'});
 
@@ -48,10 +48,10 @@ export class ProfileService {
         return this._http.get(this._url + '/followers' + '/' + userId + this._token)
             .map((response: Response) => {
                 const DATA = response.json().obj;
-                let objs: any[] = [];
+                const objs: any[] = [];
 
-                for(let i = 0; i < DATA.length; i++) {
-                    let follower = new Profile(DATA[i].username, DATA[i]._id, null, DATA[i].email, DATA[i].pictureUrl);
+                for (let i = 0; i < DATA.length; i++) {
+                    const follower = new Profile(DATA[i].username, DATA[i]._id, null, DATA[i].email, DATA[i].pictureUrl);
                     follower.name = DATA[i].name;
                     objs.push(follower);
                 }
@@ -65,10 +65,10 @@ export class ProfileService {
         return this._http.get(this._url + '/following' + '/' + userId + this._token)
             .map((response: Response) => {
                 const DATA = response.json().obj;
-                let objs: any[] = [];
+                const objs: any[] = [];
 
                  for(let i = 0; i < DATA.length; i++) {
-                 let following = new Profile(DATA[i].username, DATA[i]._id, [], DATA[i].email, DATA[i].pictureUrl);
+                 const following = new Profile(DATA[i].username, DATA[i]._id, [], DATA[i].email, DATA[i].pictureUrl);
                      following.name = DATA[i].name;
 
                      objs.push(following);
@@ -83,13 +83,12 @@ export class ProfileService {
             .map((response: Response) => {
                 const DATA = response.json().obj;
 
-                let objs: any[] = [];
-                
-                for(let i = 0; i < DATA.length; i++) {
+                const objs: any[] = [];
+                for (let i = 0; i < DATA.length; i++) {
 
                     for (let j = 0; j < DATA[i].messages.length; j++) {
-
-                        let message = new Message(DATA[i].messages[j].content, DATA[i].messages[j].created_at, DATA[i].username, DATA[i].messages[j].meta, DATA[i].messages[j]._id, DATA[i].messages[j].user, DATA[i].pictureUrl);
+                        let message = new Message(DATA[i].messages[j].content, DATA[i].messages[j].created_at,
+                        DATA[i].username, DATA[i].messages[j].meta, DATA[i].messages[j]._id, DATA[i].messages[j].user, DATA[i].pictureUrl);
                         objs.push(message);
                     }
                 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MessageService } from "./message.service";
+import { MessageService } from './message.service';
 import { Message } from './message';
 import { Profile } from '../profile/profile';
 import { ProfileService } from '../profile/profile.service';
@@ -16,7 +16,7 @@ export class MessageComponent implements OnInit {
     messages: Message[] = [];
     message: Message = null;
     messagesCache: Message[] = null;
-    //In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
+    // In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
     userId = localStorage.getItem('userId');
     globalFeedActive: boolean = true;
     followerFeedActive: boolean = false;
@@ -58,7 +58,7 @@ export class MessageComponent implements OnInit {
         this._messageService.getMessages(this.messageSkipper)
             .subscribe(
                 messages => {
-                    //messages is an array, messageItems must be picked from it to push them into this.messages
+                    // messages is an array, messageItems must be picked from it to push them into this.messages
                     for (let messageItem of messages) {
                         this.messages.push(messageItem);
                     }
@@ -71,7 +71,7 @@ export class MessageComponent implements OnInit {
         const inputValue = input.value;
 
         if (this.message) {
-            //Edit message
+            // Edit message
             this.message.content = inputValue;
             this._messageService.editMessage(this.message)
                 .subscribe(
@@ -80,7 +80,7 @@ export class MessageComponent implements OnInit {
                 () => this.message = null);
 
         } else {
-            //Save new message
+            // Save new message
             const date = Date.now();
             const message = new Message(inputValue, date);
 
@@ -97,8 +97,8 @@ export class MessageComponent implements OnInit {
 
             this.messages.unshift(message);
         }
-        //clearing the input field -> 1 bug: after creating a message it cannot be edited at first, but
-        //only after canceling at least once
+        // clearing the input field -> 1 bug: after creating a message it cannot be edited at first, but
+        // only after canceling at least once
         input.value = null;
 
     }
@@ -127,9 +127,9 @@ export class MessageComponent implements OnInit {
 
         this._messageService.getMessages(this.messageSkipper)
             .subscribe(messages => {
-                //temporary workaround
+                // temporary workaround
                 this.messages = [];
-                //messages is an array, messageItems must be picked from it to push them into this.messages
+                // messages is an array, messageItems must be picked from it to push them into this.messages
                 for (let messageItem of messages) {
                     this.messages.push(messageItem);
                 }
@@ -149,21 +149,21 @@ export class MessageComponent implements OnInit {
     }
 
     userRating(messageId) {
-        //Liked message
+        // Liked message
         if (this.userObject.ratings.given.likes.indexOf(messageId) != -1) return 1;
 
-        //Disliked message
+        // Disliked message
         if (this.userObject.ratings.given.dislikes.indexOf(messageId) != -1) return 2;
 
-        //No rating
+        // No rating
         return 0;
     }
 
     messageRated(event, messageId) {
-        //console.log(event);
-        //console.log(messageId);
+        // console.log(event);
+        // console.log(messageId);
 
-        //Changing message rating server-side
+        // Changing message rating server-side
         this._messageService.rateMessage(messageId, this.userId, event.newRating, event.prevRating)
             .subscribe(null,
                 error => this._errorService.handleError(error));

@@ -25,13 +25,13 @@ import { ErrorService }                 from '../error/error.service';
 })
 export class FollowingComponent implements OnInit {
 
-    followings = [];
+    private followings = [];
     private userId = null;
     constructor(private _profileService: ProfileService, private _route: ActivatedRoute, private _errorService: ErrorService) { }
 
     ngOnInit() {
 
-        //getting the userId from URL param
+        // getting the userId from URL param
         this._route.parent.params
             .map(params => params['userId'])
             .subscribe(
@@ -41,7 +41,7 @@ export class FollowingComponent implements OnInit {
         this._profileService.getFollowing(this.userId)
             .subscribe(followings => {
                 this.followings = followings;
-                //console.log(this.followings);
+                // console.log(this.followings);
             },
             error => this._errorService.handleError(error));
     }

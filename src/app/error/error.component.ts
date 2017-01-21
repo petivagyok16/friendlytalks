@@ -38,9 +38,7 @@ export class ErrorComponent implements OnInit {
     errorDisplay = 'none';
     errorData = Error;
 
-    constructor(private _errorService: ErrorService) {
-
-    }
+    constructor(private _errorService: ErrorService) {}
 
     ngOnInit() {
         this._errorService.errorOccured

@@ -22,9 +22,7 @@ class Relations {
 }
 
 export class Ratings {
-
     my = new My();
-
     given = new Given();
 }
 

@@ -10,9 +10,6 @@ import { Component, OnInit } from '@angular/core';
                         <a routerLink="/signup"><h3>Sign up!</h3></a>
                    </div>
                </div>
-               
-               
-               
 `
 })
 export class LandingPageComponent implements OnInit {

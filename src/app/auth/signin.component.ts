@@ -47,7 +47,7 @@ export class SigninComponent implements OnInit {
                 data => {
                     localStorage.setItem('token', data.token);
                     this._objectStore.setObject('userObject', data.user);
-                    //Since i use only the localStored userId its necessary to store it separately.
+                    // Since i use only the localStored userId its necessary to store it separately.
                     localStorage.setItem('userId', data.user.id);
                     localStorage.setItem('username', data.user.username);
                     localStorage.setItem('pictureUrl', data.user.pictureUrl);

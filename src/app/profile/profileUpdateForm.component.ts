@@ -78,7 +78,6 @@ export class ProfileUpdateFormComponent implements OnInit{
             city: ['', Validators.required],
 
         });
-        
     }
 
     submit() {
@@ -86,7 +85,7 @@ export class ProfileUpdateFormComponent implements OnInit{
             this.form.value.email, this.form.value.firstName, this.form.value.lastName,
             this.form.value.city);
 
-        //updating profile client-side
+        // updating profile client-side
         this.selectedUser.pictureUrl = this.form.value.pictureUrl;
         this.selectedUser.email = this.form.value.email;
         this.selectedUser.name.first = this.form.value.firstName;
@@ -95,12 +94,12 @@ export class ProfileUpdateFormComponent implements OnInit{
 
         this._objectStore.setObject('userObject', this.selectedUser);
 
-        //sending the changes to the server
+        // sending the changes to the server
         this._profileService.editProfile(this.selectedUser.id, UPDATED_PROFILE)
             .subscribe(data => console.log(data),
                 error => this._errorService.handleError(error));
-        //NAVIGATE TO PROFILE
-        //navigate to feed at first, it will be fixed later cause client-side userObject must be updated
+        // NAVIGATE TO PROFILE
+        // navigate to feed at first, it will be fixed later cause client-side userObject must be updated
         this._router.navigate(['/profile', this.selectedUser.id]);
     }
 
@@ -109,5 +108,4 @@ export class ProfileUpdateFormComponent implements OnInit{
             return {invalidMail: true};
         }
     }
-
 }

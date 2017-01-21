@@ -28,15 +28,15 @@ export class RatingComponent implements OnInit {
     }
 
     rate(rating) {
-        //i could use enum, but it doesnt work for some reason.
+        // i could use enum, but it doesnt work for some reason.
         const NO_RATING = 0;
         const LIKE = 1;
         const DISLIKE = 2;
 
-        //sending previous Rating in order to determine where need to remove
-        //the previous ratings from database, this prevents the necessity of using inefficient loops server-side
-        //when it comes to NO_RATING case (because in that case we need to determine whether the
-        //previous rating was LIKE or DISLIKE
+        // sending previous Rating in order to determine where need to remove
+        // the previous ratings from database, this prevents the necessity of using inefficient loops server-side
+        // when it comes to NO_RATING case (because in that case we need to determine whether the
+        // previous rating was LIKE or DISLIKE
         var prevRating: number = NO_RATING;
 
         switch (rating) {

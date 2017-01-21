@@ -29,10 +29,11 @@ export class MessageService {
             .map((response: Response) => {
                 const DATA = response.json().obj;
                 console.log(DATA);
-                let objs: any[] = [];
+                const objs: any[] = [];
 
-                for(let i = 0; i < DATA.length; i++) {
-                    let message = new Message(DATA[i].content, DATA[i].created_at, DATA[i].user.username, DATA[i].meta, DATA[i]._id, DATA[i].user._id, DATA[i].user.pictureUrl);
+                for (let i = 0; i < DATA.length; i++) {
+                    const message = new Message(DATA[i].content, DATA[i].created_at, DATA[i].user.username, DATA[i].meta,
+                    DATA[i]._id, DATA[i].user._id, DATA[i].user.pictureUrl);
                     objs.push(message);
                 }
                 return objs;
@@ -59,7 +60,7 @@ export class MessageService {
     }
 
     rateMessage(messageId, raterUserId, rating, prevRating) {
-        //console.log('messageId: ' + messageId, 'userId: ' + raterUserId, 'rating: ' + rating);
+        // console.log('messageId: ' + messageId, 'userId: ' + raterUserId, 'rating: ' + rating);
         const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
         const HEADERS = new Headers({'Content-Type' : 'application/json'});
 
