@@ -59,7 +59,6 @@ export class FindFriendComponent implements OnInit {
                 // if text is undefined (= user removed all the characters from the input field) 
                 // foundUsers array will be empty and gives back no feedback
                 if (text.length === 0) {
-                    console.log(`text length 0`);
                     this.foundUsers = [];
                 } else {
                     // firing subscribe only if there are at least 3 characters
@@ -78,7 +77,6 @@ export class FindFriendComponent implements OnInit {
                 this._findFriendService.find(searchTerm)
                     .subscribe(
                         foundUsers => {
-                            console.log(`foundusers: `, foundUsers);
                             // null value gives feedback to user that 'no user found'
                             if (foundUsers.length === 0) {
                                 this.foundUsers = null;
