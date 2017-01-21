@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Friendly Talks</title>
+    <link rel="stylesheet" href="assets/stylesheets/css/bootstrap.min.css" />
+    <link rel='stylesheet' href='assets/stylesheets/fonts/font-awesome/css/font-awesome.min.css'/>
+<link href="styles.4b28a99abb16f2b29ee9.bundle.css" rel="stylesheet"/></head>
+<body>
+
+    <my-app></my-app>
+    <div class="loading col-md-12">
+        <h1><i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> Loading...</h1>
+    </div>
+
+
+<style>
+    /* default .loading styles, .loading should be invisible, opacity: 0, z-index: -1 */
+    .loading {
+        opacity: 0;
+        transition: opacity .8s ease-in-out;
+        position: fixed;
+        text-align: center;
+        padding-top: 100px;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: #FFFFFF;
+        z-index: -1;
+    }
+
+    /* .loading screen is visible when app is not bootstraped yet, .my-app is empty */
+    my-app:empty + .loading {
+        opacity: 1;
+        z-index: 100;
+    }
+
+</style>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/stylesheets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="inline.208a776503bf54f1c8d0.bundle.js"></script><script type="text/javascript" src="vendor.a540da2bc73fa4eec1a4.bundle.js"></script><script type="text/javascript" src="main.c156941e120079101115.bundle.js"></script></body>
+</html>
