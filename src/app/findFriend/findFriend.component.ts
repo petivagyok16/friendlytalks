@@ -8,32 +8,7 @@ import { ErrorService }         from '../error/error.service';
 
 @Component({
     selector: 'my-findFriend',
-    template: `
-<div class="container">
-    <div class="col-md-6 col-md-offset-3 margin-bottom" id="inputContainer">
-      <div class="input-group">
-        <span class="input-group-addon" id="searchAddon"><i class="glyphicon glyphicon-search"></i></span>
-        <input [formControl]="searchTerm" type="text" class="form-control" aria-describedby="searchAddon">
-      </div>
-      <div class="col-md-12 center-align"><spinner [visible]="isLoading"></spinner></div>
-    </div>
-    <div class="col-md-6 col-md-offset-3 well" *ngIf="foundUsers === null">No user found!</div>
-    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 message-panel"  *ngFor="let user of foundUsers">
-    <div class="media">
-        <div class="media-left">
-            <a [routerLink]="['/profile', user.id]">
-              <img class="media-object" [src]="user.pictureUrl" alt="...">
-            </a>
-        </div>
-    <div class="media-body">
-        <h4 class="media-heading"><a [routerLink]="['/profile', user.id]">@{{ user.username }}</a></h4>
-        <div class="well well-sm white-bg well-margin-bottom">{{ user.name.first }}, {{ user.name.last }}</div>
-        <div class="well well-sm white-bg well-margin-bottom">{{ user.email }}</div>
-    </div>
-    </div>
-    </div>
-</div>
-`
+    templateUrl: 'findFriend.component.html'
 })
 
 export class FindFriendComponent implements OnInit {
@@ -56,7 +31,7 @@ export class FindFriendComponent implements OnInit {
             // no async call until the search term is the same (e.g. arrow keys would fire the subscribe method as well)
             .distinctUntilChanged()
             .filter(text => {
-                // if text is undefined (= user removed all the characters from the input field) 
+                // if text is undefined (= user removed all the characters from the input field)
                 // foundUsers array will be empty and gives back no feedback
                 if (text.length === 0) {
                     this.foundUsers = [];
