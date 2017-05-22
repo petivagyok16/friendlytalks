@@ -4,11 +4,10 @@ import { ModuleWithProviders } from '@angular/core';
 import { ProfileComponent } from './profile.component';
 import { SelectedProfileComponent } from './selectedProfile.component';
 import { ProfileUpdateFormComponent } from './profileUpdateForm.component';
-import { FollowersComponent } from './followers.component';
-import { FollowingComponent } from './following.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowingComponent } from './following/following.component';
 
 const profileRoutes: Routes = [
-
 	{
 		path: 'profile/:userId', children: [
 			{ path: '', component: SelectedProfileComponent },
