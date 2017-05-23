@@ -3,7 +3,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
 	selector: 'my-rating',
 	template: `
-
     <i (click)="rate(1)" class="fa fa-thumbs-up cursor-pointer" [class.like]="userRating === 1"></i> {{ likes }} 
     <!-- <span (click)="rate(2)" class="cursor-pointer" [class.dislike]="userRating === 2" id="dislikeSpan">💩</span> {{ dislikes }} -->
     <i (click)="rate(2)" class="fa fa-thumbs-down cursor-pointer" [class.dislike]="userRating === 2"></i> {{ dislikes }}
