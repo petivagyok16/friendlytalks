@@ -5,30 +5,30 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema({
 
-    username: { type: String, required: true, trim: true, unique: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
-    name: {
-            first: { type: String, trim: true, required: true },
-            last: { type: String, trim: true, required: true }
-    },
-    city: {type: String, trim: true, required: true},
-    messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
-    relations: {
-        followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
-    },
-    ratings: {
-        my: {
-            likes: [{ type: Schema.Types.ObjectId, ref: 'User'}],
-            dislikes: [{ type: Schema.Types.ObjectId, ref: 'User'}]
-        },
-        given: {
-            likes: [{ type: Schema.Types.ObjectId, ref: 'Message'}],
-            dislikes: [{ type: Schema.Types.ObjectId, ref: 'Message'}]
-        }
-    },
-    pictureUrl: { type: String, required: true }
+	username: { type: String, required: true, trim: true, unique: true },
+	email: { type: String, required: true },
+	password: { type: String, required: true },
+	name: {
+		first: { type: String, trim: true, required: true },
+		last: { type: String, trim: true, required: true }
+	},
+	city: { type: String, trim: true, required: true },
+	messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
+	relations: {
+		followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+		following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+	},
+	ratings: {
+		my: {
+			likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+			dislikes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+		},
+		given: {
+			likes: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
+			dislikes: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
+		}
+	},
+	pictureUrl: { type: String, required: true }
 
 });
 
