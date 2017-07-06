@@ -29,26 +29,26 @@ import { profileRouting }                   from './profile/profile.routing';
 
 @NgModule({
     imports: [
-        BrowserModule,
-        HttpModule,
-        RouterModule,
+			BrowserModule,
+			HttpModule,
+			RouterModule,
 
-        SharedModule,
-        MessageModule,
-        ProfileModule,
-        AuthModule,
-        ErrorModule,
-        FindFriendModule,
+			SharedModule,
+			MessageModule,
+			ProfileModule,
+			AuthModule,
+			ErrorModule,
+			FindFriendModule,
 
-        profileRouting,
-        routing
+			profileRouting,
+			routing
     ],
     declarations: [
-        AppComponent,
-        NavbarComponent,
-        LandingPageComponent,
-        AnnouncementsComponent,
-        NotFoundComponent
+			AppComponent,
+			NavbarComponent,
+			LandingPageComponent,
+			AnnouncementsComponent,
+			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
     providers: [ appRoutingProviders, ErrorService, ObjectStore ]
