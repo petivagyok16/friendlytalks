@@ -1,29 +1,29 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 
 @Component({
-    selector: 'my-navbar',
-    templateUrl: 'navbar.component.html'
+	selector: 'my-navbar',
+	templateUrl: 'navbar.component.html'
 })
 export class NavbarComponent implements OnInit, DoCheck {
-    userId;
-    landingPage;
+	userId;
+	landingPage;
 
-    constructor() { }
+	constructor() { }
 
-    ngOnInit() {
+	ngOnInit() {
 
-    }
+	}
 
-    ngDoCheck() {
-        this.userId = localStorage.getItem('userId');
-        this.landingPage = this.isLoggedIn() ? '/announcements' : '';
-    }
+	ngDoCheck() {
+		this.userId = localStorage.getItem('userId');
+		this.landingPage = this.isLoggedIn() ? '/announcements' : '';
+	}
 
-    isLoggedIn() {
-        return localStorage.getItem('token') !== null;
-    }
+	isLoggedIn() {
+		return localStorage.getItem('token') !== null;
+	}
 
-    logout() {
-        localStorage.clear();
-    }
+	logout() {
+		localStorage.clear();
+	}
 }
