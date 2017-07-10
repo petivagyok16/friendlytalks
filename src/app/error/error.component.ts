@@ -1,11 +1,11 @@
-import { Component, OnInit }    from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { Error }                from './error';
-import { ErrorService }         from './error.service';
+import { Error } from './error';
+import { ErrorService } from './error.service';
 
 @Component({
-    selector: 'my-error',
-    template: `<div class="backdrop" [ngStyle]="{'display': errorDisplay}"></div>
+	selector: 'my-error',
+	template: `<div class="backdrop" [ngStyle]="{'display': errorDisplay}"></div>
         <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': errorDisplay}">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -23,7 +23,7 @@ import { ErrorService }         from './error.service';
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->  
     `,
-    styles: [`
+	styles: [`
         .backdrop {
             background-color: rgba(0,0,0,0.6);
             position: fixed;
@@ -35,20 +35,20 @@ import { ErrorService }         from './error.service';
     `]
 })
 export class ErrorComponent implements OnInit {
-    errorDisplay = 'none';
-    errorData = Error;
+	errorDisplay = 'none';
+	errorData = Error;
 
-    constructor(private _errorService: ErrorService) {}
+	constructor(private _errorService: ErrorService) { }
 
-    ngOnInit() {
-        this._errorService.errorOccured
-            .subscribe(errorData => {
-                this.errorData = errorData;
-                this.errorDisplay = 'block';
-            });
-    }
+	ngOnInit() {
+		this._errorService.errorOccured
+			.subscribe(errorData => {
+				this.errorData = errorData;
+				this.errorDisplay = 'block';
+			});
+	}
 
-    onErrorHandled() {
-        this.errorDisplay = 'none';
-    }
+	onErrorHandled() {
+		this.errorDisplay = 'none';
+	}
 }
