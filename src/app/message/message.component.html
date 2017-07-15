@@ -1,50 +1,52 @@
 <div class="container">
-    <ul class="nav nav-tabs nav-justified">
-        <li (click)="getGlobalMessages()" [class.active]="globalFeedActive" class="cursor-pointer"><a>Global</a></li>
-        <li (click)="getFollowingMessages()" [class.active]="followerFeedActive" class="cursor-pointer"><a>Following</a></li>
-    </ul>
+	<ul class="nav nav-tabs nav-justified">
+		<li (click)="getGlobalMessages()" [class.active]="globalFeedActive" class="cursor-pointer"><a>Global</a></li>
+		<li (click)="getFollowingMessages()" [class.active]="followerFeedActive" class="cursor-pointer"><a>Following</a></li>
+	</ul>
 </div>
 <div class="col-md-12 well">
-    <div class="row form-group margin-bottom">
-        <section class="col-md-6 col-md-offset-3 margin-top">
-            <label for="content">Be friendly.</label>
-            <input #input type="text" class="form-control input-margin" id="content" maxlength="75" minlength="1" placeholder="Write something here"
-                [ngModel]="message?.content" />
-            <button class="btn btn-success" (click)="sendMsg(input)">{{ message === null ? 'Send' : 'Save' }}</button>
-            <button class="btn btn-warning" *ngIf="message != null" (click)="onCancel()">Cancel</button><br />
-            <div class="col-md-12 center-align">
-                <spinner [visible]="messagesLoading"></spinner>
-            </div>
-        </section>
-    </div>
-    <!-- <pagination [items]="messages" (page-changed)="onMessageChanged($event)" [page-size]="pageSize"></pagination> -->
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 message-panel" *ngFor="let messageItem of messages">
-            <div class="media">
-                <div class="media-left">
-                    <a [routerLink]="['/profile', messageItem.userId]">
+	<div class="row form-group margin-bottom">
+		<section class="col-md-6 col-md-offset-3 margin-top">
+			<label for="content">Be friendly.</label>
+			<input #input type="text" class="form-control input-margin" id="content" maxlength="75" minlength="1" placeholder="Write something here"
+			 [ngModel]="message?.content" />
+			<button class="btn btn-success" (click)="sendMsg(input)">{{ message === null ? 'Send' : 'Save' }}</button>
+			<button class="btn btn-warning" *ngIf="message != null" (click)="onCancel()">Cancel</button><br />
+			<div class="col-md-12 center-align">
+				<spinner [visible]="messagesLoading"></spinner>
+			</div>
+		</section>
+	</div>
+	<!-- <pagination [items]="messages" (page-changed)="onMessageChanged($event)" [page-size]="pageSize"></pagination> -->
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 message-panel" *ngFor="let messageItem of messages">
+			<div class="media">
+				<div class="media-left">
+					<a [routerLink]="['/profile', messageItem.userId]">
                         <img class="media-object" [src]="messageItem.pictureUrl" alt="...">
                     </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading"><a [routerLink]="['/profile', messageItem.userId]">@{{ messageItem.username }}</a></h4>
-                    <div class="col-md-10 col-sm-10 col-xs-10 message-content">{{ messageItem.content }}</div>
-                    <div class="col-md-2 col-sm-2 col-xs-2 pull-right right-align message-config">
-                        <div class="message-config" *ngIf="userId == messageItem.userId">
-                            <i class="glyphicon glyphicon-pencil cursor-pointer left-align" data-toggle="tooltip" title="Edit" (click)="onEdit(messageItem)"> </i>
-                            <i class="glyphicon glyphicon-remove glyphicon-remove-color cursor-pointer left-align" data-toggle="tooltip" title="Remove"
-                                (click)="onDelete(messageItem)"> </i>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 message-footer">
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading"><a [routerLink]="['/profile', messageItem.userId]">@{{ messageItem.username }}</a></h4>
+					<div class="col-md-10 col-sm-10 col-xs-10 message-content">{{ messageItem.content }}</div>
+					<div class="col-md-2 col-sm-2 col-xs-2 pull-right right-align message-config">
+						<div class="message-config" *ngIf="userId == messageItem.userId">
+							<i class="glyphicon glyphicon-pencil cursor-pointer left-align" data-toggle="tooltip" title="Edit" (click)="onEdit(messageItem)"> </i>
+							<i class="glyphicon glyphicon-remove glyphicon-remove-color cursor-pointer left-align" data-toggle="tooltip" title="Remove"
+							 (click)="onDelete(messageItem)"> </i>
+						</div>
+					</div>
+					<div class="col-md-12 col-sm-12 col-xs-12 message-footer">
 
-                        <div class="col-md-6 col-sm-6 col-xs-6 left-align"><my-rating [userRating]="userRating(messageItem.messageId)" [ratingObj]="messageItem.meta" (change)="messageRated($event, messageItem.messageId)"></my-rating></div>
-                        <div class="col-md-6 col-sm-6 col-xs-6 right-align" id="date">{{ messageItem.created_at | date: 'HH.m, MMM.d, y' }}</div>
+						<div class="col-md-6 col-sm-6 col-xs-6 left-align">
+							<my-rating [userRating]="userRating(messageItem.messageId)" [ratingObj]="messageItem.meta" (change)="messageRated($event, messageItem.messageId)"></my-rating>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-6 right-align" id="date">{{ messageItem.created_at | date: 'HH.m, MMM.d, y' }}</div>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12 center-align"> <button class="btn-loadMoreMessage" (click)="loadMoreMessage()">Load more</button> </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 center-align"> <button class="btn-loadMoreMessage" (click)="loadMoreMessage()">Load more</button> </div>
 </div>
