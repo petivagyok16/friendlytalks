@@ -4,6 +4,7 @@ import { RouterModule }                     from '@angular/router';
 import { HttpModule }                       from '@angular/http';
 
 import { ErrorService }                     from './error/error.service';
+import { NetworkService } from './shared/network.service';
 
 //App module components
 import { AppComponent }                     from './app.component';
@@ -51,6 +52,6 @@ import { profileRouting }                   from './profile/profile.routing';
 			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
-    providers: [ appRoutingProviders, ErrorService, ObjectStore ]
+    providers: [ appRoutingProviders, ErrorService, ObjectStore, NetworkService ]
 })
 export class AppModule { }
