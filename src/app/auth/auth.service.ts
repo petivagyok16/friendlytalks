@@ -5,29 +5,26 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 
+import { NetworkService } from './../shared/network.service';
 import { User } from './user';
 
 @Injectable()
 export class AuthService {
 
-	private _url = 'http://localhost:3000/user';
-
-	constructor(private _http: Http) { }
+	constructor(private networkService: NetworkService) { }
 
 	signup(user: User) {
 		const BODY = JSON.stringify(user);
-		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.post(this._url, BODY, { headers: HEADERS })
+		return this.networkService.post('user/signup', BODY)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	signin(user: User) {
 		const BODY = JSON.stringify(user);
-		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.post(this._url + '/signin', BODY, { headers: HEADERS })
+		return this.networkService.post('user/signin', BODY)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
