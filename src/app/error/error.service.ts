@@ -8,7 +8,11 @@ export class ErrorService {
 	handleError(error: any) {
 		// const ERROROBJ = error.json();
 		console.error(`[ErrorService][HandleError]`, error);
-		const ERRORDATA = new Error(error.title, error.error.message);
-		this.errorOccured.emit(ERRORDATA);
+		if (error.title && error.error) {
+			const ERRORDATA = new Error(error.title, error.error.message);
+			this.errorOccured.emit(ERRORDATA);
+		} else {
+			console.log(error);
+		}
 	}
 }
