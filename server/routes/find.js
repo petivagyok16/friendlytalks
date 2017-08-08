@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-var User = require('../models/user');
+const User = require('../models/user');
 
-router.use('/', function (req, res, next) {
+router.use('/', (req, res, next) => {
 
-	jwt.verify(req.query.token, 'secret', function (err, decoded) {
+	jwt.verify(req.query.token, 'secret', (err, decoded) => {
 		if (err) {
 			return res.status(401).json({
 				title: 'Authenticaton failed!',
@@ -18,14 +18,14 @@ router.use('/', function (req, res, next) {
 
 });
 
-router.get('/:username', function (req, res, next) {
+router.get('/:username', (req, res, next) => {
 
 	//In optimal case keyword will be an exact username, but mostly keyword will be only a part of a username
-	var searchTerm = req.params.username;
+	const searchTerm = req.params.username;
 
 	//searching for users that match the keyword. "i" is for case-insensitiveness and selecting only the listed fields
 	User.find({ username: new RegExp('^' + searchTerm, "i") }, 'username messages name pictureUrl email city')
-		.exec(function (err, docs) {
+		.exec((err, docs) => {
 
 			if (err) {
 				return res.status(404).json({
