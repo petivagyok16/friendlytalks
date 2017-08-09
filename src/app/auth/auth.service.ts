@@ -15,14 +15,12 @@ export class AuthService {
 	constructor(private _http: Http) { }
 
 	signup(user: User) {
-
 		const BODY = JSON.stringify(user);
 		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
 		return this._http.post(this._url, BODY, { headers: HEADERS })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
-
 	}
 
 	signin(user: User) {
@@ -32,7 +30,6 @@ export class AuthService {
 		return this._http.post(this._url + '/signin', BODY, { headers: HEADERS })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
-
 	}
 
 	logout() {
