@@ -42,7 +42,6 @@ export class MessageService {
 	}
 
 	deleteMessage(message: Message) {
-
 		const MESSAGEID = message.messageId;
 
 		return this._http.delete(this._url + '/' + MESSAGEID + this._token)
