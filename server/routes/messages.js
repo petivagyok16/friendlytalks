@@ -1,13 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-var Message = require('../models/message');
-var User = require('../models/user');
+const Message = require('../models/message');
+const User = require('../models/user');
 
-router.use('/', function (req, res, next) {
+router.use('/', (req, res, next) => {
 
-	jwt.verify(req.query.token, 'secret', function (err, decoded) {
+	jwt.verify(req.query.token, 'secret', (err, decoded) => {
 		if (err) {
 			return res.status(401).json({
 				title: 'Authenticaton failed!',
@@ -19,11 +19,11 @@ router.use('/', function (req, res, next) {
 
 });
 
-router.get('/:skipper', function (req, res, next) {
+router.get('/:skipper', (req, res, next) => {
 
 	Message.find().sort({ _id: -1 }).skip(parseInt(req.params.skipper)).limit(10)
 		.populate('user', 'username pictureUrl')
-		.exec(function (err, docs) {
+		.exec((err, docs) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -47,13 +47,13 @@ router.get('/:skipper', function (req, res, next) {
 		});
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
 
-	var decoded = jwt.decode(req.query.token);
+	const decoded = jwt.decode(req.query.token);
 
 	//Decoded token contains the user object as well, so we can use it here
 	//to match the userId with the message
-	User.findById(decoded.user._id, function (err, UserDoc) {
+	User.findById(decoded.user._id, (err, UserDoc) => {
 		if (err) {
 			return res.status(404).json({
 				title: 'Error!',
@@ -61,7 +61,7 @@ router.post('/', function (req, res, next) {
 			});
 		}
 
-		var message = new Message({
+		const message = new Message({
 
 			content: req.body.content,
 			created_at: req.body.created_at,
@@ -70,7 +70,7 @@ router.post('/', function (req, res, next) {
 
 		});
 
-		message.save(function (err, result) {
+		message.save((err, result) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -103,10 +103,10 @@ router.post('/', function (req, res, next) {
 
 });
 
-router.delete('/:id', function (req, res, next) {
-	var decoded = jwt.decode(req.query.token);
+router.delete('/:id', (req, res, next) => {
+	const decoded = jwt.decode(req.query.token);
 
-	Message.findById(req.params.id, function (err, doc) {
+	Message.findById(req.params.id, (err, doc) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -129,7 +129,7 @@ router.delete('/:id', function (req, res, next) {
 			});
 		}
 
-		doc.remove(function (err, result) {
+		doc.remove((err, result) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -149,10 +149,10 @@ router.delete('/:id', function (req, res, next) {
 
 });
 
-router.patch('/:id', function (req, res, next) {
+router.patch('/:id', (req, res, next) => {
 	var decoded = jwt.decode(req.query.token);
 
-	Message.findById(req.params.id, function (err, doc) {
+	Message.findById(req.params.id, (err, doc) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -176,7 +176,7 @@ router.patch('/:id', function (req, res, next) {
 		}
 
 		doc.content = req.body.content;
-		doc.save(function (err, result) {
+		doc.save((err, result) => {
 			if (err) {
 				return res.status(404).json({
 					title: 'An error occured',
@@ -192,7 +192,7 @@ router.patch('/:id', function (req, res, next) {
 	});
 });
 
-router.patch('/rate/:id', function (req, res, next) {
+router.patch('/rate/:id', (req, res, next) => {
 
 	var rating = req.body.rating;
 	var raterUserId = req.body.raterUserId;
@@ -201,7 +201,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 	Message.findById(messageId)
 		.populate('user meta.likes meta.dislikes', 'ratings')
-		.exec(function (err, message) {
+		.exec((err, message) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -217,7 +217,7 @@ router.patch('/rate/:id', function (req, res, next) {
 				});
 			}
 
-			User.findById(raterUserId, function (err, raterUser) {
+			User.findById(raterUserId, (err, raterUser) => {
 
 				if (err) {
 					console.log('Cannot find raterUser', + err);
@@ -258,7 +258,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.likes.splice(messageLikedByRaterUser, 1);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -272,7 +272,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.dislikes.splice(messageDislikedByRaterUser, 1);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -289,7 +289,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.likes.push(messageId);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -312,7 +312,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.likes.push(messageId);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -330,7 +330,7 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.dislikes.push(messageId);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -352,18 +352,18 @@ router.patch('/rate/:id', function (req, res, next) {
 
 							raterUser.ratings.given.dislikes.push(messageId);
 
-							raterUser.save(function (err) {
+							raterUser.save((err) => {
 								if (err) console.log('raterUser saving err: ' + err);
 							});
 							break;
 						}
 				}
 
-				messageOwner.save(function (err) {
+				messageOwner.save((err) => {
 					if (err) console.log('messageOwner saving err: ' + err);
 				});
 
-				message.save(function (err, result) {
+				message.save((err, result) => {
 
 					if (err) {
 						console.log(err);
