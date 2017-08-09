@@ -25,7 +25,7 @@ export class MessageService {
 	}
 
 	getMessages(skipper) {
-		return this._http.get(this._url + '/' + skipper + this._token)
+		return this._http.get(`${this._url}/${skipper}${this._token}`)
 			.map((response: Response) => {
 				const DATA = response.json().obj;
 				console.log(DATA);
@@ -44,7 +44,7 @@ export class MessageService {
 	deleteMessage(message: Message) {
 		const MESSAGEID = message.messageId;
 
-		return this._http.delete(this._url + '/' + MESSAGEID + this._token)
+		return this._http.delete(`${this._url}/${MESSAGEID}${this._token}`)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -53,7 +53,7 @@ export class MessageService {
 		const BODY = JSON.stringify(message);
 		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(this._url + '/' + message.messageId + this._token, BODY, { headers: HEADERS })
+		return this._http.patch(`${this._url}/${message.messageId}${this._token}`, BODY, { headers: HEADERS })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -63,7 +63,7 @@ export class MessageService {
 		const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
 		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(this._url + '/rate' + '/' + messageId + this._token, RATINGOBJECT, { headers: HEADERS })
+		return this._http.patch(`${this._url}/rate/${messageId}${this._token}`, RATINGOBJECT, { headers: HEADERS })
 			.map((response: Response) => console.log(response.json()))
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
