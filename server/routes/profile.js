@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-var User = require('../models/user');
+const User = require('../models/user');
 
-router.use('/', function (req, res, next) {
+router.use('/', (req, res, next) => {
 
-	jwt.verify(req.query.token, 'secret', function (err, decoded) {
+	jwt.verify(req.query.token, 'secret', (err, decoded) => {
 		if (err) {
 			return res.status(401).json({
 				title: 'Authenticaton failed!',
@@ -18,12 +18,12 @@ router.use('/', function (req, res, next) {
 
 });
 
-router.get('/:userId', function (req, res, next) {
+router.get('/:userId', (req, res, next) => {
 
-	var userId = req.params.userId;
+	const userId = req.params.userId;
 
 	User.findById(userId, 'username messages name pictureUrl email city relations ratings')
-		.exec(function (err, doc) {
+		.exec((err, doc) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -46,7 +46,7 @@ router.get('/:userId', function (req, res, next) {
 		});
 });
 
-router.patch('/:id', function (req, res, next) {
+router.patch('/:id', (req, res, next) => {
 	//var decoded = jwt.decode(req.query.token);
 	console.log('follower user:' + req.params.id);
 
@@ -54,7 +54,7 @@ router.patch('/:id', function (req, res, next) {
 	//Finding the followed User to update its follower field
 	//first element of the array is the follower user, second is the followed user
 	//mongoose gives back in the same order hopefully. BELIEVE
-	User.find({ _id: { $in: [req.params.id, req.body.toFollowId] } }, function (err, docs) {
+	User.find({ _id: { $in: [req.params.id, req.body.toFollowId] } }, (err, docs) => {
 
 		if (err) {
 
@@ -119,7 +119,7 @@ router.patch('/:id', function (req, res, next) {
 		//operation in time, but its not a big deal atm.
 		var followedUserResult = null;
 
-		followedUser.save(function (err, result) {
+		followedUser.save((err, result) => {
 
 			if (err) {
 				followedUserErr = err;
@@ -135,7 +135,7 @@ router.patch('/:id', function (req, res, next) {
 
 		});
 
-		followerUser.save(function (followerUserErr, followerUserResult) {
+		followerUser.save((followerUserErr, followerUserResult) => {
 
 			if (followerUserErr || followedUserErr) {
 				return res.status(404).json({
@@ -155,13 +155,13 @@ router.patch('/:id', function (req, res, next) {
 	});
 });
 
-router.get('/followers/:userId', function (req, res, next) {
+router.get('/followers/:userId', (req, res, next) => {
 
 	var userId = req.params.userId;
 
 	User.findById(userId)
 		.populate('relations.followers', 'username email name pictureUrl')
-		.exec(function (err, doc) {
+		.exec((err, doc) => {
 			//console.log(doc);
 			if (err) {
 				return res.status(404).json({
@@ -184,14 +184,13 @@ router.get('/followers/:userId', function (req, res, next) {
 		});
 });
 
-router.get('/following/:userId', function (req, res, next) {
+router.get('/following/:userId', (req, res, next) => {
 
 	var userId = req.params.userId;
 
 	User.findById(userId)
 		.populate('relations.following', 'username email name pictureUrl')
-		.exec(function (err, doc) {
-			//console.log(doc);
+		.exec((err, doc) => {
 			if (err) {
 				return res.status(404).json({
 					title: 'An error occured',
@@ -213,14 +212,14 @@ router.get('/following/:userId', function (req, res, next) {
 		});
 });
 
-router.get('/followingmessages/:userId', function (req, res, next) {
+router.get('/followingmessages/:userId', (req, res, next) => {
 
 	User.findById(req.params.userId, 'relations.following')
 		.populate({
 			path: 'relations.following',
 			populate: { path: 'messages' }
 		})
-		.exec(function (err, doc) {
+		.exec((err, doc) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -236,10 +235,10 @@ router.get('/followingmessages/:userId', function (req, res, next) {
 		});
 });
 
-router.patch('/editprofile/:id', function (req, res, next) {
+router.patch('/editprofile/:id', (req, res, next) => {
 	var decoded = jwt.decode(req.query.token);
 
-	User.findById(req.params.id, function (err, doc) {
+	User.findById(req.params.id, (err, doc) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -268,7 +267,7 @@ router.patch('/editprofile/:id', function (req, res, next) {
 		doc.name.last = req.body.lastName;
 		doc.city = req.body.city;
 
-		doc.save(function (err, result) {
+		doc.save((err, result) => {
 
 			if (err) {
 				return res.status(404).json({
