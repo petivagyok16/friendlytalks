@@ -47,7 +47,7 @@ router.get('/:skipper', (req, res, next) => {
 		});
 });
 
-router.post('/', (req, res, next) => {
+router.post('/add', (req, res, next) => {
 
 	const decoded = jwt.decode(req.query.token);
 
