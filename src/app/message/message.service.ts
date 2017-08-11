@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
 
 import { Message } from './message';
+import { NetworkService } from './../shared/network.service';
 
 @Injectable()
 export class MessageService {
 
-	private _url: string = 'http://localhost:3000/message';
-	private _token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
-
-	constructor(private _http: Http) { }
+	constructor(private networkService: NetworkService) { }
 
 	addMessage(message: Message) {
 		const BODY = JSON.stringify(message);
-		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.post(this._url + this._token, BODY, { headers: HEADERS })
+		return this.networkService.post(`message/add`, BODY)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	getMessages(skipper) {
-		return this._http.get(`${this._url}/${skipper}${this._token}`)
+		return this.networkService.get(`message/${skipper}`)
 			.map((response: Response) => {
 				const DATA = response.json().obj;
 				console.log(DATA);
@@ -44,7 +41,7 @@ export class MessageService {
 	deleteMessage(message: Message) {
 		const MESSAGEID = message.messageId;
 
-		return this._http.delete(`${this._url}/${MESSAGEID}${this._token}`)
+		return this.networkService.delete(`message/${MESSAGEID}`)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -53,7 +50,7 @@ export class MessageService {
 		const BODY = JSON.stringify(message);
 		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(`${this._url}/${message.messageId}${this._token}`, BODY, { headers: HEADERS })
+		return this.networkService.patch(`message/${message.messageId}`, BODY)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -63,7 +60,7 @@ export class MessageService {
 		const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
 		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(`${this._url}/rate/${messageId}${this._token}`, RATINGOBJECT, { headers: HEADERS })
+		return this.networkService.patch(`message/rate/${messageId}`, RATINGOBJECT)
 			.map((response: Response) => console.log(response.json()))
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
