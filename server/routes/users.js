@@ -4,12 +4,11 @@ var passwordHash = require('password-hash');
 var jwt = require('jsonwebtoken');
 
 //var Message = require('../models/message');
-var User = require('../models/user');
+const User = require('../models/user');
 
-router.post('/', function (req, res, next) {
+router.post('/signup', (req, res, next) => {
 
-	var user = new User({
-
+	const user = new User({
 		username: req.body.username,
 		email: req.body.email,
 		password: passwordHash.generate(req.body.password),
@@ -22,7 +21,7 @@ router.post('/', function (req, res, next) {
 
 	});
 
-	user.save(function (err, result) {
+	user.save((err, result) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -40,9 +39,9 @@ router.post('/', function (req, res, next) {
 
 });
 
-router.post('/signin', function (req, res, next) {
+router.post('/signin', (req, res, next) => {
 
-	User.findOne({ username: req.body.username }, function (err, doc) {
+	User.findOne({ username: req.body.username }, (err, doc) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -65,8 +64,8 @@ router.post('/signin', function (req, res, next) {
 			});
 		}
 
-		//Sending the user object as well to be able to use its ID throughout the app
-		var token = jwt.sign({ user: doc }, 'secret', { expiresIn: '2 days' });
+		// Sending the user object as well to be able to use its ID throughout the app
+		const token = jwt.sign({ user: doc }, 'secret', { expiresIn: '2 days' });
 
 		res.status(200).json({
 			message: 'success',
