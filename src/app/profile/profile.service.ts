@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
@@ -7,17 +7,16 @@ import { Observable } from 'rxjs';
 
 import { Profile, UpdatedProfile } from './profile';
 import { Message } from '../message/message';
+import { NetworkService } from './../shared/network.service';
 
 @Injectable()
 export class ProfileService {
-	private _url: string = 'http://localhost:3000/profile';
-	private _token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
 
-	constructor(private _http: Http) { }
+	constructor(private networkService: NetworkService) { }
 
 	// Finding the requested user profiles
 	find(userId) {
-		return this._http.get(this._url + '/' + userId + this._token)
+		return this.networkService.get(`profile/${userId}`)
 			.map((response: Response) => {
 				const DATA = response.json().obj;
 
@@ -34,72 +33,71 @@ export class ProfileService {
 	// by sending the followed and follower user's IDs i can set it server-side to
 	// change both user's relation states in one http request
 	follow(userId, toFollowId, state) {
-		// console.log('userId: ' + userId, 'toFollowId: ' + toFollowId, 'following state: ' + state);
 		const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state });
-		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(this._url + '/' + userId + this._token, toFollowOrUnfollow, { headers: HEADERS })
+		return this.networkService.patch(`profile/${userId}`, toFollowOrUnfollow)
 			.map((response: Response) => console.log(response.json()))
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	getFollowers(userId) {
-		return this._http.get(this._url + '/followers' + '/' + userId + this._token)
+		return this.networkService.get(`profile/followers/${userId}`)
 			.map((response: Response) => {
-				const DATA = response.json().obj;
-				const objs: any[] = [];
+				const rawFollowers = response.json().obj;
+				const followers: any[] = [];
 
-				for (let i = 0; i < DATA.length; i++) {
-					const follower = new Profile(DATA[i].username, DATA[i]._id, null, DATA[i].email, DATA[i].pictureUrl);
-					follower.name = DATA[i].name;
-					objs.push(follower);
-				}
-				return objs;
+				rawFollowers.forEach(follower => {
+					const mappedFollower = new Profile(follower.username, follower._id, null, follower.email, follower.pictureUrl);
+					mappedFollower.name = follower.name;
+					followers.push(mappedFollower);
+				});
+
+				return followers;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	getFollowing(userId) {
-		return this._http.get(this._url + '/following' + '/' + userId + this._token)
+		return this.networkService.get(`profile/following/${userId}`)
 			.map((response: Response) => {
-				const DATA = response.json().obj;
-				const objs: any[] = [];
+				const rawFollowing = response.json().obj;
+				const following: any[] = [];
 
-				for (let i = 0; i < DATA.length; i++) {
-					const following = new Profile(DATA[i].username, DATA[i]._id, [], DATA[i].email, DATA[i].pictureUrl);
-					following.name = DATA[i].name;
-
-					objs.push(following);
-				}
-				return objs;
+				rawFollowing.forEach(following => {
+					const mappedFollowing = new Profile(following.username, following._id, [], following.email, following.pictureUrl);
+					mappedFollowing.name = following.name;
+					following.push(following);
+				});
+				
+				return following;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	getFollowingMessages(userId) {
-		return this._http.get(this._url + '/followingmessages' + '/' + userId + this._token)
+		return this.networkService.get(`profile/followingmessages/${userId}`)
 			.map((response: Response) => {
-				const DATA = response.json().obj;
+				const rawFollowingMessages = response.json().obj;
+				const followingMessages: any[] = [];
 
-				const objs: any[] = [];
-				for (let i = 0; i < DATA.length; i++) {
-
-					for (let j = 0; j < DATA[i].messages.length; j++) {
-						let message = new Message(DATA[i].messages[j].content, DATA[i].messages[j].created_at,
-							DATA[i].username, DATA[i].messages[j].meta, DATA[i].messages[j]._id, DATA[i].messages[j].user, DATA[i].pictureUrl);
-						objs.push(message);
+				rawFollowingMessages.forEach(following => {
+					if (following.messages) {
+						following.messages.forEach(message => {
+							let mappedMessage = new Message(message.content, message.created_at,
+							following.username, message.meta, message._id, message.user, following.pictureUrl);
+							followingMessages.push(message);
+						});
 					}
-				}
-				return objs;
+				})
+				return followingMessages;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
 	editProfile(userId, profile: UpdatedProfile) {
 		const BODY = JSON.stringify(profile);
-		const HEADERS = new Headers({ 'Content-Type': 'application/json' });
 
-		return this._http.patch(this._url + '/editprofile' + '/' + userId + this._token, BODY, { headers: HEADERS })
+		return this.networkService.patch(`profile/editprofile/${userId}`, BODY)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
