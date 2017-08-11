@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 
 import { Profile } from '../profile/profile';
+import { NetworkService } from './../shared/network.service';
 
 @Injectable()
 export class FindFriendService {
-	private _url: string = 'http://localhost:3000/find';
-	private _token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
 
-	constructor(private _http: Http) { }
+	constructor(private networkService: NetworkService) { }
 
 	find(username) {
-		return this._http.get(this._url + '/' + username + this._token)
+		return this.networkService.get(`find/${username}`)
 			.map((response: Response) => {
-				const DATA = response.json().obj;
-				const objs: any[] = [];
+				const rawFoundUsers = response.json().obj;
+				const foundUsers: any[] = [];
 
-				for (let i = 0; i < DATA.length; i++) {
-					const foundUser = new Profile(DATA[i].username, DATA[i]._id, DATA[i].messages, DATA[i].email,
-						DATA[i].pictureUrl, DATA[i].city);
-					foundUser.name = DATA[i].name;
-
-					objs.push(foundUser);
-				}
-				return objs;
+				rawFoundUsers.forEach(foundUser => {
+					const mappedFoundUser = new Profile(foundUser.username, foundUser._id, foundUser.messages, foundUser.email,
+						foundUser.pictureUrl, foundUser.city);
+					foundUsers.push(mappedFoundUser);
+				});
+				return foundUsers;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
