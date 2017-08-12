@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { FollowComponent } from './follow.component';
-//import { PaginationComponent }    from './pagination.component';
+// import { PaginationComponent }    from './pagination.component';
 import { ProfileBarComponent } from './profileBar.component';
 import { RatingComponent } from './rating.component';
 import { SpinnerComponent } from './spinner.component';
@@ -18,13 +18,13 @@ import { SpinnerComponent } from './spinner.component';
 		FollowComponent,
 		ProfileBarComponent,
 		RatingComponent,
-		SpinnerComponent
+		SpinnerComponent,
 	],
 	exports: [
 		FollowComponent,
 		ProfileBarComponent,
 		RatingComponent,
-		SpinnerComponent
+		SpinnerComponent,
 	]
 })
 export class SharedModule {
