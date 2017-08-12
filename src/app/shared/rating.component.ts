@@ -16,8 +16,8 @@ export class RatingComponent implements OnInit {
 	@Input() dislikes: number = null; */
 	@Input() ratingObj;
 	@Output() change = new EventEmitter();
-	private likes: number;
-	private dislikes: number;
+	public likes: number;
+	public dislikes: number;
 
 	constructor() { }
 
