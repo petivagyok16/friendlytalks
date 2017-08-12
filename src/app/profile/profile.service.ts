@@ -61,15 +61,15 @@ export class ProfileService {
 		return this.networkService.get(`profile/following/${userId}`)
 			.map((response: Response) => {
 				const rawFollowing = response.json().obj;
-				const following: any[] = [];
+				const followings: any[] = [];
 
 				rawFollowing.forEach(following => {
 					const mappedFollowing = new Profile(following.username, following._id, [], following.email, following.pictureUrl);
 					mappedFollowing.name = following.name;
-					following.push(following);
+					followings.push(mappedFollowing);
 				});
 				
-				return following;
+				return followings;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
