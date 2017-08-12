@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng build -prod && node server.js",
+    "build": "ng build -prod && node server/server.js",
+    "server": "node server/server.js",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
