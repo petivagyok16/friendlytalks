@@ -16,9 +16,12 @@ export class MessageService {
 	addMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.post(`message/add`, BODY)
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+		return this.networkService.post(`message/add`, BODY).toPromise()
+			.then((response: Response) => response.json())
+			.catch((error: Response) => {
+				console.error(error.json());
+				throw error.json();
+			});
 	}
 
 	getMessages(skipper): Promise<any> {
@@ -43,7 +46,7 @@ export class MessageService {
 		return this.networkService.delete(`message/${MESSAGEID}`).toPromise()
 			// .then((response: Response) => response.json())
 			.catch((error: Response) => {
-				throw error;
+				throw error.json();
 			});
 	}
 
@@ -52,7 +55,10 @@ export class MessageService {
 
 		return this.networkService.patch(`message/${message.messageId}`, BODY).toPromise()
 			.then((response: Response) => response.json())
-			.catch((error: Response) => console.error(error.json()));
+			.catch((error: Response) => {
+				console.error(error.json());
+				throw error.json();
+			});
 	}
 
 	rateMessage(messageId, raterUserId, rating, prevRating) {

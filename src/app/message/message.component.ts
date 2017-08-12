@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 
 import { MessageService } from './message.service';
 import { Message } from './message';
@@ -11,9 +12,10 @@ import { ObjectStore } from '../objectStore';
 	selector: 'my-message',
 	templateUrl: 'message.component.html'
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnDestroy {
 
 	public messages: Message[] = [];
+	private userSubscription: Subscription;
 	public message: Message = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
 	public userId = localStorage.getItem('userId');
@@ -42,7 +44,7 @@ export class MessageComponent implements OnInit {
 				this.messagesLoading = false;
 			});
 
-		this._profileService.find(this.userId)
+		this.userSubscription = this._profileService.find(this.userId)
 			.subscribe(user => {
 				this.userObject = user;
 				this._objectStore.setObject('userObject', user);
@@ -80,14 +82,14 @@ export class MessageComponent implements OnInit {
 			const message = new Message(inputValue, date);
 
 			this._messageService.addMessage(message)
-				.subscribe(data => {
+				.then(data => {
 					message.messageId = data.obj.id;
 					message.username = data.obj.username;
 					message.userId = data.obj.userId;
 					message.meta = data.obj.meta;
 					message.pictureUrl = data.obj.pictureUrl;
-				},
-				error => this._errorService.handleError(error));
+				})
+				.catch(error => this._errorService.handleError(error));
 
 			this.messages.unshift(message);
 		}
@@ -155,5 +157,9 @@ export class MessageComponent implements OnInit {
 		this._messageService.rateMessage(messageId, this.userId, event.newRating, event.prevRating)
 			.subscribe(null,
 			error => this._errorService.handleError(error));
+	}
+
+	ngOnDestroy() {
+		this.userSubscription.unsubscribe();
 	}
 }
