@@ -25,7 +25,7 @@ import { ErrorService } from '../error/error.service';
 })
 export class FollowingComponent implements OnInit {
 
-	private followings = [];
+	public followings = [];
 	private userId = null;
 	constructor(
 		private _profileService: ProfileService,
