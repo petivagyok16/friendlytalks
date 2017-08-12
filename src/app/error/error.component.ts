@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 
 import { Error } from './error';
 import { ErrorService } from './error.service';
@@ -34,14 +35,15 @@ import { ErrorService } from './error.service';
         }
     `]
 })
-export class ErrorComponent implements OnInit {
-	errorDisplay = 'none';
-	errorData = Error;
+export class ErrorComponent implements OnInit, OnDestroy {
+	public errorDisplay = 'none';
+    private errorData = Error;
+    private errorSubscription: Subscription;
 
 	constructor(private _errorService: ErrorService) { }
 
 	ngOnInit() {
-		this._errorService.errorOccured
+		this.errorSubscription = this._errorService.errorOccured
 			.subscribe(errorData => {
 				this.errorData = errorData;
 				this.errorDisplay = 'block';
@@ -50,5 +52,9 @@ export class ErrorComponent implements OnInit {
 
 	onErrorHandled() {
 		this.errorDisplay = 'none';
-	}
+    }
+    
+    ngOnDestroy() {
+        this.errorSubscription.unsubscribe();
+    }
 }
