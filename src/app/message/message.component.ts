@@ -15,7 +15,6 @@ export class MessageComponent implements OnInit {
 
 	public messages: Message[] = [];
 	public message: Message = null;
-	public messagesCache: Message[] = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
 	public userId = localStorage.getItem('userId');
 	public globalFeedActive: boolean = true;
