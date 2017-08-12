@@ -12,9 +12,9 @@ import { ErrorService } from '../error/error.service';
 })
 
 export class FindFriendComponent implements OnInit, OnDestroy {
-	private foundUsers: Profile[] = [];
-	private isLoading = false;
-	private searchTerm = new FormControl();
+	public foundUsers: Profile[] = [];
+	public isLoading = false;
+	public searchTerm = new FormControl();
 	private keyups: any;
 
 	constructor(
