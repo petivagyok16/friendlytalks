@@ -2,17 +2,15 @@
 
 ## How to build
 
-Run `node server.js` to start the dev server
+Run `npm run server` to start the dev server
 
 Run `npm start` or `ng serve` to build the project
+
+Run `npm run build` to build the project and start node server which listens on port `3000`. The build artifacts will be stored in the `dist/` directory.
 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
-
-## Build and Server
-
-Run `npm run build` to build the project and start node server which listens on port `3000`. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
 ## Running unit tests
 
