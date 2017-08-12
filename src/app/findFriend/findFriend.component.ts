@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { FormControl } from '@angular/forms';
 
@@ -11,19 +11,19 @@ import { ErrorService } from '../error/error.service';
 	templateUrl: 'findFriend.component.html'
 })
 
-export class FindFriendComponent implements OnInit {
+export class FindFriendComponent implements OnInit, OnDestroy {
 	private foundUsers: Profile[] = [];
 	private isLoading = false;
 	private searchTerm = new FormControl();
+	private keyups: any;
 
 	constructor(
 		private _findFriendService: FindFriendService,
 		private _errorService: ErrorService) { }
 
 	ngOnInit() {
-		const keyups = this.searchTerm.valueChanges
+		this.keyups = this.searchTerm.valueChanges
 			.debounceTime(400)
-			// no async call until the search term is the same (e.g. arrow keys would fire the subscribe method as well)
 			.distinctUntilChanged()
 			.filter(text => {
 				if (text.length === 0) {
@@ -31,13 +31,12 @@ export class FindFriendComponent implements OnInit {
 				} else {
 					return text.length >= 2;
 				}
-
 			})
 			.map(searchTerm => {
 				return searchTerm;
 			});
 
-		keyups.subscribe(
+		this.keyups.subscribe(
 			searchTerm => {
 				this.isLoading = true;
 				this._findFriendService.find(searchTerm)
@@ -53,5 +52,9 @@ export class FindFriendComponent implements OnInit {
 					() => this.isLoading = false);
 			},
 			error => console.log(error));
+	}
+
+	ngOnDestroy() {
+		this.keyups.unsubscribe();
 	}
 }
