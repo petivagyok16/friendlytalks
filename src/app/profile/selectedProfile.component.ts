@@ -1,8 +1,9 @@
 import {
 	Component, OnInit, DoCheck, HostBinding,
-	trigger, transition, animate, style, state
+	trigger, transition, animate, style, state, OnDestroy
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 import { Profile } from './profile';
 import { ProfileService } from './profile.service';
@@ -37,13 +38,14 @@ import { ObjectStore } from '../objectStore';
 			])
 	] */
 })
-export class SelectedProfileComponent implements OnInit, DoCheck {
+export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 
 	private selectedUserId = null;
-	userObject: Profile = null;
+	public userObject: Profile = null;
 	// Initial values must be provided for ngFormModel otherwise component  crashes...
-	selectedUser = new Profile('init', 'init', [], 'init', 'init', 'init');
-	isFollowed = null;
+	public selectedUser = new Profile('init', 'init', [], 'init', 'init', 'init');
+	public isFollowed = null;
+	private selectedUserSubscription: Subscription;
 
 	// Animation
 	/*
@@ -82,7 +84,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 			error => this._errorService.handleError(error));
 
 		// and then finding it by calling the server
-		this._profileService.find(this.selectedUserId)
+		this.selectedUserSubscription = this._profileService.find(this.selectedUserId)
 			.subscribe(profile => {
 				this.selectedUser = profile;
 				// localStorage userObject must be updated to track the changes of the followers
@@ -148,5 +150,9 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 			this._objectStore.setObject('userObject', this.userObject);
 
 		}
+	}
+
+	ngOnDestroy() {
+		this.selectedUserSubscription.unsubscribe();
 	}
 }
