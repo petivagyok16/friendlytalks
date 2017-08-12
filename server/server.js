@@ -7,14 +7,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
-// Get our API routes
-const api = require('./server/routes/api');
-const config = require('./server/config');
-const appRoutes = require('./server/routes/app');
-const messageRoutes = require('./server/routes/messages');
-const userRoutes = require('./server/routes/users');
-const findUserRoutes = require('./server/routes/find');
-const profileRoutes = require('./server/routes/profile');
+// Get API route files
+const api = require('./routes/api');
+const config = require('./config');
+const appRoutes = require('./routes/app');
+const messageRoutes = require('./routes/messages');
+const userRoutes = require('./routes/users');
+const findUserRoutes = require('./routes/find');
+const profileRoutes = require('./routes/profile');
 
 const app = express();
 mongoose.Promise = global.Promise;
@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Point static path to dist
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 //Connecting to MongoDB
 mongoose.connect(config.getDbConnectionString());
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Set our api routes
+// Set API routes
 app.use('/message', messageRoutes);
 app.use('/user', userRoutes);
 app.use('/find', findUserRoutes);
@@ -46,7 +46,7 @@ app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 /**
