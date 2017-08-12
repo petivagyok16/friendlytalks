@@ -50,9 +50,9 @@ export class MessageService {
 	editMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.patch(`message/${message.messageId}`, BODY)
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+		return this.networkService.patch(`message/${message.messageId}`, BODY).toPromise()
+			.then((response: Response) => response.json())
+			.catch((error: Response) => console.error(error.json()));
 	}
 
 	rateMessage(messageId, raterUserId, rating, prevRating) {
