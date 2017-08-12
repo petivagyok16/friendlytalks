@@ -21,23 +21,14 @@ export class FindFriendComponent implements OnInit {
 		private _errorService: ErrorService) { }
 
 	ngOnInit() {
-
-		// event raised from each input field keyups, returns a searchTerm after filtering
 		const keyups = this.searchTerm.valueChanges
-
-			// picking only the value from the event object
-			// .map(e => e.target.value)
-			// waiting 400ms until subscribe fires the async call
 			.debounceTime(400)
 			// no async call until the search term is the same (e.g. arrow keys would fire the subscribe method as well)
 			.distinctUntilChanged()
 			.filter(text => {
-				// if text is undefined (= user removed all the characters from the input field)
-				// foundUsers array will be empty and gives back no feedback
 				if (text.length === 0) {
 					this.foundUsers = [];
 				} else {
-					// firing subscribe only if there are at least 3 characters
 					return text.length >= 2;
 				}
 
@@ -46,14 +37,12 @@ export class FindFriendComponent implements OnInit {
 				return searchTerm;
 			});
 
-		// subscribing to the keyup events and firing findFriendService in order to get back the found users list
 		keyups.subscribe(
 			searchTerm => {
 				this.isLoading = true;
 				this._findFriendService.find(searchTerm)
 					.subscribe(
 					foundUsers => {
-						// null value gives feedback to user that 'no user found'
 						if (foundUsers.length === 0) {
 							this.foundUsers = null;
 						} else {
