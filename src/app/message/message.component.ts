@@ -13,16 +13,16 @@ import { ObjectStore } from '../objectStore';
 })
 export class MessageComponent implements OnInit {
 
-	messages: Message[] = [];
-	message: Message = null;
-	messagesCache: Message[] = null;
+	public messages: Message[] = [];
+	public message: Message = null;
+	public messagesCache: Message[] = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
-	userId = localStorage.getItem('userId');
-	globalFeedActive: boolean = true;
-	followerFeedActive: boolean = false;
-	messagesLoading: boolean = true;
-	userObject: Profile = null;
-	messageSkipper = 0;
+	public userId = localStorage.getItem('userId');
+	public globalFeedActive: boolean = true;
+	public followerFeedActive: boolean = false;
+	public messagesLoading: boolean = true;
+	public userObject: Profile = null;
+	private messageSkipper = 0;
 
 	constructor(
 		private _messageService: MessageService,
@@ -31,16 +31,15 @@ export class MessageComponent implements OnInit {
 		private _objectStore: ObjectStore) { }
 
 	ngOnInit() {
-
 		this.messageSkipper = 0;
 
 		this._messageService.getMessages(this.messageSkipper)
-			.subscribe(
-			messages => {
+			.then(messages => {
 				this.messages = messages;
-			},
-			error => this._errorService.handleError(error),
-			() => {
+				this.messagesLoading = false;
+			})
+			.catch(error => {
+				this._errorService.handleError(error);
 				this.messagesLoading = false;
 			});
 
@@ -48,26 +47,20 @@ export class MessageComponent implements OnInit {
 			.subscribe(user => {
 				this.userObject = user;
 				this._objectStore.setObject('userObject', user);
-			})
+			});
 	}
 
 	loadMoreMessage() {
-
 		this.messageSkipper += 10;
 
 		this._messageService.getMessages(this.messageSkipper)
-			.subscribe(
-			messages => {
-				// messages is an array, messageItems must be picked from it to push them into this.messages
-				for (let messageItem of messages) {
-					this.messages.push(messageItem);
-				}
+			.then(newMessages => {
+				this.messages = this.messages.concat(newMessages);
 			},
 			error => this._errorService.handleError(error));
 	}
 
 	sendMsg(input) {
-
 		const inputValue = input.value;
 
 		if (this.message) {
@@ -86,7 +79,6 @@ export class MessageComponent implements OnInit {
 
 			this._messageService.addMessage(message)
 				.subscribe(data => {
-					console.log(data);
 					message.messageId = data.obj.id;
 					message.username = data.obj.username;
 					message.userId = data.obj.userId;
@@ -100,16 +92,13 @@ export class MessageComponent implements OnInit {
 		// clearing the input field -> 1 bug: after creating a message it cannot be edited at first, but
 		// only after canceling at least once
 		input.value = null;
-
 	}
 
 	onDelete(message) {
 		this.messages.splice(this.messages.indexOf(message), 1);
 
 		this._messageService.deleteMessage(message)
-			.subscribe(
-			null,
-			error => this._errorService.handleError(error));
+			.catch(error => this._errorService.handleError(error));
 	}
 
 	onEdit(message) {
@@ -126,15 +115,15 @@ export class MessageComponent implements OnInit {
 		this.messageSkipper = 0;
 
 		this._messageService.getMessages(this.messageSkipper)
-			.subscribe(messages => {
+			.then(messages => {
 				// temporary workaround
 				this.messages = [];
 				// messages is an array, messageItems must be picked from it to push them into this.messages
 				for (let messageItem of messages) {
 					this.messages.push(messageItem);
 				}
-			},
-			error => this._errorService.handleError(error));
+			})
+			.catch(error => this._errorService.handleError(error));
 	}
 
 	getFollowingMessages() {
@@ -160,9 +149,6 @@ export class MessageComponent implements OnInit {
 	}
 
 	messageRated(event, messageId) {
-		// console.log(event);
-		// console.log(messageId);
-
 		// Changing message rating server-side
 		this._messageService.rateMessage(messageId, this.userId, event.newRating, event.prevRating)
 			.subscribe(null,

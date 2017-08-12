@@ -21,9 +21,9 @@ export class MessageService {
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
-	getMessages(skipper) {
-		return this.networkService.get(`message/${skipper}`)
-			.map((response: Response) => {
+	getMessages(skipper): Promise<any> {
+		return this.networkService.get(`message/${skipper}`).toPromise()
+			.then((response: Response) => {
 				const messagesObj = response.json().obj;
 				const messages: any[] = [];
 
@@ -31,18 +31,20 @@ export class MessageService {
 					const messageObject = new Message(message.content, message.created_at, message.user.username, message.meta,
 						message._id, message.user._id, message.user.pictureUrl);
 					messages.push(messageObject);
-				}) 
+				});
 				return messages;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => console.error(error.json()));
 	}
 
 	deleteMessage(message: Message) {
 		const MESSAGEID = message.messageId;
 
-		return this.networkService.delete(`message/${MESSAGEID}`)
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+		return this.networkService.delete(`message/${MESSAGEID}`).toPromise()
+			// .then((response: Response) => response.json())
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 	editMessage(message: Message) {

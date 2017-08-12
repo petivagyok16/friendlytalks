@@ -39,7 +39,7 @@
 					<div class="col-md-12 col-sm-12 col-xs-12 message-footer">
 
 						<div class="col-md-6 col-sm-6 col-xs-6 left-align">
-							<my-rating [userRating]="userRating(messageItem.messageId)" [ratingObj]="messageItem.meta" (change)="messageRated($event, messageItem.messageId)"></my-rating>
+							<my-rating [userRating]="userRating(messageItem?.messageId)" [ratingObj]="messageItem?.meta" (change)="messageRated($event, messageItem.messageId)"></my-rating>
 						</div>
 						<div class="col-md-6 col-sm-6 col-xs-6 right-align" id="date">{{ messageItem.created_at | date: 'HH.m, MMM.d, y' }}</div>
 
