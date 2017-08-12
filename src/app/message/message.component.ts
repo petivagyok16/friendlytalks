@@ -56,8 +56,8 @@ export class MessageComponent implements OnInit {
 		this._messageService.getMessages(this.messageSkipper)
 			.then(newMessages => {
 				this.messages = this.messages.concat(newMessages);
-			},
-			error => this._errorService.handleError(error));
+			})
+			.catch(error => this._errorService.handleError(error));
 	}
 
 	sendMsg(input) {
@@ -67,11 +67,14 @@ export class MessageComponent implements OnInit {
 			// Edit message
 			this.message.content = inputValue;
 			this._messageService.editMessage(this.message)
-				.subscribe(
-				data => console.log(data),
-				error => this._errorService.handleError(error),
-				() => this.message = null);
-
+				.then(data => {
+					console.log(data);
+					this.message = null
+				})
+				.catch(error => {
+					this._errorService.handleError(error);
+					this.message = null
+				});
 		} else {
 			// Save new message
 			const date = Date.now();
@@ -137,7 +140,7 @@ export class MessageComponent implements OnInit {
 			error => this._errorService.handleError(error))
 	}
 
-	userRating(messageId) {
+	calculateUserRating(messageId) {
 		// Liked message
 		if (this.userObject.ratings.given.likes.indexOf(messageId) != -1) return 1;
 
