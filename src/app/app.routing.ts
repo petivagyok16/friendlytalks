@@ -7,7 +7,7 @@ import { NotFoundComponent } from './not-found.component';
 
 import { MessageComponent } from './message/message.component';
 import { FindFriendComponent } from './findFriend/findFriend.component';
-import { ProfileUpdateFormComponent } from './profile/profileUpdateForm.component';
+import { ProfileUpdateFormComponent } from './profile/profileUpdateForm/profileUpdateForm.component';
 
 import { SignupComponent } from './auth/signup.component';
 
