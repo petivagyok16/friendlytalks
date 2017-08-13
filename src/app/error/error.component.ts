@@ -38,7 +38,7 @@ import { ErrorService } from './error.service';
 })
 export class ErrorComponent implements OnInit, OnDestroy {
 	public errorDisplay = 'none';
-	private errorData = Error;
+	public errorData: Error;
 	private errorSubscription: Subscription;
 
 	constructor(private _errorService: ErrorService) { }
