@@ -7,10 +7,10 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Profile, UpdatedProfile } from './profile';
-import { ProfileService } from './profile.service';
-import { ErrorService } from '../error/error.service';
-import { ObjectStore } from '../objectStore';
+import { Profile, UpdatedProfile } from '../profile';
+import { ProfileService } from '../profile.service';
+import { ErrorService } from '../../error/error.service';
+import { ObjectStore } from '../../objectStore';
 
 @Component({
 	selector: 'profile-form',

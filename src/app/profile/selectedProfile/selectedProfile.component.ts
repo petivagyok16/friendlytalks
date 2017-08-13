@@ -5,10 +5,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
-import { Profile } from './profile';
-import { ProfileService } from './profile.service';
-import { ErrorService } from '../error/error.service';
-import { ObjectStore } from '../objectStore';
+import { Profile } from '../profile';
+import { ProfileService } from '../profile.service';
+import { ErrorService } from '../../error/error.service';
+import { ObjectStore } from '../../objectStore';
 
 @Component({
 	selector: 'selected-profile',

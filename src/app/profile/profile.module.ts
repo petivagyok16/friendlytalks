@@ -10,9 +10,9 @@ import { ProfileService } from './profile.service';
 import { profileRouting } from './profile.routing';
 import { FollowersComponent } from './followers/followers.component';
 import { FollowingComponent } from './following/following.component';
-import { SelectedProfileComponent } from './selectedProfile.component';
-import { ProfileStatsComponent } from './profileStats.component';
-import { ProfileUpdateFormComponent } from './profileUpdateForm.component';
+import { SelectedProfileComponent } from './selectedProfile/selectedProfile.component';
+import { ProfileStatsComponent } from './profileStats/profileStats.component';
+import { ProfileUpdateFormComponent } from './profileUpdateForm/profileUpdateForm.component';
 
 @NgModule({
 	imports: [
