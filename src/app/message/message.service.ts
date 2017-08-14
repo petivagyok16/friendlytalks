@@ -65,7 +65,7 @@ export class MessageService {
 		const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
 
 		return this.networkService.patch(`message/rate/${messageId}`, RATINGOBJECT)
-			.map((response: Response) => console.log(response.json()))
+			// .map((response: Response) => console.log(response.json()))
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 }
