@@ -1,13 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
-import { LandingPageComponent } from './landingPage.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
-import { NotFoundComponent } from './not-found.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 import { MessageComponent } from './message/message.component';
-import { FindFriendComponent } from './findFriend/findFriend.component';
-import { ProfileUpdateFormComponent } from './profile/profileUpdateForm/profileUpdateForm.component';
+import { FindFriendComponent } from './find-friend/find-friend.component';
+import { ProfileUpdateFormComponent } from './profile/profile-update-form/profile-update-form.component';
 
 import { SignupComponent } from './auth/signup.component';
 
