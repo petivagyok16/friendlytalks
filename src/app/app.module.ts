@@ -3,9 +3,11 @@ import { BrowserModule }                    from '@angular/platform-browser';
 import { RouterModule }                     from '@angular/router';
 import { HttpModule }                       from '@angular/http';
 
+// Services, guards
 import { ErrorService }                     from './error/error.service';
 import { NetworkService } 									from './shared/network.service';
 import { StorageService } 									from './shared/storage.service';
+import { AuthGuard } 												from './nav-guards/auth-guard';
 
 // App module components
 import { AppComponent }                     from './app.component';
@@ -23,7 +25,7 @@ import { SharedModule }                     from './shared/shared.module';
 import { ProfileModule }                    from './profile/profile.module';
 
 // RouteConfigs
-import { routing, appRoutingProviders }     from './app.routing';
+import { routing }     											from './app.routing';
 import { profileRouting }                   from './profile/profile.routing';
 
 @NgModule({
@@ -50,6 +52,6 @@ import { profileRouting }                   from './profile/profile.routing';
 			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
-    providers: [ appRoutingProviders, ErrorService, NetworkService, StorageService ]
+    providers: [ appRoutingProviders, ErrorService, NetworkService, StorageService, AuthGuard ]
 })
 export class AppModule { }

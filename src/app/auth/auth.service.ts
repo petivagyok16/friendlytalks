@@ -11,6 +11,8 @@ import { User } from './user';
 @Injectable()
 export class AuthService {
 
+	public redirectUrl: string = '';
+
 	constructor(
 		private networkService: NetworkService,
 		private storageService: StorageService
@@ -39,4 +41,6 @@ export class AuthService {
 	isLoggedIn() {
 		return this.storageService.get('token') !== null;
 	}
+
+	// TODO: getAuthenticatedUser via server. Check JWT if it gives back some data or how to use getAuthenticatedUser by TOKEN
 }
