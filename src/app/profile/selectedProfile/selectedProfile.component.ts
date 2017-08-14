@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Rx';
 import { Profile } from '../profile';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
-import { ObjectStore } from '../../objectStore';
+import { StorageService } from './../../shared/storage.service';
 
 @Component({
 	selector: 'selected-profile',
@@ -68,11 +68,11 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 		private _router: Router,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private _objectStore: ObjectStore) { }
+		private storageService: StorageService) { }
 
 	ngOnInit() {
 
-		this.userObject = this._objectStore.getObject('userObject');
+		this.userObject = this.storageService.getObject('userObject');
 
 		// getting the userId from URL param
 		this._route.parent.params
@@ -89,7 +89,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 				this.selectedUser = profile;
 				// localStorage userObject must be updated to track the changes of the followers
 				if (this.isOwnProfile()) {
-					this._objectStore.setObject('userObject', profile);
+					this.storageService.setObject('userObject', profile);
 				}
 			},
 			error => this._errorService.handleError(error));
@@ -99,8 +99,6 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	ngDoCheck() {
-		// console.log('Do check runs');
-
 		// DoCheck is necessary here, because user can change the view to his own profile
 		// but view wouldn't update, if a different profile is loaded.
 
@@ -111,7 +109,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 
 	// edit button will be available if the selected user profile is the user's own profile
 	isOwnProfile() {
-		return this.selectedUserId == localStorage.getItem('userId');
+		return this.selectedUserId == this.storageService.get('userId');
 	}
 
 	editProfile() {
@@ -121,7 +119,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 	onFollowChange(newState) {
 
 		// Changing the follower's state server-side
-		this._profileService.follow(localStorage.getItem('userId'), this.selectedUserId, newState.state)
+		this._profileService.follow(this.storageService.get('userId'), this.selectedUserId, newState.state)
 			.subscribe(null,
 			error => this._errorService.handleError(error));
 
@@ -135,7 +133,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 
 			// since its a userObject changer operation localStorage.userObject must be updated
 			// to keep both the client and server side in sync
-			this._objectStore.setObject('userObject', this.userObject);
+			this.storageService.setObject('userObject', this.userObject);
 
 		} else {
 
@@ -147,7 +145,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 			this.userObject.relations.following.splice(followingIndex, 1);
 			this.selectedUser.relations.followers.splice(followerIndex, 1);
 
-			this._objectStore.setObject('userObject', this.userObject);
+			this.storageService.setObject('userObject', this.userObject);
 
 		}
 	}
