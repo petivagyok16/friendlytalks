@@ -18,10 +18,11 @@ export class StorageService {
     return localStorage.clear();
   }
 
-  public setObject(key, value) {
-		localStorage.setItem(key, JSON.stringify(value));
-	}
-	public getObject(key) {
+  public setObject(key: string, value: any) {
+		return localStorage.setItem(key, JSON.stringify(value));
+  }
+  
+	public getObject(key: string) {
 		const value = localStorage.getItem(key);
 		return value && JSON.parse(value);
 	}
