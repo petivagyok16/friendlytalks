@@ -1,6 +1,5 @@
 import {
-	Component, OnInit, DoCheck, HostBinding,
-	trigger, transition, animate, style, state, OnDestroy
+	Component, OnInit, DoCheck, OnDestroy
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -13,30 +12,6 @@ import { StorageService } from './../../shared/storage.service';
 @Component({
 	selector: 'selected-profile',
 	templateUrl: 'selected-profile.component.html'
-	/*,
-	animations: [
-			trigger('routeAnimation', [
-					state('*',
-					style({
-							opacity: 1,
-							transform: 'translateX(0)'
-					})
-					),
-					transition('void => *', [
-							style({
-									opacity: 0,
-									transform: 'translateX(-100%)'
-							}),
-							animate('0.2s ease-in')
-					]),
-					transition('* => void', [
-							animate('0.5s ease-out', style({
-									opacity: 0,
-									transform: 'translateY(100%)'
-							}))
-					])
-			])
-	] */
 })
 export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 
@@ -46,22 +21,6 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 	public selectedUser = new Profile('init', 'init', [], 'init', 'init', 'init');
 	public isFollowed = null;
 	private selectedUserSubscription: Subscription;
-
-	// Animation
-	/*
-	@HostBinding('@routeAnimation') get display() {
-			return true;
-	}
-
-	@HostBinding('style.display') get display() {
-			return 'inline';
-	}
-
-	@HostBinding('style.position') get position() {
-			return 'absolute';
-	}
-	*/
-	//
 
 	constructor(
 		private _route: ActivatedRoute,
