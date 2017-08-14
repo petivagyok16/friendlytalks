@@ -4,7 +4,7 @@ import { Ratings } from '../profile';
 
 @Component({
 	selector: 'my-ratio',
-	templateUrl: 'profileStats.component.html'
+	templateUrl: 'profile-stats.component.html'
 })
 
 export class ProfileStatsComponent implements OnChanges {
