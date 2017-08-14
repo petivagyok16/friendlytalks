@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthService } from './../auth/auth.service';
+import { StorageService } from './storage.service';
+
 @Component({
 	selector: 'my-profilebar',
 	template: `
@@ -20,17 +23,20 @@ import { Component, OnInit } from '@angular/core';
 	`
 })
 export class ProfileBarComponent implements OnInit {
-	userId = localStorage.getItem('userId');
-	username = localStorage.getItem('username');
-	pictureUrl = localStorage.getItem('pictureUrl');
+	public userId = this.storageService.get('userId');
+	public username = this.storageService.get('username');
+	public pictureUrl = this.storageService.get('pictureUrl');
 
-	constructor() { }
+	constructor(
+		private storageService: StorageService,
+		private auth: AuthService,
+	) { }
 
 	ngOnInit() {
 	}
 
 	logout() {
-		localStorage.clear();
+		return this.auth.logout();
 	}
 
 }
