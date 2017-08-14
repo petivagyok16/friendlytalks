@@ -6,7 +6,7 @@ import { Message } from './message';
 import { Profile } from '../profile/profile';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
-import { ObjectStore } from '../objectStore';
+import { StorageService } from './../shared/storage.service';
 
 @Component({
 	selector: 'my-message',
@@ -18,7 +18,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 	private userSubscription: Subscription;
 	public message: Message = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
-	public userId = localStorage.getItem('userId');
+	public userId = this.storageService.get('userId');
 	public globalFeedActive: boolean = true;
 	public followerFeedActive: boolean = false;
 	public messagesLoading: boolean = true;
@@ -29,7 +29,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 		private _messageService: MessageService,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private _objectStore: ObjectStore) { }
+		private storageService: StorageService) { }
 
 	ngOnInit() {
 		this.messageSkipper = 0;
@@ -47,7 +47,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 		this.userSubscription = this._profileService.find(this.userId)
 			.subscribe(user => {
 				this.userObject = user;
-				this._objectStore.setObject('userObject', user);
+				this.storageService.setObject('userObject', user);
 			});
 	}
 
