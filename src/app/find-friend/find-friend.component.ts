@@ -8,7 +8,7 @@ import { ErrorService } from '../error/error.service';
 
 @Component({
 	selector: 'my-findFriend',
-	templateUrl: 'findFriend.component.html'
+	templateUrl: 'find-friend.component.html'
 })
 
 export class FindFriendComponent implements OnInit, OnDestroy {
