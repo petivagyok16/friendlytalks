@@ -6,10 +6,11 @@ import { SelectedProfileComponent } from './selected-profile/selected-profile.co
 import { ProfileUpdateFormComponent } from './profile-update-form/profile-update-form.component';
 import { FollowersComponent } from './followers/followers.component';
 import { FollowingComponent } from './following/following.component';
+import { AuthGuard } from './../nav-guards/auth-guard';
 
 const profileRoutes: Routes = [
 	{
-		path: 'profile/:userId', children: [
+		path: 'profile/:userId', canActivate: [AuthGuard], children: [
 			{ path: '', component: SelectedProfileComponent },
 			// { path: 'update-profile-form', component: ProfileUpdateFormComponent },
 			{ path: 'followers', component: FollowersComponent },
