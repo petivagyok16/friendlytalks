@@ -1,0 +1,40 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+	<div class="row col-md-6 col-lg-6 well margin-right">
+		<fieldset>
+			<legend>
+				<i class="glyphicon glyphicon-user"></i> User
+			</legend>
+
+			<div class="form-group">
+				<label for="form-pictureUrl">Updating profile picture</label>
+				<input [(ngModel)]="selectedUser.pictureUrl" formControlName="pictureUrl" ngModel #pictureUrl class="form-control" id="form-pictureUrl">
+			</div>
+
+			<div class="form-group">
+				<label for="form-email">Email</label>
+				<input [(ngModel)]="selectedUser.email" formControlName="email" ngModel #email class="form-control" id="form-email" required>
+
+			</div>
+
+			<div class="form-group">
+				<label for="form-firstname">Firstname</label>
+				<input [(ngModel)]="selectedUser.name.first" formControlName="firstName" ngModel #firstName class="form-control" id="form-firstName">
+
+			</div>
+
+			<div class="form-group">
+				<label for="form-lastName">Lastname</label>
+				<input [(ngModel)]="selectedUser.name.last" formControlName="lastName" ngModel #lastName class="form-control" id="form-lastName">
+
+			</div>
+
+			<div class="form-group">
+				<label for="form-city">City</label>
+				<input [(ngModel)]="selectedUser.city" formControlName="city" ngModel #city class="form-control" id="form-city">
+
+			</div>
+		</fieldset>
+		<button type="submit" [disabled]="!form.valid" class="btn btn-primary form">Save</button>
+		<a [routerLink]="['/profile', selectedUser.id]" routerLinkActive="active"><button class="btn btn-danger">Cancel</button></a>
+	</div>
+</form>

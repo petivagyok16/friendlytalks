@@ -2,8 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
 import { ProfileComponent } from './profile.component';
-import { SelectedProfileComponent } from './selectedProfile/selectedProfile.component';
-import { ProfileUpdateFormComponent } from './profileUpdateForm/profileUpdateForm.component';
+import { SelectedProfileComponent } from './selected-profile/selected-profile.component';
+import { ProfileUpdateFormComponent } from './profile-update-form/profile-update-form.component';
 import { FollowersComponent } from './followers/followers.component';
 import { FollowingComponent } from './following/following.component';
 
