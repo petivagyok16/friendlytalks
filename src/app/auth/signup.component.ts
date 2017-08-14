@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 
 import { User } from './user';
@@ -12,10 +11,9 @@ import { ErrorService } from '../error/error.service';
 	templateUrl: 'signup.component.html'
 })
 
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit {
 
 	public signupForm: FormGroup;
-	private signupSubscription: Subscription;
 
 	constructor(private _fb: FormBuilder, private _authService: AuthService, private _router: Router, private _errorService: ErrorService) { }
 
@@ -43,22 +41,17 @@ export class SignupComponent implements OnInit, OnDestroy {
 		USER.name.first = this.signupForm.value.firstName;
 		USER.name.last = this.signupForm.value.lastName;
 
-		this.signupSubscription = this._authService.signup(USER)
-			.subscribe(data => console.log(data),
-			error => this._errorService.handleError(error));
+		this._authService.signup(USER)
+			.then(data => console.log(data))
+			.catch(error => this._errorService.handleError(error));
 
 		this._router.navigateByUrl('/');
-
 	}
 
 	private isEmail(control: FormControl): { [s: string]: boolean } {
 		if (!control.value.match("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
 			return { invalidMail: true };
 		}
-	}
-
-	ngOnDestroy() {
-		this.signupSubscription.unsubscribe();
 	}
 
 }
