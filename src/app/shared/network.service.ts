@@ -5,12 +5,17 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 
+import { StorageService } from './storage.service';
+
 @Injectable()
 export class NetworkService {
 
   private url: string = 'http://localhost:3000';
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private storageService: StorageService,
+  ) {
     
   }
 
@@ -41,7 +46,7 @@ export class NetworkService {
 
   // TODO: handle params if necessary in the future
   private createUrl(path: string, params: any): string {
-   let token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+   let token = this.storageService.get('token') ? '?token=' + this.storageService.get('token') : '';
 
     if (path.indexOf('/') == 0) {
       return `${this.url}${path}${token}`;
