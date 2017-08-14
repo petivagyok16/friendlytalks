@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'my-follow',
@@ -15,16 +15,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 	</button>
 	`
 })
-export class FollowComponent implements OnInit {
+export class FollowComponent {
 
 	@Input() isFollowed: boolean = false;
 	@Output() change = new EventEmitter();
 
 	constructor() { }
-
-	ngOnInit() {
-		console.log('isFollowed: ' + this.isFollowed);
-	}
 
 	onFollowClick() {
 		this.isFollowed = !this.isFollowed;
