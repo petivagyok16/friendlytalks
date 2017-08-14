@@ -47,7 +47,6 @@ export class PaginationComponent implements OnChanges {
 
 		this.currentPage = page;
 		this.pageChanged.emit({ newPage: page });
-		console.log('changePage(): ' + page);
 
 	}
 
