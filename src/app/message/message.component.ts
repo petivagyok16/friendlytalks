@@ -69,7 +69,6 @@ export class MessageComponent implements OnInit, OnDestroy {
 			this.message.content = inputValue;
 			this._messageService.editMessage(this.message)
 				.then(data => {
-					console.log(data);
 					this.message = null
 				})
 				.catch(error => {
