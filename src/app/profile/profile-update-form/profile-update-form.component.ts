@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { Profile, UpdatedProfile } from '../profile';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
-import { ObjectStore } from '../../objectStore';
+import { StorageService } from './../../shared/storage.service';
 
 @Component({
 	selector: 'profile-form',
@@ -42,7 +42,7 @@ import { ObjectStore } from '../../objectStore';
 })
 export class ProfileUpdateFormComponent implements OnInit {
 
-	selectedUser: Profile = this._objectStore.getObject('userObject');
+	selectedUser: Profile = this.storageService.getObject('userObject');
 	form: FormGroup;
 
 	//Animation
@@ -65,7 +65,7 @@ export class ProfileUpdateFormComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private _objectStore: ObjectStore) { }
+		private storageService: StorageService) { }
 
 	ngOnInit() {
 
@@ -94,7 +94,7 @@ export class ProfileUpdateFormComponent implements OnInit {
 		this.selectedUser.name.last = this.form.value.lastName;
 		this.selectedUser.city = this.form.value.city;
 
-		this._objectStore.setObject('userObject', this.selectedUser);
+		this.storageService.setObject('userObject', this.selectedUser);
 
 		// sending the changes to the server
 		this._profileService.editProfile(this.selectedUser.id, UPDATED_PROFILE)
