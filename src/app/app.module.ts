@@ -52,6 +52,6 @@ import { profileRouting }                   from './profile/profile.routing';
 			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
-    providers: [ appRoutingProviders, ErrorService, NetworkService, StorageService, AuthGuard ]
+    providers: [ ErrorService, NetworkService, StorageService, AuthGuard ]
 })
 export class AppModule { }
