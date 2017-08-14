@@ -1,18 +1,18 @@
 <nav id="navbar" class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+    </button>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="top-nav">
 			<div class="navbar-header">
 				<a class="navbar-brand" id="brand" routerLink="{{ landingPage }}">
-                    Friendly Talks
-                    <!-- <img alt="Brand" src="../images/logo.png"> -->
-                </a>
+					Friendly Talks
+					<!-- <img alt="Brand" src="../images/logo.png"> -->
+        </a>
 			</div>
 			<ul class="nav navbar-nav">
 				<li *ngIf="isLoggedIn()"><a routerLink="/feed" routerLinkActive="active"><i class="fa fa-feed"></i> Feed</a></li>
