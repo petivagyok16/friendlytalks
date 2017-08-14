@@ -36,7 +36,6 @@ export class ProfileService {
 		const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state });
 
 		return this.networkService.patch(`profile/${userId}`, toFollowOrUnfollow)
-			.map((response: Response) => console.log(response.json()))
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
