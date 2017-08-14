@@ -5,12 +5,16 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { NetworkService } from './../shared/network.service';
+import { StorageService } from './../shared/storage.service';
 import { User } from './user';
 
 @Injectable()
 export class AuthService {
 
-	constructor(private networkService: NetworkService) { }
+	constructor(
+		private networkService: NetworkService,
+		private storageService: StorageService
+	) { }
 
 	signup(user: User) {
 		const BODY = JSON.stringify(user);
@@ -29,10 +33,11 @@ export class AuthService {
 	}
 
 	logout() {
-		localStorage.clear();
+		return this.storageService.clear();
 	}
 
 	isLoggedIn() {
-		return localStorage.getItem('token') !== null;
+		return this.storageService.get('token') !== null;
+		// TODO use this everywhere
 	}
 }
