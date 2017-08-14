@@ -17,12 +17,11 @@ const appRoutes: Routes = [
 	{
 		path: '',
     component: AppComponent,
-    canActivate: [AuthGuard],
     children: [
 			{ path: 'announcements', component: AnnouncementsComponent },
-			{ path: 'find', component: FindFriendComponent },
-			{ path: 'update-profile-form', component: ProfileUpdateFormComponent },
-			{ path: 'feed', component: MessageComponent },
+			{ path: 'find', canActivate: [AuthGuard], component: FindFriendComponent },
+			{ path: 'update-profile-form', canActivate: [AuthGuard], component: ProfileUpdateFormComponent },
+			{ path: 'feed', canActivate: [AuthGuard], component: MessageComponent },
 			{ path: 'signup', component: SignupComponent },
 			{ path: '', component: LandingPageComponent },
 			{ path: '**', component: NotFoundComponent }
