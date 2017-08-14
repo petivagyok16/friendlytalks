@@ -29,7 +29,6 @@ export class FollowingComponent implements OnInit {
 		this._profileService.getFollowing(this.userId)
 			.subscribe(followings => {
 				this.followings = followings;
-				// console.log(this.followings);
 			},
 			error => this._errorService.handleError(error));
 	}
