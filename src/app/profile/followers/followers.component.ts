@@ -22,7 +22,6 @@ export class FollowersComponent implements OnInit {
 			.subscribe(
 			(userId) => {
 				this.userId = userId;
-				console.log(userId);
 				this._profileService.getFollowers(userId)
 					.subscribe(followers => {
 						this.followers = followers;
