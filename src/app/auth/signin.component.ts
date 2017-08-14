@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Rx';
 import { AuthService } from './auth.service';
 import { User } from './user';
 import { ErrorService } from '../error/error.service';
-import { ObjectStore } from '../objectStore';
+import { StorageService } from './../shared/storage.service';
 
 @Component({
 	selector: 'my-signin',
@@ -31,7 +31,7 @@ export class SigninComponent implements OnInit, OnDestroy {
 		private _router: Router,
 		private _authService: AuthService,
 		private _errorService: ErrorService,
-		private _objectStore: ObjectStore) { }
+		private storageService: StorageService) { }
 
 	ngOnInit() {
 		this.signinForm = this._fb.group({
@@ -46,12 +46,12 @@ export class SigninComponent implements OnInit, OnDestroy {
 		this.signinSubscription = this._authService.signin(user)
 			.subscribe(
 				data => {
-					localStorage.setItem('token', data.token);
-					this._objectStore.setObject('userObject', data.user);
+					this.storageService.set('token', data.token);
+					this.storageService.setObject('userObject', data.user);
 					// Since i use only the localStored userId its necessary to store it separately.
-					localStorage.setItem('userId', data.user.id);
-					localStorage.setItem('username', data.user.username);
-					localStorage.setItem('pictureUrl', data.user.pictureUrl);
+					this.storageService.set('userId', data.user.id);
+					this.storageService.set('username', data.user.username);
+					this.storageService.set('pictureUrl', data.user.pictureUrl);
 
 					this._router.navigateByUrl('/feed');
 				},
