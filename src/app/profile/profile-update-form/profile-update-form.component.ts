@@ -15,51 +15,11 @@ import { StorageService } from './../../shared/storage.service';
 @Component({
 	selector: 'profile-form',
 	templateUrl: 'profileUpdateForm.component.html'
-	/*,
-	 animations: [
-	 trigger('routeAnimation', [
-	 state('*',
-	 style({
-	 opacity: 1,
-	 transform: 'translateX(0)'
-	 })
-	 ),
-	 transition('void => *', [
-	 style({
-	 opacity: 0,
-	 transform: 'translateX(-100%)'
-	 }),
-	 animate('0.2s ease-in')
-	 ]),
-	 transition('* => void', [
-	 animate('0.5s ease-out', style({
-	 opacity: 0,
-	 transform: 'translateY(100%)'
-	 }))
-	 ])
-	 ])
-	 ] */
 })
 export class ProfileUpdateFormComponent implements OnInit {
 
-	selectedUser: Profile = this.storageService.getObject('userObject');
-	form: FormGroup;
-
-	//Animation
-	/*
-	 @HostBinding('@routeAnimation') get display() {
-	 return true;
-	 }
-
-	 @HostBinding('style.display') get display() {
-	 return 'inline';
-	 }
-
-	 @HostBinding('style.position') get position() {
-	 return 'absolute';
-	 }
-	 */
-	//
+	public selectedUser: Profile = this.storageService.getObject('userObject');
+	public form: FormGroup;
 
 	constructor(private _router: Router,
 		private _fb: FormBuilder,
