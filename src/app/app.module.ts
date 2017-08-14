@@ -14,9 +14,6 @@ import { NotFoundComponent }                from './not-found.component';
 import { NavbarComponent }                  from './navbar.component';
 import { AnnouncementsComponent }           from './announcements.component';
 
-// Additional functionality for localStorage
-import { ObjectStore }                      from './objectStore';
-
 // Modules
 import { MessageModule }                    from './message/message.module';
 import { AuthModule }                       from './auth/auth.module';
