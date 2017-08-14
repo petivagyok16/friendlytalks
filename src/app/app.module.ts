@@ -9,16 +9,16 @@ import { StorageService } 									from './shared/storage.service';
 
 // App module components
 import { AppComponent }                     from './app.component';
-import { LandingPageComponent }             from './landingPage.component';
-import { NotFoundComponent }                from './not-found.component';
-import { NavbarComponent }                  from './navbar.component';
-import { AnnouncementsComponent }           from './announcements.component';
+import { LandingPageComponent }             from './landing-page/landing-page.component';
+import { NotFoundComponent }                from './not-found/not-found.component';
+import { NavbarComponent }                  from './navbar/navbar.component';
+import { AnnouncementsComponent }           from './announcements/announcements.component';
 
 // Modules
 import { MessageModule }                    from './message/message.module';
 import { AuthModule }                       from './auth/auth.module';
 import { ErrorModule }                      from './error/error.module';
-import { FindFriendModule }                 from './findFriend/findFriend.module';
+import { FindFriendModule }                 from './find-friend/find-friend.module';
 import { SharedModule }                     from './shared/shared.module';
 import { ProfileModule }                    from './profile/profile.module';
 
@@ -50,6 +50,6 @@ import { profileRouting }                   from './profile/profile.routing';
 			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
-    providers: [ appRoutingProviders, ErrorService, ObjectStore, NetworkService, StorageService ]
+    providers: [ appRoutingProviders, ErrorService, NetworkService, StorageService ]
 })
 export class AppModule { }

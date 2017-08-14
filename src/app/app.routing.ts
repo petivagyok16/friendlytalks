@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
 import { LandingPageComponent } from './landingPage.component';
-import { AnnouncementsComponent } from './announcements.component';
+import { AnnouncementsComponent } from './announcements/announcements.component';
 import { NotFoundComponent } from './not-found.component';
 
 import { MessageComponent } from './message/message.component';
