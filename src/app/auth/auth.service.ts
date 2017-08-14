@@ -29,9 +29,11 @@ export class AuthService {
 	signin(user: User) {
 		const BODY = JSON.stringify(user);
 
-		return this.networkService.post('user/signin', BODY)
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+		return this.networkService.post('user/signin', BODY).toPromise()
+			.then((response: Response) => response.json())
+			.catch((error: Response) => {
+				throw error.json();
+			});
 	}
 
 	logout() {

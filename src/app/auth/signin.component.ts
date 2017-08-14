@@ -21,10 +21,9 @@ import { StorageService } from './../shared/storage.service';
     <button type="submit" class="btn btn-success" [disabled]="!signinForm.valid">Sign in</button>
 </form>`
 })
-export class SigninComponent implements OnInit, OnDestroy {
+export class SigninComponent implements OnInit {
 
 	public signinForm: FormGroup;
-	private signinSubscription: Subscription;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -43,23 +42,17 @@ export class SigninComponent implements OnInit, OnDestroy {
 	onSubmit() {
 		const user = new User(this.signinForm.value.username, this.signinForm.value.password);
 
-		this.signinSubscription = this._authService.signin(user)
-			.subscribe(
-				data => {
-					this.storageService.set('token', data.token);
-					this.storageService.setObject('userObject', data.user);
-					// Since i use only the localStored userId its necessary to store it separately.
-					this.storageService.set('userId', data.user.id);
-					this.storageService.set('username', data.user.username);
-					this.storageService.set('pictureUrl', data.user.pictureUrl);
+		this._authService.signin(user)
+			.then(data => {
+				this.storageService.set('token', data.token);
+				this.storageService.setObject('userObject', data.user);
+				// Since i use only the localStored userId its necessary to store it separately.
+				this.storageService.set('userId', data.user.id);
+				this.storageService.set('username', data.user.username);
+				this.storageService.set('pictureUrl', data.user.pictureUrl);
 
-					this._router.navigateByUrl('/feed');
-				},
-				error => this._errorService.handleError(error));
+				this._router.navigateByUrl('/feed');
+			})
+				.catch(error => this._errorService.handleError(error));
 	}
-
-	ngOnDestroy() {
-		this.signinSubscription.unsubscribe();
-	}
-
 }
