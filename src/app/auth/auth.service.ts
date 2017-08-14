@@ -38,6 +38,5 @@ export class AuthService {
 
 	isLoggedIn() {
 		return this.storageService.get('token') !== null;
-		// TODO use this everywhere
 	}
 }
