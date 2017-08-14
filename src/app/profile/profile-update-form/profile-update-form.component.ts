@@ -14,7 +14,7 @@ import { StorageService } from './../../shared/storage.service';
 
 @Component({
 	selector: 'profile-form',
-	templateUrl: 'profileUpdateForm.component.html'
+	templateUrl: 'profile-update-form.component.html'
 })
 export class ProfileUpdateFormComponent implements OnInit {
 
