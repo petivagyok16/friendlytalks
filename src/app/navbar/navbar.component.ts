@@ -26,4 +26,8 @@ export class NavbarComponent implements OnInit, DoCheck {
 	logout() {
 		this.auth.logout();
 	}
+
+	isLoggedIn() {
+		return this.auth.isLoggedIn();
+	}
 }
