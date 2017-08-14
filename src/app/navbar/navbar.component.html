@@ -15,13 +15,13 @@
                 </a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li *ngIf="isLoggedIn()"><a routerLink="feed" routerLinkActive="active"><i class="fa fa-feed"></i> Feed</a></li>
-				<li *ngIf="isLoggedIn()"><a routerLink="find" routerLinkActive="active"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find a Friend</a></li>
-				<li *ngIf="isLoggedIn()"><a routerLink="profile/{{ userId }}/followers" routerLinkActive="active"><i class="fa fa-users"></i> Relations</a></li>
-				<li *ngIf="!isLoggedIn()"><a routerLink="signup" routerLinkActive="active"><i class="fa fa-sign-in"></i> Sign Up</a></li>
+				<li *ngIf="this.auth.isLoggedIn()"><a routerLink="feed" routerLinkActive="active"><i class="fa fa-feed"></i> Feed</a></li>
+				<li *ngIf="this.auth.isLoggedIn()"><a routerLink="find" routerLinkActive="active"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find a Friend</a></li>
+				<li *ngIf="this.auth.isLoggedIn()"><a routerLink="profile/{{ userId }}/followers" routerLinkActive="active"><i class="fa fa-users"></i> Relations</a></li>
+				<li *ngIf="!this.auth.isLoggedIn()"><a routerLink="signup" routerLinkActive="active"><i class="fa fa-sign-in"></i> Sign Up</a></li>
 			</ul>
-			<span *ngIf="!isLoggedIn()"><my-signin></my-signin></span>
-			<span *ngIf="isLoggedIn()"><my-profilebar></my-profilebar></span>
+			<span *ngIf="!this.auth.isLoggedIn()"><my-signin></my-signin></span>
+			<span *ngIf="this.auth.isLoggedIn()"><my-profilebar></my-profilebar></span>
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>
