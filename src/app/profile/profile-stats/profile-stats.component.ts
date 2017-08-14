@@ -20,7 +20,6 @@ export class ProfileStatsComponent implements OnChanges {
 	// ngOnChanges is vital of this component's life, because selectedUser.ratings object arrives a little bit later and
 	// the changes need to be tracked later as well.
 	ngOnChanges() {
-		// console.log(this.ratings);
 		this.ratioCalc(this.ratings);
 	}
 
