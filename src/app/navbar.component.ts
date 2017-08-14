@@ -1,29 +1,29 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 
+import { StorageService } from './shared/storage.service';
+import { AuthService } from './auth/auth.service';
+
 @Component({
 	selector: 'my-navbar',
 	templateUrl: 'navbar.component.html'
 })
 export class NavbarComponent implements OnInit, DoCheck {
-	userId;
-	landingPage;
+	public userId: any;
+	public landingPage: any;
 
-	constructor() { }
+	constructor(
+		private storageService: StorageService,
+		private auth: AuthService,
+	) { }
 
-	ngOnInit() {
-
-	}
+	ngOnInit() { }
 
 	ngDoCheck() {
-		this.userId = localStorage.getItem('userId');
-		this.landingPage = this.isLoggedIn() ? '/announcements' : '';
-	}
-
-	isLoggedIn() {
-		return localStorage.getItem('token') !== null;
+		this.userId = this.storageService.get('userId');
+		this.landingPage = this.auth.isLoggedIn() ? '/announcements' : '';
 	}
 
 	logout() {
-		localStorage.clear();
+		this.auth.logout();
 	}
 }
