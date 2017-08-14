@@ -12,7 +12,7 @@ import { StorageService } from './../../shared/storage.service';
 
 @Component({
 	selector: 'selected-profile',
-	templateUrl: 'selectedProfile.component.html'
+	templateUrl: 'selected-profile.component.html'
 	/*,
 	animations: [
 			trigger('routeAnimation', [
