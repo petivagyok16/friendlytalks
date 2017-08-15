@@ -4,7 +4,7 @@ export class Message {
 		public content: string,
 		public created_at: number,
 		public username?: string,
-		public meta = new Meta(),
+		public meta?: Meta,
 		public messageId?: string,
 		public userId?: string,
 		public pictureUrl?: string
@@ -13,6 +13,6 @@ export class Message {
 }
 
 class Meta {
-	public likes = 0;
-	public dislikes = 0;
+	public likes: number = 0;
+	public dislikes: number = 0;
 }
