@@ -15,7 +15,12 @@ export class SignupComponent implements OnInit {
 
 	public signupForm: FormGroup;
 
-	constructor(private _fb: FormBuilder, private _authService: AuthService, private _router: Router, private _errorService: ErrorService) { }
+	constructor(
+		private _fb: FormBuilder,
+		private _authService: AuthService,
+		private _router: Router,
+		private _errorService: ErrorService
+	) { }
 
 	ngOnInit() {
 
@@ -29,9 +34,7 @@ export class SignupComponent implements OnInit {
 			firstName: ['', Validators.required],
 			lastName: ['', Validators.required],
 			city: ['', Validators.required]
-
-		})
-
+		});
 	}
 
 	onSubmit() {
