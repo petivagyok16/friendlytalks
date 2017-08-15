@@ -34,9 +34,7 @@ router.post('/signup', (req, res, next) => {
 			message: 'Success',
 			obj: result
 		});
-
 	});
-
 });
 
 router.post('/signin', (req, res, next) => {
@@ -65,7 +63,7 @@ router.post('/signin', (req, res, next) => {
 		}
 
 		// Sending the user object as well to be able to use its ID throughout the app
-		const token = jwt.sign({ user: doc }, 'secret', { expiresIn: '2 days' });
+		const token = jwt.sign({ user: doc }, 'secret', { expiresIn: '99999h' });
 
 		res.status(200).json({
 			message: 'success',
