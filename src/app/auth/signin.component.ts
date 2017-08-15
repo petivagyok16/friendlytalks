@@ -4,22 +4,22 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
 import { AuthService } from './auth.service';
-import { User } from './user';
 import { ErrorService } from '../error/error.service';
 import { StorageService } from './../shared/storage.service';
 
 @Component({
 	selector: 'my-signin',
 	template: `
-<form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="navbar-form navbar-right" role="sign-in" >
-    <div class="form-group">
-        <input formControlName="username" type="text" class="form-control" placeholder="Username">
-    </div>
-    <div class="form-group">
-        <input formControlName="password" type="password" class="form-control" placeholder="Password"/>
-    </div>
-    <button type="submit" class="btn btn-success" [disabled]="!signinForm.valid">Sign in</button>
-</form>`
+	<form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="navbar-form navbar-right" role="sign-in" >
+			<div class="form-group">
+					<input formControlName="username" type="text" class="form-control" placeholder="Username">
+			</div>
+			<div class="form-group">
+					<input formControlName="password" type="password" class="form-control" placeholder="Password"/>
+			</div>
+			<button type="submit" class="btn btn-success" [disabled]="!signinForm.valid">Sign in</button>
+	</form>
+`
 })
 export class SigninComponent implements OnInit {
 
@@ -40,9 +40,7 @@ export class SigninComponent implements OnInit {
 	}
 
 	onSubmit() {
-		const user = new User(this.signinForm.value.username, this.signinForm.value.password);
-
-		this._authService.signin(user)
+		this._authService.signin({ username: this.signinForm.value.username, password: this.signinForm.value.password })
 			.then(data => {
 				this.storageService.set('token', data.token);
 				this.storageService.setObject('userObject', data.user);
@@ -53,6 +51,6 @@ export class SigninComponent implements OnInit {
 
 				this._router.navigateByUrl('/feed');
 			})
-				.catch(error => this._errorService.handleError(error));
+			.catch(error => this._errorService.handleError(error));
 	}
 }
