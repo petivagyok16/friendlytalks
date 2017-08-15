@@ -1,15 +1,13 @@
 export class User {
 
-	name = new Name();
-
 	constructor(
 		public username: string,
-		public password: string,
+		public password?: string,
 		public email?: string,
-		public city?: string
+		public city?: string,
+		public name?: Name,
 
 	) { }
-
 }
 
 export class Name {
@@ -17,7 +15,7 @@ export class Name {
 	last: string = 'Doe';
 }
 
-//Webstorm would underline data.pictureUrl with red without this.
+// Webstorm would underline data.pictureUrl with red without this.
 export class Data {
 	pictureUrl: string;
 }
