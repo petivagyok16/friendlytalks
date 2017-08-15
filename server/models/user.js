@@ -3,11 +3,14 @@ var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var Schema = mongoose.Schema;
 
-var schema = new Schema({
-
+var userSchema = new Schema({
 	username: { type: String, required: true, trim: true, unique: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
+	tokens: [{
+		access: { type: String, required: true },
+		token: { type: String, unique: true }
+	}],
 	name: {
 		first: { type: String, trim: true, required: true },
 		last: { type: String, trim: true, required: true }
@@ -29,9 +32,10 @@ var schema = new Schema({
 		}
 	},
 	pictureUrl: { type: String, required: true }
-
 });
 
-schema.plugin(mongooseUniqueValidator);
+userSchema.plugin(mongooseUniqueValidator);
+
+
 
 module.exports = mongoose.model('User', schema);
