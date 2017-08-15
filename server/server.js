@@ -8,13 +8,15 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
 // Get API route files
-const api = require('./routes/api');
 const config = require('./config');
 const appRoutes = require('./routes/app');
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/users');
 const findUserRoutes = require('./routes/find');
 const profileRoutes = require('./routes/profile');
+
+// Middleware
+// const authenticate = require('./middleware/authenticate');
 
 const app = express();
 mongoose.Promise = global.Promise;
@@ -42,7 +44,6 @@ app.use('/user', userRoutes);
 app.use('/find', findUserRoutes);
 app.use('/profile', profileRoutes);
 app.use('/', appRoutes);
-app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
