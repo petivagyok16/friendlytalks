@@ -15,6 +15,7 @@ import { LandingPageComponent }             from './landing-page/landing-page.co
 import { NotFoundComponent }                from './not-found/not-found.component';
 import { NavbarComponent }                  from './navbar/navbar.component';
 import { AnnouncementsComponent }           from './announcements/announcements.component';
+import { HomeComponent }										from './home.component';
 
 // Modules
 import { MessageModule }                    from './message/message.module';
@@ -46,6 +47,7 @@ import { profileRouting }                   from './profile/profile.routing';
     ],
     declarations: [
 			AppComponent,
+			HomeComponent,
 			NavbarComponent,
 			LandingPageComponent,
 			AnnouncementsComponent,

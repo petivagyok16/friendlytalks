@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
+import { HomeComponent } from './home.component';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
@@ -16,7 +17,7 @@ import { AuthGuard } from './nav-guards/auth-guard';
 const appRoutes: Routes = [
 	{
 		path: '',
-    component: AppComponent,
+    component: HomeComponent,
     children: [
 			{ path: 'announcements', component: AnnouncementsComponent },
 			{ path: 'find', canActivate: [AuthGuard], component: FindFriendComponent },
