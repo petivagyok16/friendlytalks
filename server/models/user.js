@@ -1,9 +1,10 @@
-var mongoose = require('mongoose');
-var mongooseUniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose');
+const mongooseUniqueValidator = require('mongoose-unique-validator');
+const jwt = require('jsonwebtoken');
 
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var UserSchema = new Schema({
 	username: { type: String, required: true, trim: true, unique: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
@@ -34,8 +35,35 @@ var userSchema = new Schema({
 	pictureUrl: { type: String, required: true }
 });
 
-userSchema.plugin(mongooseUniqueValidator);
+UserSchema.plugin(mongooseUniqueValidator);
 
+UserSchema.statics.findByToken = function(token) {
+	let user = this;
+	let decoded;
 
+	try {
+		decoded = jwt.verify(token, 'abc123');
+	} catch (e) {
+		return Promise.reject();
+	}
 
-module.exports = mongoose.model('User', schema);
+	return user.findOne({
+		'_id': decoded._id,
+		'tokens.token': token,
+		'tokens.access': 'auth'
+	})
+};
+
+UserSchema.methods.generateAuthToken = function() {
+	let user = this;
+	let access = 'auth';
+	let token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
+
+	user.tokens.push({ access, token });
+
+	return user.save().then(() => {
+		return token;
+	});
+};
+
+module.exports = mongoose.model('User', UserSchema);

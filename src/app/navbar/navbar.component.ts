@@ -8,7 +8,7 @@ import { AuthService } from '../auth/auth.service';
 	templateUrl: 'navbar.component.html'
 })
 export class NavbarComponent implements OnInit, DoCheck {
-	public userId: any;
+	public user: any;
 	public landingPage: any;
 
 	constructor(
@@ -19,15 +19,15 @@ export class NavbarComponent implements OnInit, DoCheck {
 	ngOnInit() { }
 
 	ngDoCheck() {
-		this.userId = this.storageService.get('userId');
-		this.landingPage = this.auth.isLoggedIn() ? '/announcements' : '';
+		this.user = this.auth.authenticatedUser.getValue();
+		this.landingPage = this.auth.isAuthenticated() ? '/announcements' : '';
 	}
 
 	logout() {
 		this.auth.logout();
 	}
 
-	isLoggedIn() {
-		return this.auth.isLoggedIn();
+	isAuthenticated() {
+		return this.auth.isAuthenticated();
 	}
 }

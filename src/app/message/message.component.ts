@@ -1,35 +1,40 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from './message.service';
 import { Message } from './message';
+import { User } from '../auth/user';
 import { Profile } from '../profile/profile';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
 import { StorageService } from './../shared/storage.service';
+import { AuthService } from './../auth/auth.service';
 
 @Component({
 	selector: 'my-message',
 	templateUrl: 'message.component.html'
 })
-export class MessageComponent implements OnInit, OnDestroy {
+export class MessageComponent implements OnInit {
 
 	public messages: Message[] = [];
-	private userSubscription: Subscription;
 	public message: Message = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
-	public userId = this.storageService.get('userId');
+	public userId = null;
 	public globalFeedActive: boolean = true;
 	public followerFeedActive: boolean = false;
 	public messagesLoading: boolean = true;
-	public userObject: Profile = null;
+	public userObject: User = null;
 	private messageSkipper = 0;
 
 	constructor(
 		private _messageService: MessageService,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private storageService: StorageService) { }
+		private storageService: StorageService,
+		private authService: AuthService
+	) {
+		this.userObject = this.authService.getUser();
+		this.userId = this.authService.getUser().id;
+	}
 
 	ngOnInit() {
 		this.messageSkipper = 0;
@@ -44,10 +49,13 @@ export class MessageComponent implements OnInit, OnDestroy {
 				this.messagesLoading = false;
 			});
 
-		this.userSubscription = this._profileService.find(this.userId)
-			.subscribe(user => {
+		this._profileService.find(this.userObject.id)
+			.then(user => {
 				this.userObject = user;
 				this.storageService.setObject('userObject', user);
+			})
+			.catch(error => {
+				this._errorService.handleError(error);
 			});
 	}
 
@@ -133,19 +141,20 @@ export class MessageComponent implements OnInit, OnDestroy {
 		this.globalFeedActive = false;
 		this.followerFeedActive = true;
 
-		this._profileService.getFollowingMessages(this.userId)
-			.subscribe(messages => {
+		this._profileService.getFollowingMessages(this.userObject.id)
+			.then(messages => {
 				this.messages = messages;
-			},
-			error => this._errorService.handleError(error))
+			})
+			.catch(error => this._errorService.handleError(error));
 	}
 
 	calculateUserRating(messageId) {
+		const user = this.authService.getUser();	
 		// Liked message
-		if (this.userObject.ratings.given.likes.indexOf(messageId) != -1) return 1;
+		if (user.ratings.given.likes.indexOf(messageId) != -1) return 1;
 
 		// Disliked message
-		if (this.userObject.ratings.given.dislikes.indexOf(messageId) != -1) return 2;
+		if (user.ratings.given.dislikes.indexOf(messageId) != -1) return 2;
 
 		// No rating
 		return 0;
@@ -154,11 +163,6 @@ export class MessageComponent implements OnInit, OnDestroy {
 	messageRated(event, messageId) {
 		// Changing message rating server-side
 		this._messageService.rateMessage(messageId, this.userId, event.newRating, event.prevRating)
-			.subscribe(null,
-			error => this._errorService.handleError(error));
-	}
-
-	ngOnDestroy() {
-		this.userSubscription.unsubscribe();
+			.catch(error => this._errorService.handleError(error));
 	}
 }

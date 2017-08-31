@@ -3,26 +3,20 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
 	selector: 'my-rating',
 	template: `
-    <i (click)="rate(1)" class="fa fa-thumbs-up cursor-pointer" [class.like]="userRating === 1"></i> {{ likes }} 
+    <i (click)="rate(1)" class="fa fa-thumbs-up cursor-pointer" [class.like]="userRating === 1"></i> {{ ratingObj ? ratingObj.likes.length : 0 }} 
     <!-- <span (click)="rate(2)" class="cursor-pointer" [class.dislike]="userRating === 2" id="dislikeSpan">💩</span> {{ dislikes }} -->
-    <i (click)="rate(2)" class="fa fa-thumbs-down cursor-pointer" [class.dislike]="userRating === 2"></i> {{ dislikes }}
+    <i (click)="rate(2)" class="fa fa-thumbs-down cursor-pointer" [class.dislike]="userRating === 2"></i> {{ ratingObj ? ratingObj.dislikes.length : 0 }}
 `
 })
 
 export class RatingComponent implements OnInit {
 	@Input() userRating: number = 0;
-	/* @Input() likes: number = null;
-	@Input() dislikes: number = null; */
 	@Input() ratingObj;
 	@Output() change = new EventEmitter();
-	public likes: number;
-	public dislikes: number;
 
 	constructor() { }
 
 	ngOnInit() {
-		this.likes = this.ratingObj.likes.length || 0;
-		this.dislikes = this.ratingObj.dislikes.length || 0;
 
 	}
 
@@ -42,12 +36,12 @@ export class RatingComponent implements OnInit {
 
 			case LIKE:
 				if (this.userRating === 2) {
-					this.dislikes -= 1;
+					this.ratingObj.dislikes -= 1;
 					prevRating = DISLIKE;
 				}
 
 				if (this.userRating === 1) {
-					this.likes -= 1;
+					this.ratingObj.likes -= 1;
 					this.userRating = 0;
 					prevRating = LIKE;
 					this.change.emit({ newRating: this.userRating, prevRating: prevRating });
@@ -55,26 +49,26 @@ export class RatingComponent implements OnInit {
 					break;
 				}
 
-				this.likes += 1;
+				this.ratingObj.likes += 1;
 				this.userRating = 1;
 				this.change.emit({ newRating: this.userRating, prevRating: prevRating });
 				break;
 
 			case DISLIKE:
 				if (this.userRating === 1) {
-					this.likes -= 1;
+					this.ratingObj.likes -= 1;
 					prevRating = LIKE;
 				}
 
 				if (this.userRating === 2) {
-					this.dislikes -= 1;
+					this.ratingObj.dislikes -= 1;
 					this.userRating = 0;
 					prevRating = DISLIKE;
 					this.change.emit({ newRating: this.userRating, prevRating: prevRating });
 					break;
 				}
 
-				this.dislikes += 1;
+				this.ratingObj.dislikes += 1;
 				this.userRating = 2;
 				this.change.emit({ newRating: this.userRating, prevRating: prevRating });
 				break;

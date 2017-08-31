@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from './../auth/auth.service';
 import { StorageService } from './storage.service';
+import { User } from './../auth/user';
 
 @Component({
 	selector: 'my-profilebar',
@@ -9,10 +11,10 @@ import { StorageService } from './storage.service';
 		<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 						<a href="#" class="dropdown-toggle profile-image" data-toggle="dropdown">
-								<img [src]="pictureUrl" class="img-circle profile-picture"> {{ username }} <b class="caret"></b>
+								<img [src]="user.pictureUrl" class="img-circle profile-picture"> {{ user.username }} <b class="caret"></b>
 						</a>
 				<ul class="dropdown-menu">
-						<li><a [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa fa-cog"></i> Profile</a></li>
+						<li><a [routerLink]="['/profile', user.id]" routerLinkActive="active"><i class="fa fa-cog"></i> Profile</a></li>
 						<li><a routerLink = '/update-profile-form' routerLinkActive="active"><i class="fa fa-pencil"></i> Edit Profile</a></li>
 																																										
 						<li role="separator" class="divider"></li>
@@ -23,20 +25,21 @@ import { StorageService } from './storage.service';
 	`
 })
 export class ProfileBarComponent implements OnInit {
-	public userId = this.storageService.get('userId');
-	public username = this.storageService.get('username');
-	public pictureUrl = this.storageService.get('pictureUrl');
+	public user: User = this.auth.authenticatedUser.getValue();
 
 	constructor(
 		private storageService: StorageService,
 		private auth: AuthService,
+		private router: Router
 	) { }
 
 	ngOnInit() {
 	}
 
 	logout() {
-		return this.auth.logout();
+		return this.auth.logout().then(() => {
+			this.router.navigateByUrl('/');			
+		});
 	}
 
 }

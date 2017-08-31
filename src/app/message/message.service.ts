@@ -16,18 +16,18 @@ export class MessageService {
 	addMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.post(`message/add`, BODY).toPromise()
-			.then((response: Response) => response.json())
+		return this.networkService.post(`message/add`, BODY)
+			.then((response: any) => response)
 			.catch((error: Response) => {
-				console.error(error.json());
-				throw error.json();
+				console.error(error);
+				throw error;
 			});
 	}
 
 	getMessages(skipper): Promise<any> {
-		return this.networkService.get(`message/${skipper}`).toPromise()
-			.then((response: Response) => {
-				const messagesObj = response.json().obj;
+		return this.networkService.get(`message/${skipper}`)
+			.then((response: any) => {
+				const messagesObj = response.obj;
 				const messages: any[] = [];
 
 				messagesObj.forEach(message => {
@@ -37,27 +37,27 @@ export class MessageService {
 				});
 				return messages;
 			})
-			.catch((error: Response) => console.error(error.json()));
+			.catch((error: Response) => console.error(error));
 	}
 
 	deleteMessage(message: Message) {
 		const MESSAGEID = message.messageId;
 
-		return this.networkService.delete(`message/${MESSAGEID}`).toPromise()
-			// .then((response: Response) => response.json())
+		return this.networkService.delete(`message/${MESSAGEID}`)
+			// .then((response: Response) => response)
 			.catch((error: Response) => {
-				throw error.json();
+				throw error;
 			});
 	}
 
 	editMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.patch(`message/${message.messageId}`, BODY).toPromise()
-			.then((response: Response) => response.json())
+		return this.networkService.patch(`message/${message.messageId}`, BODY)
+			.then((response: Response) => response)
 			.catch((error: Response) => {
-				console.error(error.json());
-				throw error.json();
+				console.error(error);
+				throw error;
 			});
 	}
 
@@ -65,7 +65,10 @@ export class MessageService {
 		const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
 
 		return this.networkService.patch(`message/rate/${messageId}`, RATINGOBJECT)
-			// .map((response: Response) => console.log(response.json()))
-			.catch((error: Response) => Observable.throw(error.json()));
+			// .map((response: Response) => console.log(response))
+			.catch((error: Response) => {
+				console.error(error);
+				throw error;
+			});
 	}
 }

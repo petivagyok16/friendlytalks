@@ -6,28 +6,42 @@ import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
 
 import { Profile, UpdatedProfile } from './profile';
+import { User } from '../auth/user';
 import { Message } from '../message/message';
 import { NetworkService } from './../shared/network.service';
+import { AuthService } from './../auth/auth.service';
 
 @Injectable()
 export class ProfileService {
 
-	constructor(private networkService: NetworkService) { }
+	constructor(
+		private networkService: NetworkService,
+		private authService: AuthService,
+	) { }
 
 	// Finding the requested user profiles
 	find(userId) {
 		return this.networkService.get(`profile/${userId}`)
-			.map((response: Response) => {
-				const DATA = response.json().obj;
+			.then((response: any) => {
+				const DATA = response.obj;
 
-				let profile = new Profile(DATA.username, DATA._id, DATA.messages, DATA.email, DATA.pictureUrl, DATA.city);
-				profile.name = DATA.name;
-				profile.relations = DATA.relations;
-				profile.ratings = DATA.ratings;
+				let profile = new User(
+					DATA.username,
+					DATA.id,
+					null,
+					DATA.email,
+					DATA.city,
+					DATA.name,
+					DATA.messages,
+					DATA.relations,
+					DATA.ratings,
+					DATA.pictureUrl);
 
 				return profile;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 	// by sending the followed and follower user's IDs i can set it server-side to
@@ -36,13 +50,13 @@ export class ProfileService {
 		const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state });
 
 		return this.networkService.patch(`profile/${userId}`, toFollowOrUnfollow)
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => Observable.throw(error));
 	}
 
 	getFollowers(userId) {
 		return this.networkService.get(`profile/followers/${userId}`)
-			.map((response: Response) => {
-				const rawFollowers = response.json().obj;
+			.then((response: any) => {
+				const rawFollowers = response.obj;
 				const followers: any[] = [];
 
 				rawFollowers.forEach(follower => {
@@ -53,13 +67,15 @@ export class ProfileService {
 
 				return followers;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 	getFollowing(userId) {
 		return this.networkService.get(`profile/following/${userId}`)
-			.map((response: Response) => {
-				const rawFollowing = response.json().obj;
+			.then((response: any) => {
+				const rawFollowing = response.obj;
 				const followings: any[] = [];
 
 				rawFollowing.forEach(following => {
@@ -70,13 +86,15 @@ export class ProfileService {
 				
 				return followings;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 	getFollowingMessages(userId) {
 		return this.networkService.get(`profile/followingmessages/${userId}`)
-			.map((response: Response) => {
-				const rawFollowingMessages = response.json().obj;
+			.then((response: any) => {
+				const rawFollowingMessages = response.obj;
 				const followingMessages: any[] = [];
 
 				rawFollowingMessages.forEach(following => {
@@ -90,15 +108,22 @@ export class ProfileService {
 				})
 				return followingMessages;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 	editProfile(userId, profile: UpdatedProfile) {
 		const BODY = JSON.stringify(profile);
 
 		return this.networkService.patch(`profile/editprofile/${userId}`, BODY)
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+			.then((response: any) => {
+				// TODO: check this out
+				this.authService.authenticatedUser.next(response.obj);
+			})
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 
 }

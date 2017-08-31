@@ -40,16 +40,19 @@ export class FindFriendComponent implements OnInit, OnDestroy {
 			searchTerm => {
 				this.isLoading = true;
 				this._findFriendService.find(searchTerm)
-					.subscribe(
+					.then(
 					foundUsers => {
 						if (foundUsers.length === 0) {
 							this.foundUsers = null;
 						} else {
 							this.foundUsers = foundUsers;
 						}
-					},
-					error => this._errorService.handleError(error),
-					() => this.isLoading = false);
+						this.isLoading = false;
+					})
+					.catch(error => {
+						this._errorService.handleError(error);
+						this.isLoading = false;
+					});
 			},
 			error => console.log(error));
 	}

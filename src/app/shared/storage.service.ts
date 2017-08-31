@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class StorageService {
-  public get(key: string) {
+  public async get(key: string) {
     return localStorage.getItem(key);
   }
 
-  public set(key: string, value: string) {
+  public async set(key: string, value: string) {
     return localStorage.setItem(key, value);
   }
 
-  public remove(key: string) {
+  public async remove(key: string) {
     return localStorage.removeItem(key);
   }
 
-  public clear() {
+  public async clear() {
     return localStorage.clear();
   }
 

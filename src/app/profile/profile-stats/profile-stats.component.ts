@@ -10,20 +10,23 @@ import { Ratings } from '../profile';
 export class ProfileStatsComponent implements OnChanges {
 	@Input() ratings = new Ratings();
 
-	myLikes: number = 0;
-	myDislikes: number = 0;
-	givenLikes: number = 0;
-	givenDislikes: number = 0;
+	public myLikes: number = 0;
+	public myDislikes: number = 0;
+	public givenLikes: number = 0;
+	public givenDislikes: number = 0;
 
 	constructor() { }
 
 	// ngOnChanges is vital of this component's life, because selectedUser.ratings object arrives a little bit later and
 	// the changes need to be tracked later as well.
 	ngOnChanges() {
-		this.ratioCalc(this.ratings);
+		if (this.ratings) {
+			this.ratioCalc(this.ratings);
+		}
 	}
 
 	ratioCalc(ratingObj) {
+		console.log(`ratingObj: `, ratingObj);
 		// My rating ratio
 		const myTotal = ratingObj.my.likes.length + ratingObj.my.dislikes.length;
 		this.myLikes = Number((ratingObj.my.likes.length / (myTotal / 100)).toFixed(1));

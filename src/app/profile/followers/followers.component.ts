@@ -23,19 +23,11 @@ export class FollowersComponent implements OnInit {
 			(userId) => {
 				this.userId = userId;
 				this._profileService.getFollowers(userId)
-					.subscribe(followers => {
+					.then(followers => {
 						this.followers = followers;
-					},
-					error => this._errorService.handleError(error));
+					})
+					.catch(error => this._errorService.handleError(error))
 			},
-			error => this._errorService.handleError(error)
-			);
-
-		/*this._profileService.getFollowers(this.userId)
-				.subscribe(followers => {
-						this.followers = followers;
-				},
-				error => this._errorService.handleError(error)); */
+			error => this._errorService.handleError(error));
 	}
-
 }

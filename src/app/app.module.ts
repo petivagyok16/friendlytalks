@@ -41,7 +41,6 @@ import { profileRouting }                   from './profile/profile.routing';
 			AuthModule,
 			ErrorModule,
 			FindFriendModule,
-
 			profileRouting,
 			routing
     ],

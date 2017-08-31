@@ -58,8 +58,9 @@ export class ProfileUpdateFormComponent implements OnInit {
 
 		// sending the changes to the server
 		this._profileService.editProfile(this.selectedUser.id, UPDATED_PROFILE)
-			.subscribe(data => console.log(data),
-			error => this._errorService.handleError(error));
+			.then(data => console.log(data))
+			.catch(error => {this._errorService.handleError(error)})
+			
 		// NAVIGATE TO PROFILE
 		// navigate to feed at first, it will be fixed later cause client-side userObject must be updated
 		this._router.navigate(['/profile', this.selectedUser.id]);

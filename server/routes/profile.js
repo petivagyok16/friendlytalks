@@ -4,45 +4,40 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-router.use('/', (req, res, next) => {
-
-	jwt.verify(req.query.token, 'secret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Authenticaton failed!',
-				error: { message: 'You have to be signed in first!' }
-			});
-		}
-		next();
-	});
-
-});
-
 router.get('/:userId', (req, res, next) => {
 
 	const userId = req.params.userId;
 
 	User.findById(userId, 'username messages name pictureUrl email city relations ratings')
-		.exec((err, doc) => {
+		.exec((err, userDoc) => {
 
 			if (err) {
 				return res.status(404).json({
-					title: 'An error occured',
+					title: 'An error occured! at [GET] profile/:userId',
 					error: { message: 'Talk to the admin for more information please.' }
 				});
 			}
 
-			if (!doc) {
+			if (!userDoc) {
 				return res.status(404).json({
 					title: 'Cannot find that user',
 					error: { message: 'Cannot find that user' }
 				});
 			}
 
-			res.status(200).json({
-				message: 'Success',
-				obj: doc
-			});
+			if (userDoc) {
+				const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name, city: userDoc.city };
+				
+				res.status(200).json({
+					message: 'Success',
+					obj: userToReturn
+				});
+			} else {
+				res.status(404).json({
+					title: 'Not found.',
+					error: { message: 'User not found!'}
+				})
+			}
 		});
 });
 
@@ -59,7 +54,7 @@ router.patch('/:id', (req, res, next) => {
 		if (err) {
 
 			return res.status(404).json({
-				title: 'An error occurred',
+				title: 'An error occurred! at [PATCH] profile/:id',
 				error: { message: 'Talk to the admin for more information please.' }
 			});
 		}
@@ -162,10 +157,9 @@ router.get('/followers/:userId', (req, res, next) => {
 	User.findById(userId)
 		.populate('relations.followers', 'username email name pictureUrl')
 		.exec((err, doc) => {
-			//console.log(doc);
 			if (err) {
 				return res.status(404).json({
-					title: 'An error occured!',
+					title: 'An error occured! at [GET]follosers/:userId',
 					error: 'Talk to the admin for more information please.'
 				});
 			}
@@ -193,7 +187,7 @@ router.get('/following/:userId', (req, res, next) => {
 		.exec((err, doc) => {
 			if (err) {
 				return res.status(404).json({
-					title: 'An error occured',
+					title: 'An error occured! at [GET]/following/:userId',
 					error: { message: 'Talk to the admin for more information please!' }
 				});
 			}
@@ -223,7 +217,7 @@ router.get('/followingmessages/:userId', (req, res, next) => {
 
 			if (err) {
 				return res.status(404).json({
-					title: 'Error!',
+					title: 'Error! at [GET]followingmessages/:userId',
 					error: 'Talk to the admin for more information please!'
 				});
 			}
@@ -242,7 +236,7 @@ router.patch('/editprofile/:id', (req, res, next) => {
 
 		if (err) {
 			return res.status(404).json({
-				title: 'An error occurred',
+				title: 'An error occurred! at [PATCH] editprofile/:id',
 				error: { message: 'Talk to the admin for more information please!' }
 			});
 		}
@@ -267,7 +261,8 @@ router.patch('/editprofile/:id', (req, res, next) => {
 		doc.name.last = req.body.lastName;
 		doc.city = req.body.city;
 
-		doc.save((err, result) => {
+		doc.save((err, userDoc) => {
+			const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name };			
 
 			if (err) {
 				return res.status(404).json({
@@ -278,7 +273,7 @@ router.patch('/editprofile/:id', (req, res, next) => {
 
 			return res.status(200).json({
 				message: 'Success',
-				obj: result
+				obj: userToReturn
 			});
 		});
 	});

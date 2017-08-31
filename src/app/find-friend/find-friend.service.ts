@@ -15,8 +15,8 @@ export class FindFriendService {
 
 	find(username) {
 		return this.networkService.get(`find/${username}`)
-			.map((response: Response) => {
-				const rawFoundUsers = response.json().obj;
+			.then((response: any) => {
+				const rawFoundUsers = response.obj;
 				const foundUsers: any[] = [];
 
 				rawFoundUsers.forEach(foundUser => {
@@ -26,6 +26,8 @@ export class FindFriendService {
 				});
 				return foundUsers;
 			})
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				throw error;
+			});
 	}
 }

@@ -16,7 +16,7 @@ const findUserRoutes = require('./routes/find');
 const profileRoutes = require('./routes/profile');
 
 // Middleware
-// const authenticate = require('./middleware/authenticate');
+const authenticate = require('./middleware/authenticate');
 
 const app = express();
 mongoose.Promise = global.Promise;
@@ -33,7 +33,8 @@ mongoose.connect(config.getDbConnectionString());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader("Access-Control-Allow-Credentials", 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Authorization, Access-Control-Allow-Credentials, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
     next();
 });
@@ -64,4 +65,4 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, () => console.log(`API is running on localhost:${port}`));

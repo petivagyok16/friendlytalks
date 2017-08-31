@@ -4,23 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const Message = require('../models/message');
 const User = require('../models/user');
+const authenticate = require('./../middleware/authenticate');
 
-router.use('/', (req, res, next) => {
-
-	jwt.verify(req.query.token, 'secret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Authenticaton failed!',
-				error: { message: 'You have to be signed in first!' }
-			});
-		}
-		next();
-	});
-
-});
-
-router.get('/:skipper', (req, res, next) => {
-
+router.get('/:skipper', authenticate, (req, res, next) => {
 	Message.find().sort({ _id: -1 }).skip(parseInt(req.params.skipper)).limit(10)
 		.populate('user', 'username pictureUrl')
 		.exec((err, docs) => {
@@ -28,32 +14,19 @@ router.get('/:skipper', (req, res, next) => {
 			if (err) {
 				return res.status(404).json({
 					title: 'An error occurred',
-					error: { message: 'An error occured. Talk to the admin for more information please.' }
+					error: { message: 'An error occured at /messages/:skipper. Talk to the admin for more information please.' }
 				});
 			}
-
-			/* if (docs.length === 0) {
-					return res.status(404).json({
-							title: 'No more message',
-							error: {message: 'All the messages have been loaded'}
-					});
-			} */
 
 			return res.status(200).json({
 				message: 'Success',
 				obj: docs
 			});
-
 		});
 });
 
-router.post('/add', (req, res, next) => {
-
-	const decoded = jwt.decode(req.query.token);
-
-	//Decoded token contains the user object as well, so we can use it here
-	//to match the userId with the message
-	User.findById(decoded.user._id, (err, UserDoc) => {
+router.post('/add', authenticate, (req, res, next) => {
+	User.findById(req.user.id, (err, UserDoc) => {
 		if (err) {
 			return res.status(404).json({
 				title: 'Error!',
@@ -62,7 +35,6 @@ router.post('/add', (req, res, next) => {
 		}
 
 		const message = new Message({
-
 			content: req.body.content,
 			created_at: req.body.created_at,
 			user: UserDoc //Mongoose is clever enough to choose the ID from the complete user (doc) object
@@ -96,15 +68,11 @@ router.post('/add', (req, res, next) => {
 					}
 				}
 			});
-
 		});
-
 	});
-
 });
 
-router.delete('/:id', (req, res, next) => {
-	const decoded = jwt.decode(req.query.token);
+router.delete('/:id', authenticate, (req, res, next) => {
 
 	Message.findById(req.params.id, (err, doc) => {
 
@@ -121,8 +89,12 @@ router.delete('/:id', (req, res, next) => {
 				error: { message: 'Message Cannot be found!' }
 			});
 		}
+		let requestUserToken = req.user.id.toString();
+		console.log(`doc.user: `, doc.user);
+		console.log(`req.user.id: `, requestUserToken);
+		console.log(`equal: `, doc.user == requestUserToken);
 
-		if (doc.user != decoded.user._id) {
+		if (doc.user != requestUserToken) {
 			return res.status(401).json({
 				title: 'Not authorized!',
 				error: { message: 'Message created by other user!' }
@@ -142,11 +114,8 @@ router.delete('/:id', (req, res, next) => {
 				message: 'Success',
 				obj: result
 			});
-
 		});
-
 	});
-
 });
 
 router.patch('/:id', (req, res, next) => {

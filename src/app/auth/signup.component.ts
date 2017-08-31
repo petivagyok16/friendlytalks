@@ -38,17 +38,20 @@ export class SignupComponent implements OnInit {
 	}
 
 	onSubmit() {
-		const USER = new User(this.signupForm.value.username, this.signupForm.value.password,
-			this.signupForm.value.email, this.signupForm.value.city);
-
-		USER.name.first = this.signupForm.value.firstName;
-		USER.name.last = this.signupForm.value.lastName;
+		const USER = new User(
+			this.signupForm.value.username,
+			undefined,
+			this.signupForm.value.password,
+			this.signupForm.value.email,
+			this.signupForm.value.city,
+			{first: this.signupForm.value.firstName, last: this.signupForm.value.lastName}
+		);
 
 		this._authService.signup(USER)
-			.then(data => console.log(data))
+			// .then(user => console.log(user))
 			.catch(error => this._errorService.handleError(error));
 
-		this._router.navigateByUrl('/');
+		this._router.navigateByUrl('/feed');
 	}
 
 	private isEmail(control: FormControl): { [s: string]: boolean } {

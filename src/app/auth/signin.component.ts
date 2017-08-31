@@ -41,13 +41,13 @@ export class SigninComponent implements OnInit {
 
 	onSubmit() {
 		this._authService.signin({ username: this.signinForm.value.username, password: this.signinForm.value.password })
-			.then(data => {
-				this.storageService.set('token', data.token);
-				this.storageService.setObject('userObject', data.user);
+			.then(authenticatedUser => {
+				console.log(`auth user: `, authenticatedUser);
+				this.storageService.setObject('userObject', authenticatedUser);
 				// Since i use only the localStored userId its necessary to store it separately.
-				this.storageService.set('userId', data.user.id);
-				this.storageService.set('username', data.user.username);
-				this.storageService.set('pictureUrl', data.user.pictureUrl);
+				this.storageService.set('userId', authenticatedUser.id);
+				this.storageService.set('username', authenticatedUser.username);
+				this.storageService.set('pictureUrl', authenticatedUser.pictureUrl);
 
 				this._router.navigateByUrl('/feed');
 			})

@@ -4,20 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-router.use('/', (req, res, next) => {
-
-	jwt.verify(req.query.token, 'secret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Authenticaton failed!',
-				error: { message: 'You have to sign in first!' }
-			});
-		}
-		next();
-	});
-
-});
-
 router.get('/:username', (req, res, next) => {
 
 	//In optimal case keyword will be an exact username, but mostly keyword will be only a part of a username

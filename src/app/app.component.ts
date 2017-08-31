@@ -8,7 +8,11 @@ import { User } from './auth/user';
 
 @Component({
 	selector: 'my-app',
-	template: `<router-outlet></router-outlet>`
+	template: `<div class="container-fluid">
+	<my-navbar></my-navbar>
+	<router-outlet></router-outlet>
+</div>
+<my-error></my-error>`
 })
 
 export class AppComponent {
@@ -30,13 +34,13 @@ export class AppComponent {
 						}
 					})
 					.catch(error => {
-						console.error(`[appCmp][constructor] error during getting authenticatedUser()`, error);
+						console.error(`[AppComponent][constructor] error while getting authenticatedUser()`, error);
 						throw error;
 					});
 			}
 		})
 		.catch(error => {
-			console.error(`[appCmp][constructor] error during getting the token`);
+			console.error(`[AppComponent][constructor] error while getting the token`);
 			throw error;
 		});
 	}

@@ -1,38 +1,39 @@
 import {
-	Component, OnInit, DoCheck, OnDestroy
+	Component, OnInit, DoCheck
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
 
 import { Profile } from '../profile';
+import { User } from '../../auth/user';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
 import { StorageService } from './../../shared/storage.service';
+import { AuthService } from './../../auth/auth.service';
 
 @Component({
 	selector: 'selected-profile',
 	templateUrl: 'selected-profile.component.html'
 })
-export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
+export class SelectedProfileComponent implements OnInit, DoCheck {
 
 	private selectedUserId = null;
-	public userObject: Profile = null;
+	public userObject: User = null;
 	// Initial values must be provided for ngFormModel otherwise component  crashes...
-	public selectedUser = new Profile('init', 'init', [], 'init', 'init', 'init');
+	// TODO remove Profile, use User instead
+	public selectedUser: User = <User>{};
 	public isFollowed = null;
-	private selectedUserSubscription: Subscription;
 
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private storageService: StorageService) { }
+		private storageService: StorageService,
+		private authService: AuthService,
+	) { }
 
 	ngOnInit() {
-
-		this.userObject = this.storageService.getObject('userObject');
-
+		this.userObject = this.authService.authenticatedUser.getValue();
 		// getting the userId from URL param
 		this._route.parent.params
 			.map(params => params['userId'])
@@ -43,12 +44,13 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 			error => this._errorService.handleError(error));
 
 		// and then finding it by calling the server
-		this.selectedUserSubscription = this._profileService.find(this.selectedUserId)
-			.subscribe(profile => {
-				this.selectedUser = profile;
+		this._profileService.find(this.selectedUserId)
+			.then(user => {
+				this.selectedUser = user;
+				console.log(`selectedUser: `, this.selectedUser);
 				// localStorage userObject must be updated to track the changes of the followers
 				if (this.isOwnProfile()) {
-					this.storageService.setObject('userObject', profile);
+					this.storageService.setObject('userObject', user);
 				}
 			},
 			error => this._errorService.handleError(error));
@@ -62,13 +64,13 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 		// but view wouldn't update, if a different profile is loaded.
 
 		if (this.selectedUserId === this.userObject.id) {
-			this.selectedUser = this.userObject;
+			this.selectedUser = <any>this.userObject;
 		}
 	}
 
 	// edit button will be available if the selected user profile is the user's own profile
 	isOwnProfile() {
-		return this.selectedUserId == this.storageService.get('userId');
+		return this.selectedUserId == this.userObject.id;
 	}
 
 	editProfile() {
@@ -78,9 +80,8 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 	onFollowChange(newState) {
 
 		// Changing the follower's state server-side
-		this._profileService.follow(this.storageService.get('userId'), this.selectedUserId, newState.state)
-			.subscribe(null,
-			error => this._errorService.handleError(error));
+		this._profileService.follow(this.userObject.id, this.selectedUserId, newState.state)
+			.catch(error => this._errorService.handleError(error));
 
 		// Changing the follower / following states client-side:
 		if (newState.state === true) {
@@ -107,9 +108,5 @@ export class SelectedProfileComponent implements OnInit, DoCheck, OnDestroy {
 			this.storageService.setObject('userObject', this.userObject);
 
 		}
-	}
-
-	ngOnDestroy() {
-		this.selectedUserSubscription.unsubscribe();
 	}
 }

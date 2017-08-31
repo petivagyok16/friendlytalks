@@ -1,14 +1,21 @@
-var express = require('express');
-var router = express.Router();
-var passwordHash = require('password-hash');
-var jwt = require('jsonwebtoken');
+const express = require('express');
+const router = express.Router();
+const passwordHash = require('password-hash');
+const jwt = require('jsonwebtoken');
+const authenticate = require('./../middleware/authenticate');
 
-//var Message = require('../models/message');
-const User = require('../models/user');
+const UserSchema = require('../models/user');
+
+router.get('/me', authenticate, (req, res) => {
+	return res.status(200).json({
+		message: 'Success',
+		user: req.user	
+	});
+});
 
 router.post('/signup', (req, res, next) => {
 
-	const user = new User({
+	const User = new UserSchema({
 		username: req.body.username,
 		email: req.body.email,
 		password: passwordHash.generate(req.body.password),
@@ -18,11 +25,9 @@ router.post('/signup', (req, res, next) => {
 		},
 		city: req.body.city,
 		pictureUrl: req.body.pictureUrl || 'https://unsplash.it/195/195/?random'
-
 	});
 
-	user.save((err, result) => {
-
+	User.save((err, userDoc) => {
 		if (err) {
 			return res.status(404).json({
 				title: 'An error occured',
@@ -30,55 +35,65 @@ router.post('/signup', (req, res, next) => {
 			});
 		}
 
-		res.status(200).json({
-			message: 'Success',
-			obj: result
+		const userToReturn =
+		{
+			id: userDoc._id,
+			email: userDoc.email,
+			pictureUrl: userDoc.pictureUrl,
+			username: userDoc.username,
+			ratings: userDoc.ratings,
+			relations: userDoc.relations,
+			messages: userDoc.messages,
+			name: userDoc.name,
+			city: userDoc.city
+		};
+		
+
+		User.generateAuthToken().then(token => {
+			res.status(200).json({
+				message: 'Success',
+				user: userToReturn,
+				token: token
+			});
 		});
 	});
 });
 
 router.post('/signin', (req, res, next) => {
 
-	User.findOne({ username: req.body.username }, (err, doc) => {
+	UserSchema.findOne({ username: req.body.username }, (err, userDoc) => {
+		const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name, city: userDoc.city };		
 
 		if (err) {
 			return res.status(404).json({
 				title: 'An error occured',
-				error: { message: 'Wrong username or password!' }
+				error: { message: 'Wrong credentials!' }
 			});
 		}
 
-		if (!doc) {
+		if (!userDoc) {
 			return res.status(404).json({
 				title: 'No user found.',
 				error: { message: 'That user does not exist!' }
 			});
 		}
 
-		if (!passwordHash.verify(req.body.password, doc.password)) {
+		if (!passwordHash.verify(req.body.password, userDoc.password)) {
 			return res.status(404).json({
 				title: 'Could not sign you in',
-				error: { message: 'Invalid password' }
+				error: { message: 'Wrong credentials' }
 			});
 		}
 
 		// Sending the user object as well to be able to use its ID throughout the app
-		const token = jwt.sign({ user: doc }, 'secret', { expiresIn: '99999h' });
+		// const token = jwt.sign({ user: userDoc }, 'secret', { expiresIn: '99999h' });
 
-		res.status(200).json({
-			message: 'success',
-			token: token,
-			user: {
-				id: doc._id,
-				username: doc.username,
-				email: doc.email,
-				name: doc.name,
-				city: doc.city,
-				messages: doc.messages,
-				relations: doc.relations,
-				ratings: doc.ratings,
-				pictureUrl: doc.pictureUrl
-			}
+		userDoc.generateAuthToken().then(token => {
+			res.status(200).json({
+				message: 'Success',
+				user: userToReturn, // token
+				token: token
+			});
 		});
 	});
 });
