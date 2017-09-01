@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const config = require('./config');
 const appRoutes = require('./routes/app');
 const messageRoutes = require('./routes/messages');
-const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 const findUserRoutes = require('./routes/find');
 const profileRoutes = require('./routes/profile');
 
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 
 // Set API routes
 app.use('/message', messageRoutes);
-app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
 app.use('/find', findUserRoutes);
 app.use('/profile', profileRoutes);
 app.use('/', appRoutes);

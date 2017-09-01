@@ -30,7 +30,7 @@ export class AuthService {
 	public signup(user: User) {
 		const BODY = JSON.stringify(user);
 
-		return this.networkService.post('user/signup', BODY)
+		return this.networkService.post('auth/signup', BODY)
 			.then((response: any) => {
 				this.authenticatedUser.next(response.user);
 				this.storageService.set('token', response.token);
@@ -45,7 +45,7 @@ export class AuthService {
 	public signin(credentials: { username: string, password: string }) {
 		const BODY = JSON.stringify(credentials);
 
-		return this.networkService.post('user/signin', BODY)
+		return this.networkService.post('auth/signin', BODY)
 			.then((response: any) => {
 				this.authenticatedUser.next(response.user);
 				this.storageService.set('token', response.token);
@@ -59,7 +59,7 @@ export class AuthService {
 
 	public getAuthenticatedUser(): Promise<User> {
     console.log('AuthService -> Calling authenticated userdata from server');
-    return this.networkService.get('/user/me').then((response: any) => {
+    return this.networkService.get('auth/user/me').then((response: any) => {
       const user: User = response.user;
       console.log('AuthService -> Authenticated user has arrived', user);
       this.authenticatedUser.next(user);
@@ -78,7 +78,7 @@ export class AuthService {
   }
 
 	public async logout() {
-		await this.networkService.post('user/logout');
+		await this.networkService.post('auth/logout');
 		this.authenticatedUser.next(null);
     this.networkService.token = null;
 		return this.storageService.clear();

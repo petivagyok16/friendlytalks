@@ -6,7 +6,7 @@ const authenticate = require('./../middleware/authenticate');
 
 const UserSchema = require('../models/user');
 
-router.get('/me', authenticate, (req, res) => {
+router.get('/user/me', authenticate, (req, res) => {
 	return res.status(200).json({
 		message: 'Success',
 		user: req.user	
