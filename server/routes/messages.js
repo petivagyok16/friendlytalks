@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const Message = require('../models/message');
 const User = require('../models/user');
-const authenticate = require('./../middleware/authenticate');
+const authenticate = require('../middleware/authenticate');
 
 router.get('/:skipper', authenticate, (req, res, next) => {
 	Message.find().sort({ _id: -1 }).skip(parseInt(req.params.skipper)).limit(10)
