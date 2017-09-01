@@ -42,7 +42,6 @@ router.post('/add', authenticate, (req, res, next) => {
 		});
 
 		message.save((err, result) => {
-
 			if (err) {
 				return res.status(404).json({
 					title: 'An error occurred',
@@ -74,7 +73,6 @@ router.post('/add', authenticate, (req, res, next) => {
 router.delete('/:id', authenticate, (req, res, next) => {
 
 	Message.findById(req.params.id, (err, doc) => {
-
 		if (err) {
 			return res.status(404).json({
 				title: 'An error occurred',
@@ -101,7 +99,6 @@ router.delete('/:id', authenticate, (req, res, next) => {
 		}
 
 		doc.remove((err, result) => {
-
 			if (err) {
 				return res.status(404).json({
 					title: 'An error occurred',
@@ -117,8 +114,9 @@ router.delete('/:id', authenticate, (req, res, next) => {
 	});
 });
 
-router.patch('/:id', (req, res, next) => {
+router.patch('/:id', authenticate, (req, res, next) => {
 	let decoded = jwt.decode(req.token);
+	console.log(`decoded: `, decoded);
 
 	Message.findById(req.params.id, (err, doc) => {
 
@@ -136,7 +134,7 @@ router.patch('/:id', (req, res, next) => {
 			});
 		}
 
-		if (doc.user != decoded.user._id) {
+		if (doc.user != decoded._id) {
 			return res.status(401).json({
 				title: 'Not authorized!',
 				error: { message: 'Message created by other user!' }
