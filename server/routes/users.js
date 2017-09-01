@@ -85,17 +85,42 @@ router.post('/signin', (req, res, next) => {
 			});
 		}
 
-		// Sending the user object as well to be able to use its ID throughout the app
-		// const token = jwt.sign({ user: userDoc }, 'secret', { expiresIn: '99999h' });
-
 		userDoc.generateAuthToken().then(token => {
 			res.status(200).json({
 				message: 'Success',
-				user: userToReturn, // token
+				user: userToReturn,
 				token: token
 			});
 		});
 	});
 });
+
+router.post('/logout', (req, res, next) => {
+	let token = req.header('Authorization');
+	
+	UserSchema.findByToken(token).then(user => {
+		if (!user) {
+			return Promise.reject();
+		}
+
+		user.tokens = [];
+		user.save((err, result) => {
+			if (err) {
+				return res.status(500).json({
+					title: 'Database error',
+					error: { message: 'Something went wrong during logout, try again later.' }
+				});
+			}
+			return res.status(200).json(null);
+		});
+	})
+	.catch(error => {
+		return res.status(401).json({
+			title: 'Unauthorized error!',
+			error: { message: 'Authorization error! Try again.' }
+		});
+	});
+});
+	
 
 module.exports = router;
