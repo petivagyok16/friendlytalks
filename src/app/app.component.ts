@@ -24,7 +24,7 @@ export class AppComponent {
 	) {
 		this.storageService.get('token')
 		.then(token => {
-			console.log(`app cmp token: `, token);
+			// console.log(`already stored token: `, token);
 			if (token) {
 				this.networkService.token = token;
 				this.authService.getAuthenticatedUser()
