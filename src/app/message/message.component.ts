@@ -113,6 +113,7 @@ export class MessageComponent implements OnInit {
 	}
 
 	onEdit(message) {
+		window.scrollTo(0,0);
 		this.message = message;
 	}
 
