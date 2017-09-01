@@ -39,7 +39,6 @@ router.post('/add', authenticate, (req, res, next) => {
 			created_at: req.body.created_at,
 			user: UserDoc //Mongoose is clever enough to choose the ID from the complete user (doc) object
 			//because the user field has been set as a Reference to the User model.
-
 		});
 
 		message.save((err, result) => {
@@ -119,7 +118,7 @@ router.delete('/:id', authenticate, (req, res, next) => {
 });
 
 router.patch('/:id', (req, res, next) => {
-	var decoded = jwt.decode(req.query.token);
+	let decoded = jwt.decode(req.token);
 
 	Message.findById(req.params.id, (err, doc) => {
 
