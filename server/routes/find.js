@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/user');
+const UserSchema = require('../models/user');
 
 router.get('/:username', (req, res, next) => {
 
@@ -10,7 +10,7 @@ router.get('/:username', (req, res, next) => {
 	const searchTerm = req.params.username;
 
 	//searching for users that match the keyword. "i" is for case-insensitiveness and selecting only the listed fields
-	User.find({ username: new RegExp('^' + searchTerm, "i") }, 'username messages name pictureUrl email city')
+	UserSchema.find({ username: new RegExp('^' + searchTerm, "i") }, 'username messages name pictureUrl email city')
 		.exec((err, docs) => {
 
 			if (err) {
