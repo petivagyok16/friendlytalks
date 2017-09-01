@@ -7,7 +7,16 @@ const authenticate = (req, res, next) => {
       if (!user) {
         return Promise.reject();
       }
-      req.user = { id: user._id, email: user.email, pictureUrl: user.pictureUrl, username: user.username, ratings: user.ratings, relations: user.relations, messages: user.messages, name: user.name };
+      req.user = {
+        id: user._id,
+        email: user.email,
+        pictureUrl: user.pictureUrl,
+        username: user.username,
+        ratings: user.ratings,
+        relations: user.relations,
+        messages: user.messages,
+        name: user.name
+      };
       req.token = token;
       next();
     })
