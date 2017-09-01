@@ -32,16 +32,16 @@ app.use(express.static(path.join(__dirname, '../dist')));
 mongoose.connect(config.getDbConnectionString());
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader("Access-Control-Allow-Credentials", 'true');
-    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Authorization, Access-Control-Allow-Credentials, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
-    next();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader("Access-Control-Allow-Credentials", 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Authorization, Access-Control-Allow-Credentials, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
+  next();
 });
 
 // Set API routes
-app.use('/message', messageRoutes);
 app.use('/auth', authRoutes);
+app.use('/message', messageRoutes);
 app.use('/find', findUserRoutes);
 app.use('/profile', profileRoutes);
 app.use('/', appRoutes);
