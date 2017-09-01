@@ -48,15 +48,6 @@ export class MessageComponent implements OnInit {
 				this._errorService.handleError(error);
 				this.messagesLoading = false;
 			});
-
-		this._profileService.find(this.userObject.id)
-			.then(user => {
-				this.userObject = user;
-				this.storageService.setObject('userObject', user);
-			})
-			.catch(error => {
-				this._errorService.handleError(error);
-			});
 	}
 
 	loadMoreMessage() {
