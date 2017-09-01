@@ -1,9 +1,9 @@
-const User = require('./../models/user');
+const UserSchema = require('./../models/user');
 
 const authenticate = (req, res, next) => {
   let token = req.header('Authorization');
     
-    User.findByToken(token).then(user => {
+    UserSchema.findByToken(token).then(user => {
       if (!user) {
         return Promise.reject();
       }
