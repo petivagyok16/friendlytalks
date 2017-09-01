@@ -116,7 +116,6 @@ router.delete('/:id', authenticate, (req, res, next) => {
 
 router.patch('/:id', authenticate, (req, res, next) => {
 	let decoded = jwt.decode(req.token);
-	console.log(`decoded: `, decoded);
 
 	Message.findById(req.params.id, (err, doc) => {
 
