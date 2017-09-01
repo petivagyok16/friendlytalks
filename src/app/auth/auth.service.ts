@@ -47,7 +47,6 @@ export class AuthService {
 
 		return this.networkService.post('user/signin', BODY)
 			.then((response: any) => {
-				console.log(`signin response: `, response);
 				this.authenticatedUser.next(response.user);
 				this.storageService.set('token', response.token);
 				this.networkService.token = response.token;
@@ -78,9 +77,11 @@ export class AuthService {
       });
   }
 
-	public logout() {
+	public async logout() {
+		await this.networkService.post('user/logout');
 		this.authenticatedUser.next(null);
+    this.networkService.token = null;
 		return this.storageService.clear();
-		// TODO: create a logout endpoint that deleting the current token on the user document
+		// Reminder: if server throws "token must be unique" error delete the token object from the user document from mongolab
 	}
 }
