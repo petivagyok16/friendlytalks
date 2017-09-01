@@ -86,12 +86,8 @@ router.delete('/:id', authenticate, (req, res, next) => {
 				error: { message: 'Message Cannot be found!' }
 			});
 		}
-		let requestUserToken = req.user.id.toString();
-		console.log(`doc.user: `, doc.user);
-		console.log(`req.user.id: `, requestUserToken);
-		console.log(`equal: `, doc.user == requestUserToken);
 
-		if (doc.user != requestUserToken) {
+		if (doc.user != req.user.id.toString()) {
 			return res.status(401).json({
 				title: 'Not authorized!',
 				error: { message: 'Message created by other user!' }
