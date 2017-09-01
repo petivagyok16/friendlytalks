@@ -42,7 +42,6 @@ export class SigninComponent implements OnInit {
 	onSubmit() {
 		this._authService.signin({ username: this.signinForm.value.username, password: this.signinForm.value.password })
 			.then(authenticatedUser => {
-				console.log(`auth user: `, authenticatedUser);
 				this.storageService.setObject('userObject', authenticatedUser);
 				// Since i use only the localStored userId its necessary to store it separately.
 				this.storageService.set('userId', authenticatedUser.id);
