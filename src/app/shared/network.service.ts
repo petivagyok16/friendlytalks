@@ -35,35 +35,35 @@ export class NetworkService {
 
   get(path: string, params: any = {}): Promise<Response> {
     return this.http.get(this.createUrl(path, params), this.createRequestOptions()).toPromise()
-    .then(response => {
-      return response.json();
-    })
-    .catch(error => {
-      this.errorService.handleError(error.json());
-      throw error;
-    });
+      .then(response => {
+        return response.json();
+      })
+      .catch(error => {
+        this.errorService.handleError(error.json());
+        throw error;
+      });
   }
 
   patch(path: string, payload: any = null): Promise<Response> {
     return this.http.patch(this.createUrl(path, {}), payload, this.createRequestOptions()).toPromise()
-    .then(response => {
-      return response.json();
-    })
-    .catch(error => {
-      this.errorService.handleError(error.json());
-      throw error;
-    });
+      .then(response => {
+        return response.json();
+      })
+      .catch(error => {
+        this.errorService.handleError(error.json());
+        throw error;
+      });
   }
 
   delete(path: string, params: any = {}): Promise<Response> {
     return this.http.delete(this.createUrl(path, params), this.createRequestOptions()).toPromise()
-    .then(response => {
-      return response.json();
-    })
-    .catch(error => {
-      this.errorService.handleError(error.json());
-      throw error;
-    });
+      .then(response => {
+        return response.json();
+      })
+      .catch(error => {
+        this.errorService.handleError(error.json());
+        throw error;
+      });
   }
 
   createRequestOptions() {
