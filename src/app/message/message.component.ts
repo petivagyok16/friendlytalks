@@ -141,7 +141,7 @@ export class MessageComponent implements OnInit {
 	}
 
 	calculateUserRating(messageId) {
-		const user = this.authService.getUser();	
+		const user = this.authService.getUser();
 		// Liked message
 		if (user.ratings.given.likes.indexOf(messageId) != -1) return 1;
 
