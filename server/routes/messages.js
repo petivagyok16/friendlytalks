@@ -220,7 +220,6 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.likes.splice(messageLikedByRaterUser, 1);
 
 							raterUser.$__save({}, (err) => {
-								console.log(`CASE NORATING: LIKE!`);								
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -235,7 +234,6 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.dislikes.splice(messageDislikedByRaterUser, 1);
 
 							raterUser.$__save({}, (err) => {
-								console.log(`CASE NORATING: DISLIKE!`);																
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -253,9 +251,7 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.likes.push(messageId);
 
 							raterUser.$__save({}, (err) => {
-								if (err) console.log('raterUser saving error: ' + err);
-								// console.log(`raterUser saved!: `, raterUser.ratings.given);
-								console.log(`CASE LIKE: LIKE!`);								
+								if (err) console.log(err);
 							});
 							break;
 						}
@@ -276,7 +272,6 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.likes.push(messageId);
 
 							raterUser.$__save({}, (err) => {
-								console.log(`CASE LIKE: DISLIKE!`);
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -295,7 +290,6 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.dislikes.push(messageId);
 
 							raterUser.$__save({}, (err) => {
-								console.log(`CASE DISLIKE: NORATING!`);								
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -318,7 +312,6 @@ router.patch('/rate/:id', (req, res, next) => {
 							raterUser.ratings.given.dislikes.push(messageId);
 							
 							raterUser.$__save({}, (err) => {
-								console.log(`CASE DISLIKE: LIKE!`);								
 								if (err) console.log('raterUser saving err: ' + err);
 							});
 							break;
@@ -330,10 +323,6 @@ router.patch('/rate/:id', (req, res, next) => {
 					
 					if (err) {
 						console.log(err);
-						/*    return res.status(404).json({
-							message: 'An error occured',
-							error: err
-						}); */
 					}
 					
 					return res.status(200).json({
@@ -341,9 +330,8 @@ router.patch('/rate/:id', (req, res, next) => {
 						obj: result
 					});
 				});
-			messageOwner.$__save({}, (err) => {
-				console.log(`messageOwner saved!`);					
-				if (err) console.log('messageOwner saving err: ' + err);
+				messageOwner.$__save({}, (err) => {
+					if (err) console.log('messageOwner saving err: ' + err);
 				});
 			});
 		});
