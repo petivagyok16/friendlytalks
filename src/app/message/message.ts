@@ -1,18 +1,3 @@
-// export class Message {
-
-// 	constructor(
-// 		public content: string,
-// 		public created_at: number,
-// 		public username?: string,
-// 		public meta?: Meta,
-// 		public messageId?: string,
-// 		public userId?: string,
-// 		public pictureUrl?: string
-// 	) { }
-
-// }
-
-
 export interface Message {
 	/**
 	 * Unique identifier
