@@ -1,13 +1,52 @@
 export interface User {
+	/**
+	 * Username of the user.
+	 */
 	username: string;
+
+	/**
+	 * Unique identifier of the user.
+	 */
 	id?: string;
+	
+	/**
+	 * Password
+	 */
 	password?: string;
+	
+	/**
+	 * Email
+	 */
 	email?: string;
+
+	/**
+	 * City
+	 */
 	city?: string;
+
+	/**
+	 * Full name.
+	 */
 	name: Name;
+
+	/**
+	 * Messages by the user.
+	 */
 	messages?: any[];
+
+	/**
+	 * Relations of the user.
+	 */
 	relations?: Relations;
+
+	/**
+	 * Ratings of the user.
+	 */
 	ratings?: Ratings;
+
+	/**
+	 * The picture of the user.
+	 */
 	pictureUrl?: string;
 }
 
