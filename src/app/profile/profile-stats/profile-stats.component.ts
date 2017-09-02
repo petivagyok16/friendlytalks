@@ -26,7 +26,6 @@ export class ProfileStatsComponent implements OnChanges {
 	}
 
 	ratioCalc(ratingObj) {
-		console.log(`ratingObj: `, ratingObj);
 		// My rating ratio
 		const myTotal = ratingObj.my.likes.length + ratingObj.my.dislikes.length;
 		this.myLikes = Number((ratingObj.my.likes.length / (myTotal / 100)).toFixed(1));
