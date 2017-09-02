@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const Message = require('../models/message');
-const User = require('../models/user');
+const UserSchema = require('../models/user');
 const authenticate = require('../middleware/authenticate');
 
 router.get('/:skipper', authenticate, (req, res, next) => {
@@ -26,7 +26,7 @@ router.get('/:skipper', authenticate, (req, res, next) => {
 });
 
 router.post('/add', authenticate, (req, res, next) => {
-	User.findById(req.user.id, (err, UserDoc) => {
+	UserSchema.findById(req.user.id, (err, UserDoc) => {
 		if (err) {
 			return res.status(404).json({
 				title: 'Error!',
@@ -178,31 +178,31 @@ router.patch('/rate/:id', (req, res, next) => {
 				});
 			}
 
-			User.findById(raterUserId, (err, raterUser) => {
+			UserSchema.findById(raterUserId, (err, raterUser) => {
 
 				if (err) {
 					console.log('Cannot find raterUser', + err);
 				}
 
-				var messageOwner = message.user;
+				let messageOwner = message.user;
 
 				//LIKE
-				var likeRater = messageOwner.ratings.my.likes.indexOf(raterUserId);
+				let likeRater = messageOwner.ratings.my.likes.indexOf(raterUserId);
 
-				var likeOfMessage = message.meta.likes.indexOf(raterUserId);
+				let likeOfMessage = message.meta.likes.indexOf(raterUserId);
 
-				var messageLikedByRaterUser = raterUser.ratings.given.likes.indexOf(messageId);
+				let messageLikedByRaterUser = raterUser.ratings.given.likes.indexOf(messageId);
 
 
 				//DISLIKE
-				var dislikeRater = messageOwner.ratings.my.dislikes.indexOf(raterUserId);
+				let dislikeRater = messageOwner.ratings.my.dislikes.indexOf(raterUserId);
 
-				var dislikeOfMessage = message.meta.dislikes.indexOf(raterUserId);
+				let dislikeOfMessage = message.meta.dislikes.indexOf(raterUserId);
 
-				var messageDislikedByRaterUser = raterUser.ratings.given.dislikes.indexOf(messageId);
+				let messageDislikedByRaterUser = raterUser.ratings.given.dislikes.indexOf(messageId);
 
 
-				var Rating = {
+				const Rating = {
 					NO_RATING: 0,
 					LIKE: 1,
 					DISLIKE: 2
@@ -219,7 +219,8 @@ router.patch('/rate/:id', (req, res, next) => {
 
 							raterUser.ratings.given.likes.splice(messageLikedByRaterUser, 1);
 
-							raterUser.save((err) => {
+							raterUser.$__save({}, (err) => {
+								console.log(`CASE NORATING: LIKE!`);								
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -233,7 +234,8 @@ router.patch('/rate/:id', (req, res, next) => {
 
 							raterUser.ratings.given.dislikes.splice(messageDislikedByRaterUser, 1);
 
-							raterUser.save((err) => {
+							raterUser.$__save({}, (err) => {
+								console.log(`CASE NORATING: DISLIKE!`);																
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -250,15 +252,15 @@ router.patch('/rate/:id', (req, res, next) => {
 
 							raterUser.ratings.given.likes.push(messageId);
 
-							raterUser.save((err) => {
+							raterUser.$__save({}, (err) => {
 								if (err) console.log('raterUser saving error: ' + err);
+								// console.log(`raterUser saved!: `, raterUser.ratings.given);
+								console.log(`CASE LIKE: LIKE!`);								
 							});
-
 							break;
 						}
 
 						if (prevRating === Rating.DISLIKE) {
-
 							//removing previous ratings
 							messageOwner.ratings.my.dislikes.splice(dislikeRater, 1);
 
@@ -273,7 +275,8 @@ router.patch('/rate/:id', (req, res, next) => {
 
 							raterUser.ratings.given.likes.push(messageId);
 
-							raterUser.save((err) => {
+							raterUser.$__save({}, (err) => {
+								console.log(`CASE LIKE: DISLIKE!`);
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 
@@ -291,7 +294,8 @@ router.patch('/rate/:id', (req, res, next) => {
 
 							raterUser.ratings.given.dislikes.push(messageId);
 
-							raterUser.save((err) => {
+							raterUser.$__save({}, (err) => {
+								console.log(`CASE DISLIKE: NORATING!`);								
 								if (err) console.log('raterUser saving error: ' + err);
 							});
 							break;
@@ -312,32 +316,34 @@ router.patch('/rate/:id', (req, res, next) => {
 							message.meta.dislikes.push(raterUserId);
 
 							raterUser.ratings.given.dislikes.push(messageId);
-
-							raterUser.save((err) => {
+							
+							raterUser.$__save({}, (err) => {
+								console.log(`CASE DISLIKE: LIKE!`);								
 								if (err) console.log('raterUser saving err: ' + err);
 							});
 							break;
 						}
 				}
 
-				messageOwner.save((err) => {
-					if (err) console.log('messageOwner saving err: ' + err);
-				});
-
+				
 				message.save((err, result) => {
-
+					
 					if (err) {
 						console.log(err);
 						/*    return res.status(404).json({
-										message: 'An error occured',
-										error: err
-								}); */
+							message: 'An error occured',
+							error: err
+						}); */
 					}
-
+					
 					return res.status(200).json({
 						message: 'Success',
 						obj: result
 					});
+				});
+			messageOwner.$__save({}, (err) => {
+				console.log(`messageOwner saved!`);					
+				if (err) console.log('messageOwner saving err: ' + err);
 				});
 			});
 		});
