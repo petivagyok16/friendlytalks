@@ -38,14 +38,13 @@ export class SignupComponent implements OnInit {
 	}
 
 	onSubmit() {
-		const USER = new User(
-			this.signupForm.value.username,
-			undefined,
-			this.signupForm.value.password,
-			this.signupForm.value.email,
-			this.signupForm.value.city,
-			{first: this.signupForm.value.firstName, last: this.signupForm.value.lastName}
-		);
+		const USER: User = {
+			username: this.signupForm.value.username,
+			password: this.signupForm.value.password,
+			email: this.signupForm.value.email,
+			city: this.signupForm.value.city,
+			name: {first: this.signupForm.value.firstName, last: this.signupForm.value.lastName}
+		};
 
 		this._authService.signup(USER)
 			// .then(user => console.log(user))

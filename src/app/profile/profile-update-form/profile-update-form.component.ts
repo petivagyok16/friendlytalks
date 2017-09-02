@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Profile, UpdatedProfile } from '../profile';
+import { User, UpdatedUser } from './../../auth/user';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
 import { StorageService } from './../../shared/storage.service';
@@ -18,7 +18,7 @@ import { StorageService } from './../../shared/storage.service';
 })
 export class ProfileUpdateFormComponent implements OnInit {
 
-	public selectedUser: Profile = this.storageService.getObject('userObject');
+	public selectedUser: User = this.storageService.getObject('userObject');
 	public form: FormGroup;
 
 	constructor(private _router: Router,
@@ -43,9 +43,13 @@ export class ProfileUpdateFormComponent implements OnInit {
 	}
 
 	submit() {
-		const UPDATED_PROFILE = new UpdatedProfile(this.form.value.pictureUrl,
-			this.form.value.email, this.form.value.firstName, this.form.value.lastName,
-			this.form.value.city);
+		const UPDATED_PROFILE: UpdatedUser = {
+			pictureUrl: this.form.value.pictureUrl,
+			email: this.form.value.email,
+			firstName: this.form.value.firstName,
+			lastName: this.form.value.lastName,
+			city: this.form.value.city
+		};
 
 		// updating profile client-side
 		this.selectedUser.pictureUrl = this.form.value.pictureUrl;

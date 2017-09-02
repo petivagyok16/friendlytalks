@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Profile } from '../profile';
 import { User } from '../../auth/user';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
@@ -47,7 +46,6 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 		this._profileService.find(this.selectedUserId)
 			.then(user => {
 				this.selectedUser = user;
-				console.log(`selectedUser: `, this.selectedUser);
 				// localStorage userObject must be updated to track the changes of the followers
 				if (this.isOwnProfile()) {
 					this.storageService.setObject('userObject', user);

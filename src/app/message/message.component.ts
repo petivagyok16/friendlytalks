@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from './message.service';
 import { Message } from './message';
 import { User } from '../auth/user';
-import { Profile } from '../profile/profile';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
 import { StorageService } from './../shared/storage.service';
@@ -77,7 +76,7 @@ export class MessageComponent implements OnInit {
 		} else {
 			// Save new message
 			const date = Date.now();
-			const message = new Message(inputValue, date);
+			const message: Message = { content: inputValue, created_at: date };
 
 			this._messageService.addMessage(message)
 				.then(data => {

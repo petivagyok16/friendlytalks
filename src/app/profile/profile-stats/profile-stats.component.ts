@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 
-import { Ratings } from '../profile';
+import { Ratings } from '../../auth/user';
 
 @Component({
 	selector: 'my-ratio',
@@ -8,7 +8,7 @@ import { Ratings } from '../profile';
 })
 
 export class ProfileStatsComponent implements OnChanges {
-	@Input() ratings = new Ratings();
+	@Input() ratings: Ratings;
 
 	public myLikes: number = 0;
 	public myDislikes: number = 0;

@@ -5,7 +5,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
 
-import { Profile, UpdatedProfile } from './profile';
 import { User } from '../auth/user';
 import { Message } from '../message/message';
 import { NetworkService } from './../shared/network.service';
@@ -25,17 +24,17 @@ export class ProfileService {
 			.then((response: any) => {
 				const DATA = response.obj;
 
-				let profile = new User(
-					DATA.username,
-					DATA.id,
-					null,
-					DATA.email,
-					DATA.city,
-					DATA.name,
-					DATA.messages,
-					DATA.relations,
-					DATA.ratings,
-					DATA.pictureUrl);
+				let profile: User = {
+					username: DATA.username,
+					id: DATA.id,
+					email: DATA.email,
+					city: DATA.city,
+					name: DATA.name,
+					messages: DATA.messages,
+					relations: DATA.relations,
+					ratings: DATA.ratings,
+					pictureUrl: DATA.pictureUrl
+				};
 
 				return profile;
 			})
@@ -60,7 +59,13 @@ export class ProfileService {
 				const followers: any[] = [];
 
 				rawFollowers.forEach(follower => {
-					const mappedFollower = new Profile(follower.username, follower._id, null, follower.email, follower.pictureUrl);
+					const mappedFollower: User = {
+						username: follower.username,
+						name: follower.name,
+						id: follower._id,
+						email: follower.email,
+						pictureUrl: follower.pictureUrl
+					};
 					mappedFollower.name = follower.name;
 					followers.push(mappedFollower);
 				});
@@ -79,7 +84,14 @@ export class ProfileService {
 				const followings: any[] = [];
 
 				rawFollowing.forEach(following => {
-					const mappedFollowing = new Profile(following.username, following._id, [], following.email, following.pictureUrl);
+					const mappedFollowing: User = {
+						username: following.username,
+						name: following.name,
+						id: following._id,
+						messages: [],
+						email: following.email,
+						pictureUrl: following.pictureUrl
+					};
 					mappedFollowing.name = following.name;
 					followings.push(mappedFollowing);
 				});
@@ -100,8 +112,15 @@ export class ProfileService {
 				rawFollowingMessages.forEach(following => {
 					if (following.messages) {
 						following.messages.forEach(message => {
-							let mappedMessage = new Message(message.content, message.created_at,
-							following.username, message.meta, message._id, message.user, following.pictureUrl);
+							let mappedMessage: Message = {
+								content: message.content,
+								created_at: message.created_at,
+								username: following.username,
+								meta: message.meta,
+								messageId: message._id,
+								userId: message.user,
+								pictureUrl: following.pictureUrl
+							};
 							followingMessages.push(message);
 						});
 					}
@@ -113,13 +132,14 @@ export class ProfileService {
 			});
 	}
 
-	editProfile(userId, profile: UpdatedProfile) {
+	editProfile(userId, profile) {
 		const BODY = JSON.stringify(profile);
 
 		return this.networkService.patch(`profile/editprofile/${userId}`, BODY)
 			.then((response: any) => {
 				// TODO: check this out
 				this.authService.authenticatedUser.next(response.obj);
+				return response.obj;
 			})
 			.catch((error: Response) => {
 				throw error;

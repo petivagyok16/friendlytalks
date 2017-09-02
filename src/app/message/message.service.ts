@@ -31,8 +31,15 @@ export class MessageService {
 				const messages: any[] = [];
 
 				messagesObj.forEach(message => {
-					const messageObject = new Message(message.content, message.created_at, message.user.username, message.meta,
-						message._id, message.user._id, message.user.pictureUrl);
+					const messageObject: Message = {
+						content: message.content,
+						created_at: message.created_at,
+						username: message.user.username,
+						meta: message.meta,
+						messageId: message._id,
+						userId: message.user._id,
+						pictureUrl: message.user.pictureUrl
+					};
 					messages.push(messageObject);
 				});
 				return messages;

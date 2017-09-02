@@ -1,46 +1,40 @@
-export class User {
-
-	constructor(
-		public username: string,
-		public id?: string,
-		public password?: string,
-		public email?: string,
-		public city?: string,
-		public name = new Name(),
-		public messages?: any[],
-		public relations?: Relations,
-		public ratings?: Ratings,
-		public pictureUrl?: string,
-
-	) { }
+export interface User {
+	username: string;
+	id?: string;
+	password?: string;
+	email?: string;
+	city?: string;
+	name: Name;
+	messages?: any[];
+	relations?: Relations;
+	ratings?: Ratings;
+	pictureUrl?: string;
 }
 
-class Relations {
-	followers: any[] = [];
-	following: any[] = [];
+export interface Relations {
+	followers: any[];
+	following: any[];
 }
 
-export class Ratings {
-	my = new My();
-	given = new Given();
+export interface Ratings {
+	my: RatingContainer;
+	given: RatingContainer;
 }
 
-class My {
-	likes: any[] = [];
-	dislikes: any[] = [];
+interface RatingContainer {
+	likes: any[];
+	dislikes: any[];
 }
 
-class Given {
-	likes: any[] = [];
-	dislikes: any[] = [];
+interface Name {
+	first: string;
+	last: string;
 }
 
-export class Name {
-	first: string = 'John';
-	last: string = 'Doe';
-}
-
-// Webstorm would underline data.pictureUrl with red without this.
-export class Data {
-	pictureUrl: string;
+export interface UpdatedUser {
+	pictureUrl?: string;
+	email?: string;
+	firstName?: string;
+	lastName?: string;
+	city?: string;
 }

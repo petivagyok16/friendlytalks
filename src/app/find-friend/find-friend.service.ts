@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
 
-import { Profile } from '../profile/profile';
+import { User } from '../auth/user';
 import { NetworkService } from './../shared/network.service';
 
 @Injectable()
@@ -20,8 +20,15 @@ export class FindFriendService {
 				const foundUsers: any[] = [];
 
 				rawFoundUsers.forEach(foundUser => {
-					const mappedFoundUser = new Profile(foundUser.username, foundUser._id, foundUser.messages, foundUser.email,
-						foundUser.pictureUrl, foundUser.city);
+					const mappedFoundUser: User = {
+						username: foundUser.username,
+						id: foundUser._id,
+						name: foundUser.name,
+						messages: foundUser.messages,
+						email: foundUser.email,
+						pictureUrl: foundUser.pictureUrl,
+						city: foundUser.city
+					};
 					foundUsers.push(mappedFoundUser);
 				});
 				return foundUsers;

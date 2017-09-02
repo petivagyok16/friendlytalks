@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Rx';
 import { FormControl } from '@angular/forms';
 
 import { FindFriendService } from './find-friend.service';
-import { Profile } from '../profile/profile';
 import { ErrorService } from '../error/error.service';
+import { User } from './../auth/user';
 
 @Component({
 	selector: 'my-findFriend',
@@ -12,7 +12,7 @@ import { ErrorService } from '../error/error.service';
 })
 
 export class FindFriendComponent implements OnInit, OnDestroy {
-	public foundUsers: Profile[] = [];
+	public foundUsers: User[] = [];
 	public isLoading = false;
 	public searchTerm = new FormControl();
 	private keyups: any;
