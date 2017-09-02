@@ -62,21 +62,32 @@ router.post('/signup', (req, res, next) => {
 router.post('/signin', (req, res, next) => {
 
 	UserSchema.findOne({ username: req.body.username }, (err, userDoc) => {
-		const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name, city: userDoc.city };		
-
+		
 		if (err) {
 			return res.status(404).json({
 				title: 'An error occured',
 				error: { message: 'Wrong credentials!' }
 			});
 		}
-
+		
 		if (!userDoc) {
 			return res.status(404).json({
 				title: 'No user found.',
 				error: { message: 'That user does not exist!' }
 			});
 		}
+
+		const userToReturn = {
+			id: userDoc._id,
+			email: userDoc.email,
+			pictureUrl: userDoc.pictureUrl,
+			username: userDoc.username,
+			ratings: userDoc.ratings,
+			relations: userDoc.relations,
+			messages: userDoc.messages,
+			name: userDoc.name,
+			city: userDoc.city
+		};		
 
 		if (!passwordHash.verify(req.body.password, userDoc.password)) {
 			return res.status(404).json({
