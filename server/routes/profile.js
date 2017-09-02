@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/user');
+const UserSchema = require('../models/user');
+const authenticate = require('../middleware/authenticate');
+
 
 router.get('/:userId', (req, res, next) => {
 
 	const userId = req.params.userId;
 
-	User.findById(userId, 'username messages name pictureUrl email city relations ratings')
+	UserSchema.findById(userId, 'username messages name pictureUrl email city relations ratings')
 		.exec((err, userDoc) => {
 
 			if (err) {
@@ -26,7 +28,17 @@ router.get('/:userId', (req, res, next) => {
 			}
 
 			if (userDoc) {
-				const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name, city: userDoc.city };
+				const userToReturn = {
+					id: userDoc._id,
+					email: userDoc.email,
+					pictureUrl: userDoc.pictureUrl,
+					username: userDoc.username,
+					ratings: userDoc.ratings,
+					relations: userDoc.relations,
+					messages: userDoc.messages,
+					name: userDoc.name,
+					city: userDoc.city
+				};
 				
 				res.status(200).json({
 					message: 'Success',
@@ -41,18 +53,16 @@ router.get('/:userId', (req, res, next) => {
 		});
 });
 
-router.patch('/:id', (req, res, next) => {
-	//var decoded = jwt.decode(req.query.token);
+router.patch('/:id', authenticate, (req, res, next) => {
 	console.log('follower user:' + req.params.id);
 
 	console.log('followed user:' + req.body.toFollowId);
 	//Finding the followed User to update its follower field
 	//first element of the array is the follower user, second is the followed user
 	//mongoose gives back in the same order hopefully. BELIEVE
-	User.find({ _id: { $in: [req.params.id, req.body.toFollowId] } }, (err, docs) => {
+	UserSchema.find({ _id: { $in: [req.params.id, req.body.toFollowId] } }, (err, docs) => {
 
 		if (err) {
-
 			return res.status(404).json({
 				title: 'An error occurred! at [PATCH] profile/:id',
 				error: { message: 'Talk to the admin for more information please.' }
@@ -60,7 +70,6 @@ router.patch('/:id', (req, res, next) => {
 		}
 
 		if (!docs) {
-
 			return res.status(404).json({
 				title: 'Error',
 				error: { message: 'User cannot be found!' }
@@ -130,7 +139,7 @@ router.patch('/:id', (req, res, next) => {
 
 		});
 
-		followerUser.save((followerUserErr, followerUserResult) => {
+		followerUser.$__save({}, (followerUserErr, followerUserResult) => {
 
 			if (followerUserErr || followedUserErr) {
 				return res.status(404).json({
@@ -154,7 +163,7 @@ router.get('/followers/:userId', (req, res, next) => {
 
 	var userId = req.params.userId;
 
-	User.findById(userId)
+	UserSchema.findById(userId)
 		.populate('relations.followers', 'username email name pictureUrl')
 		.exec((err, doc) => {
 			if (err) {
@@ -180,9 +189,9 @@ router.get('/followers/:userId', (req, res, next) => {
 
 router.get('/following/:userId', (req, res, next) => {
 
-	var userId = req.params.userId;
+	let userId = req.params.userId;
 
-	User.findById(userId)
+	UserSchema.findById(userId)
 		.populate('relations.following', 'username email name pictureUrl')
 		.exec((err, doc) => {
 			if (err) {
@@ -208,7 +217,7 @@ router.get('/following/:userId', (req, res, next) => {
 
 router.get('/followingmessages/:userId', (req, res, next) => {
 
-	User.findById(req.params.userId, 'relations.following')
+	UserSchema.findById(req.params.userId, 'relations.following')
 		.populate({
 			path: 'relations.following',
 			populate: { path: 'messages' }
@@ -229,10 +238,10 @@ router.get('/followingmessages/:userId', (req, res, next) => {
 		});
 });
 
-router.patch('/editprofile/:id', (req, res, next) => {
-	var decoded = jwt.decode(req.query.token);
-
-	User.findById(req.params.id, (err, doc) => {
+router.patch('/editprofile/:id', authenticate, (req, res, next) => {
+	let decoded = jwt.decode(req.token);
+	
+	UserSchema.findById(req.params.id, (err, doc) => {
 
 		if (err) {
 			return res.status(404).json({
@@ -248,7 +257,7 @@ router.patch('/editprofile/:id', (req, res, next) => {
 			});
 		}
 
-		if (doc._id != decoded.user._id) {
+		if (doc._id != decoded._id) {
 			return res.status(401).json({
 				title: 'Not authorized!',
 				error: { message: 'You are trying to change a different profile.' }
@@ -261,8 +270,18 @@ router.patch('/editprofile/:id', (req, res, next) => {
 		doc.name.last = req.body.lastName;
 		doc.city = req.body.city;
 
-		doc.save((err, userDoc) => {
-			const userToReturn = { id: userDoc._id, email: userDoc.email, pictureUrl: userDoc.pictureUrl, username: userDoc.username, ratings: userDoc.ratings, relations: userDoc.relations, messages: userDoc.messages, name: userDoc.name };			
+		doc.$__save({}, (err, userDoc) => {
+			const userToReturn = {
+				id: userDoc._id,
+				email: userDoc.email,
+				pictureUrl: userDoc.pictureUrl,
+				username: userDoc.username,
+				ratings: userDoc.ratings,
+				relations: userDoc.relations,
+				messages: userDoc.messages,
+				name: userDoc.name,
+				city: userDoc.city,
+			};
 
 			if (err) {
 				return res.status(404).json({
