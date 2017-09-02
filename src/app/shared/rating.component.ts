@@ -19,7 +19,6 @@ export class RatingComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		console.log(`userRating: `, this.userRating);
 		if (this.ratingObj) {
 			this.likes = this.ratingObj.likes.length
 			this.dislikes = this.ratingObj.dislikes.length
