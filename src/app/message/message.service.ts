@@ -62,7 +62,7 @@ export class MessageService {
 	}
 
 	rateMessage(messageId, raterUserId, rating, prevRating) {
-		const RATINGOBJECT = JSON.stringify({ raterUserId: raterUserId, rating: rating, prevRating: prevRating });
+		const RATINGOBJECT = JSON.stringify({ raterUserId, rating, prevRating });
 
 		return this.networkService.patch(`message/rate/${messageId}`, RATINGOBJECT)
 			// .map((response: Response) => console.log(response))
