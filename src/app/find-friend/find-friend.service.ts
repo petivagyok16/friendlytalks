@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 
 import { User } from '../auth/user';
 import { NetworkService } from './../shared/network.service';
+import { Error } from './../error/error';
 
 @Injectable()
 export class FindFriendService {
@@ -33,7 +34,7 @@ export class FindFriendService {
 				});
 				return foundUsers;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
