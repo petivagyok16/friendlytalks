@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 
 import { Message } from './message';
 import { NetworkService } from './../shared/network.service';
+import { Error } from './../error/error';
 
 @Injectable()
 export class MessageService {
@@ -18,7 +19,7 @@ export class MessageService {
 
 		return this.networkService.post(`message/add`, BODY)
 			.then((response: any) => response)
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				console.error(error);
 				throw error;
 			});
@@ -44,7 +45,7 @@ export class MessageService {
 				});
 				return messages;
 			})
-			.catch((error: Response) => console.error(error));
+			.catch((error: Error) => console.error(error));
 	}
 
 	deleteMessage(message: Message) {
@@ -52,7 +53,7 @@ export class MessageService {
 
 		return this.networkService.delete(`message/${MESSAGEID}`)
 			// .then((response: Response) => response)
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -62,7 +63,7 @@ export class MessageService {
 
 		return this.networkService.patch(`message/${message.messageId}`, BODY)
 			.then((response: Response) => response)
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				console.error(error);
 				throw error;
 			});
@@ -73,7 +74,7 @@ export class MessageService {
 
 		return this.networkService.patch(`message/rate/${messageId}`, RATINGOBJECT)
 			// .map((response: Response) => console.log(response))
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				console.error(error);
 				throw error;
 			});
