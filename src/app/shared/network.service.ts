@@ -29,7 +29,7 @@ export class NetworkService {
       })
       .catch(error => {
         this.errorService.handleError(error.json());
-        throw error;
+        throw error.json();
       });
   }
 
@@ -40,7 +40,7 @@ export class NetworkService {
       })
       .catch(error => {
         this.errorService.handleError(error.json());
-        throw error;
+        throw error.json();
       });
   }
 
@@ -51,7 +51,7 @@ export class NetworkService {
       })
       .catch(error => {
         this.errorService.handleError(error.json());
-        throw error;
+        throw error.json().json();
       });
   }
 
@@ -62,7 +62,7 @@ export class NetworkService {
       })
       .catch(error => {
         this.errorService.handleError(error.json());
-        throw error;
+        throw error.json();
       });
   }
 
