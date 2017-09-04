@@ -17,7 +17,6 @@
 			</div>
 		</section>
 	</div>
-	<!-- <pagination [items]="messages" (page-changed)="onMessageChanged($event)" [page-size]="pageSize"></pagination> -->
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 message-panel" *ngFor="let messageItem of messages">
 			<div class="media">
@@ -42,7 +41,6 @@
 							<my-rating [userRating]="calculateUserRating(messageItem.messageId)" [ratingObj]="messageItem.meta" (change)="messageRated($event, messageItem.messageId)"></my-rating>
 						</div>
 						<div class="col-md-6 col-sm-6 col-xs-6 right-align" id="date">{{ messageItem.created_at | date: 'HH.m, MMM.d, y' }}</div>
-
 					</div>
 				</div>
 			</div>
