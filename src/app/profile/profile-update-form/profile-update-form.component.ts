@@ -43,31 +43,21 @@ export class ProfileUpdateFormComponent implements OnInit {
 	}
 
 	submit() {
+		const val = this.form.value;
+
 		const UPDATED_PROFILE: UpdatedUser = {
-			pictureUrl: this.form.value.pictureUrl,
-			email: this.form.value.email,
-			firstName: this.form.value.firstName,
-			lastName: this.form.value.lastName,
-			city: this.form.value.city
+			pictureUrl: val.pictureUrl,
+			email: val.email,
+			firstName: val.firstName,
+			lastName: val.lastName,
+			city: val.city
 		};
 
-		// updating profile client-side
-		this.selectedUser.pictureUrl = this.form.value.pictureUrl;
-		this.selectedUser.email = this.form.value.email;
-		this.selectedUser.name.first = this.form.value.firstName;
-		this.selectedUser.name.last = this.form.value.lastName;
-		this.selectedUser.city = this.form.value.city;
-
-		this.storageService.setObject('userObject', this.selectedUser);
-
-		// sending the changes to the server
 		this._profileService.editProfile(this.selectedUser.id, UPDATED_PROFILE)
-			.then(data => console.log(data))
+			.then( (updatedUser: User) => {
+				this._router.navigate(['/profile', this.selectedUser.id]);
+			})
 			.catch(error => {this._errorService.handleError(error)})
-			
-		// NAVIGATE TO PROFILE
-		// navigate to feed at first, it will be fixed later cause client-side userObject must be updated
-		this._router.navigate(['/profile', this.selectedUser.id]);
 	}
 
 	private isEmail(control: FormControl): { [s: string]: boolean } {
