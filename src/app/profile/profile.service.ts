@@ -9,6 +9,7 @@ import { User } from '../auth/user';
 import { Message } from '../message/message';
 import { NetworkService } from './../shared/network.service';
 import { AuthService } from './../auth/auth.service';
+import { Error } from './../error/error';
 
 @Injectable()
 export class ProfileService {
@@ -38,7 +39,7 @@ export class ProfileService {
 
 				return profile;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -49,7 +50,7 @@ export class ProfileService {
 		const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state });
 
 		return this.networkService.patch(`profile/${userId}`, toFollowOrUnfollow)
-			.catch((error: Response) => Observable.throw(error));
+			.catch((error: Error) => Observable.throw(error));
 	}
 
 	getFollowers(userId) {
@@ -72,7 +73,7 @@ export class ProfileService {
 
 				return followers;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -98,7 +99,7 @@ export class ProfileService {
 				
 				return followings;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -127,7 +128,7 @@ export class ProfileService {
 				})
 				return followingMessages;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -141,7 +142,7 @@ export class ProfileService {
 				this.authService.authenticatedUser.next(response.obj);
 				return response.obj;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
