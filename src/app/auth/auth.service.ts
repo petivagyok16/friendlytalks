@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import { NetworkService } from './../shared/network.service';
 import { StorageService } from './../shared/storage.service';
 import { User } from './user';
+import { Error } from './../error/error';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,7 @@ export class AuthService {
 				this.networkService.token = response.token;
 				return response.user;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
@@ -52,7 +53,7 @@ export class AuthService {
 				this.networkService.token = response.token;
 				return response;
 			})
-			.catch((error: Response) => {
+			.catch((error: Error) => {
 				throw error;
 			});
 	}
