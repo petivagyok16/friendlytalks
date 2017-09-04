@@ -38,12 +38,14 @@ export class SignupComponent implements OnInit {
 	}
 
 	onSubmit() {
+		const val = this.signupForm.value;
+
 		const USER: User = {
-			username: this.signupForm.value.username,
-			password: this.signupForm.value.password,
-			email: this.signupForm.value.email,
-			city: this.signupForm.value.city,
-			name: {first: this.signupForm.value.firstName, last: this.signupForm.value.lastName}
+			username: val.username,
+			password: val.password,
+			email: val.email,
+			city: val.city,
+			name: {first: val.firstName, last: val.lastName}
 		};
 
 		this._authService.signup(USER)
