@@ -51,6 +51,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+console.log(`valami uj koooood`);
+
 /**
  * Get port from environment and store in Express.
  */
