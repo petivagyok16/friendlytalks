@@ -53,6 +53,8 @@ app.get('*', (req, res) => {
 
 console.log(`valami uj koooood`);
 
+console.log(`valami uj koood2`);
+
 /**
  * Get port from environment and store in Express.
  */
