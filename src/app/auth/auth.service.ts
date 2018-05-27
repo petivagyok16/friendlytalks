@@ -45,7 +45,7 @@ export class AuthService {
 	public signin(credentials: { username: string, password: string }) {
 		const BODY = JSON.stringify(credentials);
 
-		return this.networkService.post<{ payload: any, token: string }>('/auth/signin', BODY)
+		return this.networkService.post<{ payload: User, token: string }>('/auth/signin', BODY)
 			.then((response: any) => {
 				this.authenticatedUser.next(response.payload);
 				this.storageService.set('token', response.token);
