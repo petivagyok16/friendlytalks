@@ -13,15 +13,15 @@ export class FindFriendService {
 	constructor(private networkService: NetworkService) { }
 
 	find(username) {
-		return this.networkService.get(`find/${username}`)
-			.then((response: any) => {
-				const rawFoundUsers = response.obj;
-				const foundUsers: any[] = [];
+		return this.networkService.get<{ payload: User[] }>(`/api/v1/user/find/${username}`)
+			.then(response => {
+				const rawFoundUsers = response.payload;
+				const foundUsers: User[] = [];
 
 				rawFoundUsers.forEach(foundUser => {
 					const mappedFoundUser: User = {
 						username: foundUser.username,
-						id: foundUser._id,
+						id: foundUser.id,
 						name: foundUser.name,
 						messages: foundUser.messages,
 						email: foundUser.email,
