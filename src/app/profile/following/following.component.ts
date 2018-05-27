@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
@@ -21,7 +22,8 @@ export class FollowingComponent implements OnInit {
 
 		// getting the userId from URL param
 		this._route.parent.params
-			.map(params => params['userId'])
+			.pipe(
+				map(params => params['userId']))
 			.subscribe(
 			(userId) => this.userId = userId,
 			error => this._errorService.handleError(error));

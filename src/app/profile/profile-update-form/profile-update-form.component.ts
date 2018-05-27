@@ -1,7 +1,4 @@
-import {
-	Component, OnInit, HostBinding,
-	trigger, transition, animate, style, state
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';

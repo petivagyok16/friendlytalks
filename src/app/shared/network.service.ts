@@ -1,93 +1,113 @@
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/catch';
+import { map, filter } from 'rxjs/operators';
 
 import { StorageService } from './storage.service';
 import { ErrorService } from './../error/error.service';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class NetworkService {
-
-  private url: string = 'http://localhost:3000';
-  public token: string = null;
+  private baseUrl = 'http://localhost:8080';
+  public _token: string;
 
   constructor(
-    private http: Http,
-    private storageService: StorageService,
-    private errorService: ErrorService,
-  ) {
-    
+    private http: HttpClient,
+  ) { }
+
+  set token(token: string) {
+    this._token = token;
   }
 
-  post(path: string, payload: any = null): Promise<Response> {
-    return this.http.post(this.createUrl(path, {}), payload, this.createRequestOptions()).toPromise()
-      .then(response => {
-        return response.json();
-      })
-      .catch(error => {
-        this.errorService.handleError(error.json());
-        throw error.json();
-      });
+  public get<T>(path: string, param: string | number = '', queryParams: Object = {}, etag?: string): Promise<T> {
+    const requestOptions = this.generateOptions(etag);
+    const builtUrl = this.buildUrl(path, param, queryParams);
+    return this.http.get<T>(builtUrl, requestOptions)
+      .toPromise()
+      .catch(this.handleGlobalError);
   }
 
-  get(path: string, params: any = {}): Promise<Response> {
-    return this.http.get(this.createUrl(path, params), this.createRequestOptions()).toPromise()
-      .then(response => {
-        return response.json();
-      })
-      .catch(error => {
-        this.errorService.handleError(error.json());
-        throw error.json();
-      });
+  /**
+   * @param path path/to/endpoint
+   * @param body post request body
+   */
+  public post<T>(path: string, body: Object = {}): Promise<T> {
+    const requestOptions = this.generateOptions();
+    const builtUrl = this.buildUrl(path, null);
+    return this.http.post<T>(builtUrl, body, requestOptions)
+      .toPromise()
+      .catch(this.handleGlobalError);
   }
 
-  patch(path: string, payload: any = null): Promise<Response> {
-    return this.http.patch(this.createUrl(path, {}), payload, this.createRequestOptions()).toPromise()
-      .then(response => {
-        return response.json();
-      })
-      .catch(error => {
-        this.errorService.handleError(error.json());
-        throw error.json().json();
-      });
+  public patch<T>(path: string, body: Object = {}): Promise<T> {
+    const requestOptions = this.generateOptions();
+    const builtUrl = this.buildUrl(path, null);
+    return this.http.patch<T>(builtUrl, body, requestOptions)
+      .toPromise()
+      .catch(this.handleGlobalError);
   }
 
-  delete(path: string, params: any = {}): Promise<Response> {
-    return this.http.delete(this.createUrl(path, params), this.createRequestOptions()).toPromise()
-      .then(response => {
-        return response.json();
-      })
-      .catch(error => {
-        this.errorService.handleError(error.json());
-        throw error.json();
-      });
+  public put<T>(path: string, body: Object = null): Promise<T> {
+    const requestOptions = this.generateOptions();
+    return this.http.put<T>(path, body, requestOptions)
+      .toPromise()
+      .catch(this.handleGlobalError);
   }
 
-  createRequestOptions() {
-    let requestOptions = new RequestOptions({
-      headers: new Headers({
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Credentials': true,
-        'Content-Type': 'application/json',
-        'Authorization': this.token
-      })
-    });
-    return requestOptions;
+  public delete<T>(path: string, param: string | number = '', queryParams: Object = {}): Promise<T> {
+    const requestOptions = this.generateOptions();
+    const builtUrl = this.buildUrl(path, param, queryParams);
+    return this.http.delete<T>(builtUrl, requestOptions)
+      .toPromise()
+      .catch(this.handleGlobalError);
   }
 
-  // TODO: handle params if necessary in the future
-  private createUrl(path: string, params: any): string {
-  //  let token = this.storageService.get('token') ? '?token=' + this.storageService.get('token') : '';
+  private generateOptions(etag?: string) {
+    let headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
 
-    if (path.indexOf('/') == 0) {
-      return `${this.url}${path}`;
+      if (this._token) {
+        headers = Object.assign(headers, headers.set('Authorization', `Bearer ${this._token}`));
+      }
+
+      if (etag) {
+        headers = Object.assign(headers, headers.set('If-None-Match', etag));
+      }
+
+      const options = {
+        headers: headers,
+      };
+
+    return options;
+  }
+
+  private buildUrl(path: string, param: string | number, queryParams: Object = {}): string {
+    let requestParam = param ? '/' + param : '';
+    return `${this.baseUrl}${path}${requestParam}${this.buildQueryParams(queryParams)}`;
+  }
+
+  /**
+   *
+   * @param queryParams contains the query parameters as key-value pairs.
+   * If @param queryParams object is empty, return ''
+   * otherwise return proper querystring parameter to the url
+   */
+  private buildQueryParams(queryParams: Object) {
+    if (Object.keys(queryParams).length === 0) {
+      return '';
     } else {
-      return `${this.url}/${path}`;
+      return '?' + Object.keys(queryParams).map(key => {
+        return `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`;
+      }).join('&');
     }
   }
-  
 
+  // TODO: implement global error handling here -> e.g: error.service & dialog.service
+  private handleGlobalError(error: HttpErrorResponse): Promise<HttpErrorResponse | any> {
+    console.log(`Http Error occurred: `, error);
+    throw error;
+  }
 }
+

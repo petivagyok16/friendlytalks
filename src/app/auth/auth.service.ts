@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { map } from 'rxjs/operators';
 
 import { NetworkService } from './../shared/network.service';
 import { StorageService } from './../shared/storage.service';
@@ -31,7 +30,7 @@ export class AuthService {
 	public signup(user: User) {
 		const BODY = JSON.stringify(user);
 
-		return this.networkService.post('auth/signup', BODY)
+		return this.networkService.post('/auth/signup', BODY)
 			.then((response: any) => {
 				this.authenticatedUser.next(response.user);
 				this.storageService.set('token', response.token);
@@ -46,7 +45,7 @@ export class AuthService {
 	public signin(credentials: { username: string, password: string }) {
 		const BODY = JSON.stringify(credentials);
 
-		return this.networkService.post('auth/signin', BODY)
+		return this.networkService.post('/auth/signin', BODY)
 			.then((response: any) => {
 				this.authenticatedUser.next(response.user);
 				this.storageService.set('token', response.token);
@@ -60,7 +59,7 @@ export class AuthService {
 
 	public getAuthenticatedUser(): Promise<User> {
     console.log('AuthService -> Calling authenticated userdata from server');
-    return this.networkService.get('auth/user/me').then((response: any) => {
+    return this.networkService.get('/auth/me').then((response: any) => {
       const user: User = response.user;
       console.log('AuthService -> Authenticated user has arrived', user);
       this.authenticatedUser.next(user);

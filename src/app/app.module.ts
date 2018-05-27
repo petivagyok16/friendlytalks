@@ -1,7 +1,7 @@
-import { NgModule }                         from '@angular/core';
 import { BrowserModule }                    from '@angular/platform-browser';
+import { NgModule }                         from '@angular/core';
 import { RouterModule }                     from '@angular/router';
-import { HttpModule }                       from '@angular/http';
+import { HttpClientModule }									from '@angular/common/http';
 
 // Services, guards
 import { ErrorService }                     from './error/error.service';
@@ -32,7 +32,7 @@ import { profileRouting }                   from './profile/profile.routing';
 @NgModule({
     imports: [
 			BrowserModule,
-			HttpModule,
+			HttpClientModule,
 			RouterModule,
 
 			SharedModule,

@@ -2,6 +2,7 @@ import {
 	Component, OnInit, DoCheck
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 import { User } from '../../auth/user';
 import { ProfileService } from '../profile.service';
@@ -35,7 +36,8 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 		this.userObject = this.authService.authenticatedUser.getValue();
 		// getting the userId from URL param
 		this._route.parent.params
-			.map(params => params['userId'])
+			.pipe(
+				map(params => params['userId']))
 			.subscribe(
 			(userId) => {
 				this.selectedUserId = userId;

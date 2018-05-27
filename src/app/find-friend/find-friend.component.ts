@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { FindFriendService } from './find-friend.service';
 import { ErrorService } from '../error/error.service';
@@ -23,18 +24,19 @@ export class FindFriendComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.keyups = this.searchTerm.valueChanges
-			.debounceTime(400)
-			.distinctUntilChanged()
-			.filter(text => {
-				if (text.length === 0) {
-					this.foundUsers = [];
-				} else {
-					return text.length >= 2;
-				}
-			})
-			.map(searchTerm => {
-				return searchTerm;
-			});
+			.pipe(
+				debounceTime(400),
+				distinctUntilChanged(),
+				filter((text: any) => {
+					if (text.length === 0) {
+						this.foundUsers = [];
+					} else {
+						return text.length >= 2;
+					}
+				}),
+				map(searchTerm => {
+					return searchTerm;
+				}));
 
 		this.keyups.subscribe(
 			searchTerm => {
