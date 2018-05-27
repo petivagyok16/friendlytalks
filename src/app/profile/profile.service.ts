@@ -12,6 +12,8 @@ import { Error } from './../error/error';
 @Injectable()
 export class ProfileService {
 
+	private apiUrl = '/api/v1/user';
+
 	constructor(
 		private networkService: NetworkService,
 		private authService: AuthService,
@@ -19,7 +21,7 @@ export class ProfileService {
 
 	// Finding the requested user profiles
 	find(userId) {
-		return this.networkService.get(`profile/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/${userId}`)
 			.then((response: any) => {
 				const DATA = response.obj;
 
@@ -52,7 +54,7 @@ export class ProfileService {
 	}
 
 	getFollowers(userId) {
-		return this.networkService.get(`profile/followers/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/followers/${userId}`)
 			.then((response: any) => {
 				const rawFollowers = response.obj;
 				const followers: any[] = [];
@@ -77,7 +79,7 @@ export class ProfileService {
 	}
 
 	getFollowing(userId) {
-		return this.networkService.get(`profile/following/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/following/${userId}`)
 			.then((response: any) => {
 				const rawFollowing = response.obj;
 				const followings: any[] = [];
@@ -103,7 +105,7 @@ export class ProfileService {
 	}
 
 	getFollowingMessages(userId) {
-		return this.networkService.get(`profile/followingmessages/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/following-messages/${userId}`)
 			.then((response: any) => {
 				const rawFollowingMessages = response.obj;
 				const followingMessages: any[] = [];
@@ -134,7 +136,7 @@ export class ProfileService {
 	editProfile(userId, profile) {
 		const BODY = JSON.stringify(profile);
 
-		return this.networkService.patch(`profile/editprofile/${userId}`, BODY)
+		return this.networkService.patch(`${this.apiUrl}/edit/${userId}`, BODY)
 			.then((response: any) => {
 				// TODO: check this out
 				this.authService.authenticatedUser.next(response.obj);
