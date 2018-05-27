@@ -66,7 +66,8 @@ export class NetworkService {
   private generateOptions(etag?: string) {
     let headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', this._token);
 
       if (this._token) {
         headers = Object.assign(headers, headers.set('Authorization', `Bearer ${this._token}`));
