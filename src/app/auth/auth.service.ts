@@ -45,9 +45,9 @@ export class AuthService {
 	public signin(credentials: { username: string, password: string }) {
 		const BODY = JSON.stringify(credentials);
 
-		return this.networkService.post('/auth/signin', BODY)
+		return this.networkService.post<{ payload: any, token: string }>('/auth/signin', BODY)
 			.then((response: any) => {
-				this.authenticatedUser.next(response.user);
+				this.authenticatedUser.next(response.payload);
 				this.storageService.set('token', response.token);
 				this.networkService.token = response.token;
 				return response;
@@ -59,8 +59,8 @@ export class AuthService {
 
 	public getAuthenticatedUser(): Promise<User> {
     console.log('AuthService -> Calling authenticated userdata from server');
-    return this.networkService.get('/auth/me').then((response: any) => {
-      const user: User = response.user;
+    return this.networkService.get<{ payload: any, token: string }>('/auth/me').then(response => {
+      const user: User = response.payload;
       console.log('AuthService -> Authenticated user has arrived', user);
       this.authenticatedUser.next(user);
       return user;
