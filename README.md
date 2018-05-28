@@ -1,5 +1,9 @@
 # Friendlytalks
 
+# Attention
+
+This version of Friendlytalks uses the old nodejs backend which is not so cool, so consider using the new master branch which uses Java/Spring 5 backend
+
 ## How to build
 
 Run `npm run server` to start the dev server
