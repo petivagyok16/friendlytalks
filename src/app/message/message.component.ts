@@ -48,7 +48,7 @@ export class MessageComponent implements OnInit {
 			});
 	}
 
-	loadMoreMessage() {
+	public loadMoreMessage() {
 		this.messageSkipper += 10;
 
 		this._messageService.getMessages(this.messageSkipper)
@@ -58,7 +58,7 @@ export class MessageComponent implements OnInit {
 			.catch(error => this._errorService.handleError(error));
 	}
 
-	sendMsg(input) {
+	public sendMsg(input) {
 		const inputValue = input.value;
 
 		if (this.message) {
@@ -74,42 +74,37 @@ export class MessageComponent implements OnInit {
 				});
 		} else {
 			// Save new message
-			const message: EditedMessage = { content: inputValue, created_at: Date.now() };
+			const editedMessage: EditedMessage = { content: inputValue, created_at: new Date(Date.now()).toISOString() };
 
-			this._messageService.addMessage(message)
-				.then(data => {
-					message.messageId = data.obj.id;
-					message.username = data.obj.username;
-					message.userId = data.obj.userId;
-					message.meta = data.obj.meta;
-					message.pictureUrl = data.obj.pictureUrl;
+			this._messageService.addMessage<{ payload: Message }>(editedMessage)
+				.then(response => {
+					this.messages.unshift(response.payload);
 				})
 				.catch(error => this._errorService.handleError(error));
 
-			this.messages.unshift(message);
 		}
 		// clearing the input field -> 1 bug: after creating a message it cannot be edited at first, but
 		// only after canceling at least once
 		input.value = null;
 	}
 
-	onDelete(message) {
+	public onDelete(message) {
 		this.messages.splice(this.messages.indexOf(message), 1);
 
 		this._messageService.deleteMessage(message)
 			.catch(error => this._errorService.handleError(error));
 	}
 
-	onEdit(message) {
+	public onEdit(message) {
 		window.scrollTo(0,0);
 		this.message = message;
 	}
 
-	onCancel() {
+	public onCancel() {
 		this.message = null;
 	}
 
-	getGlobalMessages() {
+	public getGlobalMessages() {
 		this.followerFeedActive = false;
 		this.globalFeedActive = true;
 		this.messageSkipper = 0;
@@ -126,7 +121,7 @@ export class MessageComponent implements OnInit {
 			.catch(error => this._errorService.handleError(error));
 	}
 
-	getFollowingMessages() {
+	public getFollowingMessages() {
 		this.globalFeedActive = false;
 		this.followerFeedActive = true;
 
@@ -137,7 +132,7 @@ export class MessageComponent implements OnInit {
 			.catch(error => this._errorService.handleError(error));
 	}
 
-	calculateUserRating(messageId) {
+	public calculateUserRating(messageId) {
 		const user = this.authService.getUser();
 		// Liked message
 		if (user.ratings.given.likes.indexOf(messageId) != -1) return 1;
@@ -149,9 +144,9 @@ export class MessageComponent implements OnInit {
 		return 0;
 	}
 
-	messageRated(event, messageId) {
+	public messageRated(event, messageId) {
 		// Changing message rating server-side
-		this._messageService.rateMessage(messageId, this.userId, event.newRating, event.prevRating)
+		this._messageService.rateMessage(messageId, this.userId, event.newRating)
 			.catch(error => this._errorService.handleError(error));
 	}
 }

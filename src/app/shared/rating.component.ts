@@ -25,7 +25,7 @@ export class RatingComponent implements OnInit {
 		}
 	}
 
-	rate(rating) {
+	public rate(rating) {
 		const NO_RATING = 0;
 		const LIKE = 1;
 		const DISLIKE = 2;
@@ -48,14 +48,14 @@ export class RatingComponent implements OnInit {
 					this.likes -= 1;
 					this.userRating = 0;
 					prevRating = LIKE;
-					this.change.emit({ newRating: this.userRating, prevRating: prevRating });
+					this.change.emit({ newRating: this.userRating });
 
 					break;
 				}
 
 				this.likes += 1;
 				this.userRating = 1;
-				this.change.emit({ newRating: this.userRating, prevRating: prevRating });
+				this.change.emit({ newRating: this.userRating });
 				break;
 
 			case DISLIKE:
@@ -68,13 +68,13 @@ export class RatingComponent implements OnInit {
 					this.dislikes -= 1;
 					this.userRating = 0;
 					prevRating = DISLIKE;
-					this.change.emit({ newRating: this.userRating, prevRating: prevRating });
+					this.change.emit({ newRating: this.userRating });
 					break;
 				}
 
 				this.dislikes += 1;
 				this.userRating = 2;
-				this.change.emit({ newRating: this.userRating, prevRating: prevRating });
+				this.change.emit({ newRating: this.userRating });
 				break;
 		}
 	}

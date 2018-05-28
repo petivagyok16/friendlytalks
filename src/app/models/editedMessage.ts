@@ -1,4 +1,4 @@
 export interface EditedMessage {
   content: string;
-  created_at: Date;
+  created_at: string;
 }

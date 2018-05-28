@@ -14,54 +14,32 @@ export class MessageService {
 
 	constructor(private networkService: NetworkService) { }
 
-	addMessage(message: EditedMessage) {
-		const BODY = JSON.stringify(message);
-
-		return this.networkService.post(`${this.apiUrl}/add`, BODY)
-			.then((response: any) => response)
+	public addMessage<T>(message: EditedMessage): Promise<T> {
+		return this.networkService.post<T>(`${this.apiUrl}/add`, message)
 			.catch((error: Error) => {
 				console.error(error);
 				throw error;
 			});
 	}
 
-	getMessages(skipper): Promise<any> {
+	public getMessages(skipper): Promise<any> {
 		return this.networkService.get<{ payload: Message[] }>(`${this.apiUrl}`) //TODO: add a limit, order query here
 			.then(response => {
-				const messagesObj = response.payload;
-				const messages: any[] = [];
-
-				messagesObj.forEach(message => {
-					const messageObject: Message = {
-						content: message.content,
-						created_at: message.created_at,
-						username: message.user.username,
-						meta: message.meta,
-						messageId: message.id,
-						userId: message.user.id,
-						pictureUrl: message.user.pictureUrl
-					};
-					messages.push(messageObject);
-				});
-				return messages;
+					return response.payload;
 			})
 			.catch((error: Error) => console.error(error));
 	}
 
-	deleteMessage(message: Message) {
-		const MESSAGEID = message.messageId;
-
-		return this.networkService.delete(`${this.apiUrl}/${MESSAGEID}`)
+	public deleteMessage(message: Message) {
+		return this.networkService.delete(`${this.apiUrl}/${message.id}`)
 			// .then((response: Response) => response)
 			.catch((error: Error) => {
 				throw error;
 			});
 	}
 
-	editMessage(message: Message) {
-		const BODY = JSON.stringify(message);
-
-		return this.networkService.patch(`${this.apiUrl}/${message.messageId}`, BODY)
+	public editMessage(message: Message) {
+		return this.networkService.patch(`${this.apiUrl}/${message.id}`, message)
 			.then((response: Response) => response)
 			.catch((error: Error) => {
 				console.error(error);
@@ -69,10 +47,8 @@ export class MessageService {
 			});
 	}
 
-	rateMessage(messageId, raterUserId, rating, prevRating) {
-		const RATINGOBJECT = JSON.stringify({ raterUserId, rating, prevRating });
-
-		return this.networkService.patch(`${this.apiUrl}/${messageId}/rate`, RATINGOBJECT)
+	public rateMessage(messageId, raterUserId, rating) {
+		return this.networkService.patch(`${this.apiUrl}/${messageId}/rate`, { raterUserId, rating })
 			// .map((response: Response) => console.log(response))
 			.catch((error: Error) => {
 				console.error(error);

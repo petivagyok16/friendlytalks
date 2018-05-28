@@ -54,7 +54,7 @@ export class ProfileUpdateFormComponent implements OnInit {
 		};
 
 		this._profileService.editProfile(this.selectedUser.id, UPDATED_PROFILE)
-			.then( (updatedUser: User) => {
+			.then(() => {
 				this._router.navigate(['/profile', this.selectedUser.id]);
 			})
 			.catch(error => {this._errorService.handleError(error)})
