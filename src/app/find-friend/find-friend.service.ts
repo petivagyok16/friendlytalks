@@ -13,7 +13,7 @@ export class FindFriendService {
 	constructor(private networkService: NetworkService) { }
 
 	find(username) {
-		return this.networkService.get<{ payload: User[] }>(`/api/v1/user/find/${username}`)
+		return this.networkService.get<{ payload: User[] }>(`/api/v1/users/find/${username}`)
 			.then(response => {
 				const rawFoundUsers = response.payload;
 				const foundUsers: User[] = [];
