@@ -123,7 +123,7 @@ export class ProfileService {
 								created_at: message.created_at,
 								username: following.username,
 								meta: message.meta,
-								messageId: message._id,
+								id: message.id,
 								userId: message.user,
 								pictureUrl: following.pictureUrl
 							};
