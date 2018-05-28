@@ -66,7 +66,7 @@ export class NetworkService {
   private generateOptions(etag?: string) {
     let headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Origin', '*');
 
       if (this._token) {
         headers = Object.assign(headers, headers.set('Authorization', `Bearer ${this._token}`));
@@ -84,7 +84,7 @@ export class NetworkService {
   }
 
   private buildUrl(path: string, param: string | number, queryParams: Object = {}): string {
-    let requestParam = param ? '/' + param : '';
+    const requestParam = param ? '/' + param : '';
     return `${this.baseUrl}${path}${requestParam}${this.buildQueryParams(queryParams)}`;
   }
 
@@ -106,7 +106,6 @@ export class NetworkService {
 
   // TODO: implement global error handling here -> e.g: error.service & dialog.service
   private handleGlobalError(error: HttpErrorResponse): Promise<HttpErrorResponse | any> {
-    console.log(`Http Error occurred: `, error);
     throw error;
   }
 }
