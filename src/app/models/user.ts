@@ -62,20 +62,7 @@ export interface Ratings {
 	given: RatingContainer;
 }
 
-interface RatingContainer {
+export interface RatingContainer {
 	likes: any[];
 	dislikes: any[];
-}
-
-interface Name {
-	first: string;
-	last: string;
-}
-
-export interface UpdatedUser {
-	pictureUrl?: string;
-	email?: string;
-	firstName?: string;
-	lastName?: string;
-	city?: string;
 }
