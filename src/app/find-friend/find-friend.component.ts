@@ -27,7 +27,7 @@ export class FindFriendComponent implements OnInit, OnDestroy {
 			.pipe(
 				debounceTime(400),
 				distinctUntilChanged(),
-				filter((text: any) => {
+				filter((text: string) => {
 					if (text.length === 0) {
 						this.foundUsers = [];
 					} else {
