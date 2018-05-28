@@ -11,7 +11,7 @@ export class ErrorService {
 			const ERRORDATA = new Error(error.title, error.error.message);
 			this.errorOccured.emit(ERRORDATA);
 		} else {
-			console.log(error);
+			// console.log(error);
 		}
 	}
 }
