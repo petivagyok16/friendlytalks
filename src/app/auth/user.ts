@@ -25,9 +25,11 @@ export interface User {
 	city?: string;
 
 	/**
-	 * Full name.
+	 * First name.
 	 */
-	name: Name;
+	firstName: string;
+
+	lastName: string;
 
 	/**
 	 * Messages by the user.
