@@ -22,7 +22,8 @@ export class FindFriendService {
 					const mappedFoundUser: User = {
 						username: foundUser.username,
 						id: foundUser.id,
-						name: foundUser.name,
+						firstName: foundUser.firstName,
+						lastName: foundUser.lastName,
 						messages: foundUser.messages,
 						email: foundUser.email,
 						pictureUrl: foundUser.pictureUrl,
