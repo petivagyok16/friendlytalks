@@ -9,14 +9,14 @@ import { Error } from './../error/error';
 
 @Injectable()
 export class MessageService {
-	private apiUrl = '/api/v1';
+	private apiUrl = '/api/v1/messages';
 
 	constructor(private networkService: NetworkService) { }
 
 	addMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.post(`${this.apiUrl}/message/add`, BODY)
+		return this.networkService.post(`${this.apiUrl}/add`, BODY)
 			.then((response: any) => response)
 			.catch((error: Error) => {
 				console.error(error);
@@ -25,7 +25,7 @@ export class MessageService {
 	}
 
 	getMessages(skipper): Promise<any> {
-		return this.networkService.get(`${this.apiUrl}/message/${skipper}`)
+		return this.networkService.get(`${this.apiUrl}/${skipper}`)
 			.then((response: any) => {
 				const messagesObj = response.obj;
 				const messages: any[] = [];
@@ -50,7 +50,7 @@ export class MessageService {
 	deleteMessage(message: Message) {
 		const MESSAGEID = message.messageId;
 
-		return this.networkService.delete(`${this.apiUrl}/message/${MESSAGEID}`)
+		return this.networkService.delete(`${this.apiUrl}/${MESSAGEID}`)
 			// .then((response: Response) => response)
 			.catch((error: Error) => {
 				throw error;
@@ -60,7 +60,7 @@ export class MessageService {
 	editMessage(message: Message) {
 		const BODY = JSON.stringify(message);
 
-		return this.networkService.patch(`${this.apiUrl}/message/${message.messageId}`, BODY)
+		return this.networkService.patch(`${this.apiUrl}/${message.messageId}`, BODY)
 			.then((response: Response) => response)
 			.catch((error: Error) => {
 				console.error(error);
@@ -71,7 +71,7 @@ export class MessageService {
 	rateMessage(messageId, raterUserId, rating, prevRating) {
 		const RATINGOBJECT = JSON.stringify({ raterUserId, rating, prevRating });
 
-		return this.networkService.patch(`${this.apiUrl}/message/rate/${messageId}`, RATINGOBJECT)
+		return this.networkService.patch(`${this.apiUrl}/${messageId}/rate`, RATINGOBJECT)
 			// .map((response: Response) => console.log(response))
 			.catch((error: Error) => {
 				console.error(error);
