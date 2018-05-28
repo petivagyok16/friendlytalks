@@ -1,8 +1,9 @@
+import { EditedMessage } from './../models/editedMessage';
 import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from './message.service';
-import { Message } from './message';
-import { User } from '../auth/user';
+import { Message } from '../models/message';
+import { User } from '../models/user';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
 import { StorageService } from './../shared/storage.service';
@@ -75,8 +76,7 @@ export class MessageComponent implements OnInit {
 				});
 		} else {
 			// Save new message
-			const date = Date.now();
-			const message: Message = { content: inputValue, created_at: date };
+			const message: EditedMessage = { content: inputValue, created_at: Date.now() };
 
 			this._messageService.addMessage(message)
 				.then(data => {

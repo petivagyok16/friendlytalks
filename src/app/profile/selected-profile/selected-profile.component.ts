@@ -4,7 +4,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
-import { User } from '../../auth/user';
+import { User } from '../../models/user';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
 import { StorageService } from './../../shared/storage.service';

@@ -3,8 +3,8 @@ import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { User } from '../auth/user';
-import { Message } from '../message/message';
+import { User } from '../models/user';
+import { Message } from '../models/message';
 import { NetworkService } from './../shared/network.service';
 import { AuthService } from './../auth/auth.service';
 import { Error } from './../error/error';

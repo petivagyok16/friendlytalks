@@ -1,9 +1,10 @@
-import { User } from './../auth/user';
+import { User } from './../models/user';
+
 export interface Message {
 	/**
 	 * Unique identifier
 	 */
-	messageId?: string;
+	id?: string;
 	
 	/**
 	 * The content of the message

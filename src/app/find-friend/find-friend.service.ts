@@ -3,7 +3,7 @@ import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map, filter, catchError } from 'rxjs/operators';
 
-import { User } from '../auth/user';
+import { User } from '../models/user';
 import { NetworkService } from './../shared/network.service';
 import { Error } from './../error/error';
 

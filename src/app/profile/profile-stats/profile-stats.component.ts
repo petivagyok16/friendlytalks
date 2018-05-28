@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 
-import { Ratings } from '../../auth/user';
+import { Ratings } from '../../model/user';
 
 @Component({
 	selector: 'my-ratio',

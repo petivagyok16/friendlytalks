@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 
 import { FindFriendService } from './find-friend.service';
 import { ErrorService } from '../error/error.service';
-import { User } from './../auth/user';
+import { User } from './../model/user';
 
 @Component({
 	selector: 'my-findFriend',

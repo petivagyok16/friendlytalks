@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from './../auth/auth.service';
 import { StorageService } from './storage.service';
-import { User } from './../auth/user';
+import { User } from './../models/user';
 
 @Component({
 	selector: 'my-profilebar',

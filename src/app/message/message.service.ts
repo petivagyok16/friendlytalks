@@ -1,9 +1,10 @@
+import { EditedMessage } from './../models/editedMessage';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { Message } from './message';
+import { Message } from '../models/message';
 import { NetworkService } from './../shared/network.service';
 import { Error } from './../error/error';
 
@@ -13,7 +14,7 @@ export class MessageService {
 
 	constructor(private networkService: NetworkService) { }
 
-	addMessage(message: Message) {
+	addMessage(message: EditedMessage) {
 		const BODY = JSON.stringify(message);
 
 		return this.networkService.post(`${this.apiUrl}/add`, BODY)
@@ -44,7 +45,7 @@ export class MessageService {
 				});
 				return messages;
 			})
-			.catch((error: Error) => console.error(error));
+			.catch((error: Error) => console.error(error));\
 	}
 
 	deleteMessage(message: Message) {

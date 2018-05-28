@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NetworkService } from './shared/network.service';
 import { AuthService } from './auth/auth.service';
 import { StorageService } from './shared/storage.service';
-import { User } from './auth/user';
+import { User } from './models/user';
 
 @Component({
 	selector: 'my-app',

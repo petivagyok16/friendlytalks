@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { NetworkService } from './../shared/network.service';
 import { StorageService } from './../shared/storage.service';
-import { User } from './user';
+import { User } from '../models/user';
 import { Error } from './../error/error';
 
 @Injectable()
