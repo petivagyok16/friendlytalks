@@ -12,7 +12,7 @@ import { Error } from './../error/error';
 @Injectable()
 export class ProfileService {
 
-	private apiUrl = '/api/v1/user';
+	private apiUrl = '/api/v1/users';
 
 	constructor(
 		private networkService: NetworkService,
@@ -25,7 +25,7 @@ export class ProfileService {
 			.then((response: any) => {
 				const DATA = response.obj;
 
-				let profile: User = {
+				const profile: User = {
 					username: DATA.username,
 					id: DATA.id,
 					email: DATA.email,
@@ -79,7 +79,7 @@ export class ProfileService {
 	}
 
 	getFollowing(userId) {
-		return this.networkService.get(`${this.apiUrl}/following/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/${userId}/following`)
 			.then((response: any) => {
 				const rawFollowing = response.obj;
 				const followings: any[] = [];
@@ -105,7 +105,7 @@ export class ProfileService {
 	}
 
 	getFollowingMessages(userId) {
-		return this.networkService.get(`${this.apiUrl}/following-messages/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/${userId}/following-messages`)
 			.then((response: any) => {
 				const rawFollowingMessages = response.obj;
 				const followingMessages: any[] = [];
@@ -113,7 +113,7 @@ export class ProfileService {
 				rawFollowingMessages.forEach(following => {
 					if (following.messages) {
 						following.messages.forEach(message => {
-							let mappedMessage: Message = {
+							const mappedMessage: Message = {
 								content: message.content,
 								created_at: message.created_at,
 								username: following.username,
@@ -136,7 +136,7 @@ export class ProfileService {
 	editProfile(userId, profile) {
 		const BODY = JSON.stringify(profile);
 
-		return this.networkService.patch(`${this.apiUrl}/edit/${userId}`, BODY)
+		return this.networkService.patch(`${this.apiUrl}/${userId}/edit`, BODY)
 			.then((response: any) => {
 				// TODO: check this out
 				this.authService.authenticatedUser.next(response.obj);
