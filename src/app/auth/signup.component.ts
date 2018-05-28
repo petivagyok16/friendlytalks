@@ -45,7 +45,8 @@ export class SignupComponent implements OnInit {
 			password: val.password,
 			email: val.email,
 			city: val.city,
-			name: {first: val.firstName, last: val.lastName}
+			firstName: val.firstName,
+			lastName: val.lastName
 		};
 
 		this._authService.signup(USER)
