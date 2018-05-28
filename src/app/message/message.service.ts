@@ -25,9 +25,9 @@ export class MessageService {
 	}
 
 	getMessages(skipper): Promise<any> {
-		return this.networkService.get(`${this.apiUrl}/${skipper}`)
-			.then((response: any) => {
-				const messagesObj = response.obj;
+		return this.networkService.get<{ payload: Message[] }>(`${this.apiUrl}`) //TODO: add a limit, order query here
+			.then(response => {
+				const messagesObj = response.payload;
 				const messages: any[] = [];
 
 				messagesObj.forEach(message => {
@@ -36,8 +36,8 @@ export class MessageService {
 						created_at: message.created_at,
 						username: message.user.username,
 						meta: message.meta,
-						messageId: message._id,
-						userId: message.user._id,
+						messageId: message.id,
+						userId: message.user.id,
 						pictureUrl: message.user.pictureUrl
 					};
 					messages.push(messageObject);

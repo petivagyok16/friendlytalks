@@ -1,3 +1,4 @@
+import { User } from './../auth/user';
 export interface Message {
 	/**
 	 * Unique identifier
@@ -33,6 +34,11 @@ export interface Message {
 	 * Picture of the creator.
 	 */
 	pictureUrl?: string;
+
+	/**
+	 * The user object who created the message
+	 */
+	user: User;
 };
 
 interface Meta {
