@@ -30,7 +30,8 @@ export class ProfileService {
 					id: DATA.id,
 					email: DATA.email,
 					city: DATA.city,
-					name: DATA.name,
+					firstName: DATA.firstName,
+					lastName: DATA.lastName,
 					messages: DATA.messages,
 					relations: DATA.relations,
 					ratings: DATA.ratings,
@@ -62,12 +63,14 @@ export class ProfileService {
 				rawFollowers.forEach(follower => {
 					const mappedFollower: User = {
 						username: follower.username,
-						name: follower.name,
+						firstName: follower.firstName,
+						lastName: follower.lastName,
 						id: follower._id,
 						email: follower.email,
 						pictureUrl: follower.pictureUrl
 					};
-					mappedFollower.name = follower.name;
+					mappedFollower.firstName = follower.firstName;
+					mappedFollower.lastName = follower.lastName;
 					followers.push(mappedFollower);
 				});
 
@@ -87,13 +90,15 @@ export class ProfileService {
 				rawFollowing.forEach(following => {
 					const mappedFollowing: User = {
 						username: following.username,
-						name: following.name,
+						firstName: following.firstName,
+						lastName: following.lastName,
 						id: following._id,
 						messages: [],
 						email: following.email,
 						pictureUrl: following.pictureUrl
 					};
-					mappedFollowing.name = following.name;
+					mappedFollowing.firstName = following.firstName;
+					mappedFollowing.lastName = following.lastName;
 					followings.push(mappedFollowing);
 				});
 				
