@@ -6,7 +6,6 @@ import { Message } from '../models/message';
 import { User } from '../models/user';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
-import { StorageService } from './../shared/storage.service';
 import { AuthService } from './../auth/auth.service';
 
 @Component({
@@ -29,7 +28,6 @@ export class MessageComponent implements OnInit {
 		private _messageService: MessageService,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private storageService: StorageService,
 		private authService: AuthService
 	) {
 		this.userObject = this.authService.getUser();
