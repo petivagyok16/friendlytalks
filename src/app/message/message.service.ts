@@ -45,7 +45,7 @@ export class MessageService {
 				});
 				return messages;
 			})
-			.catch((error: Error) => console.error(error));\
+			.catch((error: Error) => console.error(error));
 	}
 
 	deleteMessage(message: Message) {
