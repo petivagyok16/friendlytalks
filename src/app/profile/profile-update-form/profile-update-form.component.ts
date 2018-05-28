@@ -1,10 +1,12 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User, UpdatedUser } from './../../auth/user';
+import { User } from './../../models/user';
+import { EditedUser } from './../../models/editedUser';
 import { ProfileService } from '../profile.service';
 import { ErrorService } from '../../error/error.service';
 import { StorageService } from './../../shared/storage.service';
@@ -15,14 +17,15 @@ import { StorageService } from './../../shared/storage.service';
 })
 export class ProfileUpdateFormComponent implements OnInit {
 
-	public selectedUser: User = this.storageService.getObject('userObject');
+	public selectedUser: User = this.authService.authenticatedUser.getValue();
 	public form: FormGroup;
 
 	constructor(private _router: Router,
 		private _fb: FormBuilder,
 		private _profileService: ProfileService,
 		private _errorService: ErrorService,
-		private storageService: StorageService) { }
+		private authService: AuthService,
+	) { }
 
 	ngOnInit() {
 
@@ -42,7 +45,7 @@ export class ProfileUpdateFormComponent implements OnInit {
 	submit() {
 		const val = this.form.value;
 
-		const UPDATED_PROFILE: UpdatedUser = {
+		const UPDATED_PROFILE: EditedUser = {
 			pictureUrl: val.pictureUrl,
 			email: val.email,
 			firstName: val.firstName,
