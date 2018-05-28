@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 
-import { Ratings } from '../../model/user';
+import { Ratings } from '../../models/user';
 
 @Component({
 	selector: 'my-ratio',
@@ -21,11 +21,11 @@ export class ProfileStatsComponent implements OnChanges {
 	// the changes need to be tracked later as well.
 	ngOnChanges() {
 		if (this.ratings) {
-			this.ratioCalc(this.ratings);
+			this.calculateRatio(this.ratings);
 		}
 	}
 
-	ratioCalc(ratingObj) {
+	private calculateRatio(ratingObj) {
 		// My rating ratio
 		const myTotal = ratingObj.my.likes.length + ratingObj.my.dislikes.length;
 		this.myLikes = Number((ratingObj.my.likes.length / (myTotal / 100)).toFixed(1));
