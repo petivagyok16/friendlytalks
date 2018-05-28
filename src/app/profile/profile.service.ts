@@ -55,7 +55,7 @@ export class ProfileService {
 	}
 
 	getFollowers(userId) {
-		return this.networkService.get(`${this.apiUrl}/followers/${userId}`)
+		return this.networkService.get(`${this.apiUrl}/${userId}/followers`)
 			.then((response: any) => {
 				const rawFollowers = response.obj;
 				const followers: any[] = [];
