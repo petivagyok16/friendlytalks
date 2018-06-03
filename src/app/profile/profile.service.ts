@@ -31,9 +31,7 @@ export class ProfileService {
 	}
 
 	public follow(userId, toFollowId, state) {
-		const toFollowOrUnfollow = JSON.stringify({ toFollowId: toFollowId, state: state });
-
-		return this.networkService.patch(`profile/${userId}`, toFollowOrUnfollow)
+		return this.networkService.patch(`${this.apiUrl}/follower/${userId}/toFollow/${toFollowId}`)
 			.catch((error: Error) => {
 				throw error;
 			});
