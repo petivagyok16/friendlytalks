@@ -57,7 +57,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 			error => this._errorService.handleError(error));
 
 		// Checking whether the selected user is followed by the user or not
-		this.isFollowed = this.userObject.relations.following.indexOf(this.selectedUserId) != -1;
+		this.isFollowed = this.userObject.relations.following.indexOf(this.selectedUserId) !== -1;
 	}
 
 	ngDoCheck() {
@@ -71,7 +71,7 @@ export class SelectedProfileComponent implements OnInit, DoCheck {
 
 	// edit button will be available if the selected user profile is the user's own profile
 	isOwnProfile() {
-		return this.selectedUserId == this.userObject.id;
+		return this.selectedUserId === this.userObject.id;
 	}
 
 	editProfile() {

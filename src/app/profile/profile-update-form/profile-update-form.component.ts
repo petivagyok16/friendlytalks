@@ -57,7 +57,7 @@ export class ProfileUpdateFormComponent implements OnInit {
 			.then(() => {
 				this._router.navigate(['/profile', this.selectedUser.id]);
 			})
-			.catch(error => {this._errorService.handleError(error)})
+			.catch(error => this._errorService.handleError(error));
 	}
 
 	private isEmail(control: FormControl): { [s: string]: boolean } {
