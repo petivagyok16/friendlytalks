@@ -13,15 +13,15 @@ export class RatingComponent implements OnInit {
 	@Input() userRating: number;
 	@Input() ratingObj = <any>{};
 	@Output() change = new EventEmitter();
-	public likes: number = 0;
-	public dislikes: number = 0;
+	public likes = 0;
+	public dislikes = 0;
 
 	constructor() { }
 
 	ngOnInit() {
 		if (this.ratingObj) {
-			this.likes = this.ratingObj.likes.length
-			this.dislikes = this.ratingObj.dislikes.length
+			this.likes = this.ratingObj.likes.length;
+			this.dislikes = this.ratingObj.dislikes.length;
 		}
 	}
 
@@ -30,24 +30,16 @@ export class RatingComponent implements OnInit {
 		const LIKE = 1;
 		const DISLIKE = 2;
 
-		// sending previous Rating in order to determine where must be
-		// the previous ratings removed from database, this prevents the necessity of using inefficient loops server-side
-		// when it comes to NO_RATING case (because in that case we need to determine whether the
-		// previous rating was LIKE or DISLIKE
-		var prevRating: number = NO_RATING;
-
 		switch (rating) {
 
 			case LIKE:
 				if (this.userRating === 2) {
 					this.dislikes -= 1;
-					prevRating = DISLIKE;
 				}
 
 				if (this.userRating === 1) {
 					this.likes -= 1;
 					this.userRating = 0;
-					prevRating = LIKE;
 					this.change.emit({ newRating: this.userRating });
 
 					break;
@@ -61,13 +53,11 @@ export class RatingComponent implements OnInit {
 			case DISLIKE:
 				if (this.userRating === 1) {
 					this.likes -= 1;
-					prevRating = LIKE;
 				}
 
 				if (this.userRating === 2) {
 					this.dislikes -= 1;
 					this.userRating = 0;
-					prevRating = DISLIKE;
 					this.change.emit({ newRating: this.userRating });
 					break;
 				}
