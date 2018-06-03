@@ -10,14 +10,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 		[class.btn-unfollow]="isFollowed"
 		(click)="onFollowClick()"><i class="glyphicon"
 		[class.glyphicon-remove]="isFollowed"
-		[class.glyphicon-ok]="!isFollowed"> </i> 
+		[class.glyphicon-ok]="!isFollowed"> </i>
 		{{ isFollowed ? 'Unfollow' : 'Follow' }}
 	</button>
 	`
 })
 export class FollowComponent {
 
-	@Input() isFollowed: boolean = false;
+	@Input() isFollowed = false;
 	@Output() change = new EventEmitter();
 
 	constructor() { }
@@ -26,5 +26,4 @@ export class FollowComponent {
 		this.isFollowed = !this.isFollowed;
 		this.change.emit({ state: this.isFollowed });
 	}
-
 }
