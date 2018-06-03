@@ -7,7 +7,7 @@ import { User } from '../models/user';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
 import { AuthService } from './../auth/auth.service';
-import { PartialUser } from './../models/partialUser';
+import { PartialUser } from './../models/partialuser';
 
 @Component({
 	selector: 'my-message',
