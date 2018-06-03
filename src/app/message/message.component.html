@@ -21,12 +21,12 @@
 		<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 message-panel" *ngFor="let messageItem of messages">
 			<div class="media">
 				<div class="media-left">
-					<a [routerLink]="['/profile', messageItem.userId]">
-						<img class="media-object" [src]="messageItem.pictureUrl" alt="...">
+					<a [routerLink]="['/profile', messageItem.partialUser.id]">
+						<img class="media-object" src="{{ messageItem.partialUser.pictureUrl }}" alt="...">
 					</a>
 				</div>
 				<div class="media-body">
-					<h4 class="media-heading"><a [routerLink]="['/profile', messageItem.userId]">@{{ messageItem.username }}</a></h4>
+					<h4 class="media-heading"><a [routerLink]="['/profile', messageItem.userId]">@{{ messageItem.partialUser.username }}</a></h4>
 					<div class="col-md-10 col-sm-10 col-xs-10 message-content">{{ messageItem.content }}</div>
 					<div class="col-md-2 col-sm-2 col-xs-2 pull-right right-align message-config">
 						<div class="message-config" *ngIf="userId == messageItem.userId">

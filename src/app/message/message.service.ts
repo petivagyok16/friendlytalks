@@ -14,7 +14,7 @@ export class MessageService {
 
 	constructor(private networkService: NetworkService) { }
 
-	public addMessage<T>(message: EditedMessage): Promise<T> {
+	public addMessage<T>(message: Message): Promise<T> {
 		return this.networkService.post<T>(`${this.apiUrl}/add`, message)
 			.catch((error: Error) => {
 				console.error(error);
@@ -22,12 +22,15 @@ export class MessageService {
 			});
 	}
 
-	public getMessages(skipper): Promise<any> {
-		return this.networkService.get<{ payload: Message[] }>(`${this.apiUrl}`) //TODO: add a limit, order query here
+	public getMessages(skipper): Promise<Message[]> {
+		return this.networkService.get<{ payload: Message[] }>(`${this.apiUrl}`) // TODO: add a limit, order query here
 			.then(response => {
 					return response.payload;
 			})
-			.catch((error: Error) => console.error(error));
+			.catch((error: Error) => {
+				console.error(error);
+				throw error;
+			});
 	}
 
 	public deleteMessage(message: Message) {
@@ -38,7 +41,7 @@ export class MessageService {
 			});
 	}
 
-	public editMessage(message: Message) {
+	public editMessage(message: EditedMessage) {
 		return this.networkService.patch(`${this.apiUrl}/${message.id}`, message)
 			.then((response: Response) => response)
 			.catch((error: Error) => {

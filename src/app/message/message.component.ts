@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { ProfileService } from '../profile/profile.service';
 import { ErrorService } from '../error/error.service';
 import { AuthService } from './../auth/auth.service';
+import { PartialUser } from './../models/partialUser';
 
 @Component({
 	selector: 'my-message',
@@ -18,9 +19,9 @@ export class MessageComponent implements OnInit {
 	public message: Message = null;
 	// In the Config (Edit + Delete) section userId must be compared to the message's userId whether its the same or not.
 	public userId = null;
-	public globalFeedActive: boolean = true;
-	public followerFeedActive: boolean = false;
-	public messagesLoading: boolean = true;
+	public globalFeedActive = true;
+	public followerFeedActive = false;
+	public messagesLoading = true;
 	public userObject: User = null;
 	private messageSkipper = 0;
 
@@ -35,8 +36,11 @@ export class MessageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.messageSkipper = 0;
+		this.loadMessages();
+	}
 
+	private loadMessages() {
+		this.messageSkipper = 0;
 		this._messageService.getMessages(this.messageSkipper)
 			.then(messages => {
 				this.messages = messages;
@@ -59,24 +63,27 @@ export class MessageComponent implements OnInit {
 	}
 
 	public sendMsg(input) {
-		const inputValue = input.value;
+		const inputValue: string = input.value;
 
 		if (this.message) {
 			// Edit message
 			this.message.content = inputValue;
-			this._messageService.editMessage(this.message)
+			const editedMessage: EditedMessage = { id: this.message.id, content: inputValue, created_at: new Date(Date.now()).toISOString() };
+
+			this._messageService.editMessage(editedMessage)
 				.then(data => {
-					this.message = null
+					this.message = null;
 				})
 				.catch(error => {
 					this._errorService.handleError(error);
-					this.message = null
+					this.message = null;
 				});
 		} else {
 			// Save new message
-			const editedMessage: EditedMessage = { content: inputValue, created_at: new Date(Date.now()).toISOString() };
+			const partialUser: PartialUser = { id: this.userObject.id, pictureUrl: this.userObject.pictureUrl, username: this.userObject.username };
+			const newMessage: Message = { content: inputValue, created_at: new Date(Date.now()).toISOString(), partialUser };
 
-			this._messageService.addMessage<{ payload: Message }>(editedMessage)
+			this._messageService.addMessage<{ payload: Message }>(newMessage)
 				.then(response => {
 					this.messages.unshift(response.payload);
 				})
@@ -96,7 +103,7 @@ export class MessageComponent implements OnInit {
 	}
 
 	public onEdit(message) {
-		window.scrollTo(0,0);
+		window.scrollTo(0, 0);
 		this.message = message;
 	}
 
@@ -114,7 +121,7 @@ export class MessageComponent implements OnInit {
 				// temporary workaround
 				this.messages = [];
 				// messages is an array, messageItems must be picked from it to push them into this.messages
-				for (let messageItem of messages) {
+				for (const messageItem of messages) {
 					this.messages.push(messageItem);
 				}
 			})
@@ -135,10 +142,10 @@ export class MessageComponent implements OnInit {
 	public calculateUserRating(messageId) {
 		const user = this.authService.getUser();
 		// Liked message
-		if (user.ratings.given.likes.indexOf(messageId) != -1) return 1;
+		if (user.ratings.given.likes.indexOf(messageId) !== -1) { return 1; }
 
 		// Disliked message
-		if (user.ratings.given.dislikes.indexOf(messageId) != -1) return 2;
+		if (user.ratings.given.dislikes.indexOf(messageId) !== -1) { return 2; }
 
 		// No rating
 		return 0;
