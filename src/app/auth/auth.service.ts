@@ -77,10 +77,9 @@ export class AuthService {
       });
   }
 
-	public async logout() {
-		await this.networkService.post('auth/logout');
+	public logout() {
 		this.authenticatedUser.next(null);
-    this.networkService.token = null;
+		this.networkService.token = null;
 		return this.storageService.clear();
 		// Reminder: if server throws "token must be unique" error delete the token object from the user document from mongolab
 	}
