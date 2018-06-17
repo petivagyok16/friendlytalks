@@ -7,7 +7,6 @@ import { HttpClientModule }									from '@angular/common/http';
 import { ErrorService }                     from './error/error.service';
 import { NetworkService } 									from './shared/network.service';
 import { StorageService } 									from './shared/storage.service';
-import { AuthGuard } 												from './nav-guards/auth-guard';
 
 // App module components
 import { AppComponent }                     from './app.component';
@@ -53,6 +52,10 @@ import { profileRouting }                   from './profile/profile.routing';
 			NotFoundComponent
     ],
     bootstrap: [ AppComponent ],
-    providers: [ ErrorService, NetworkService, StorageService, AuthGuard ]
+		providers: [
+			ErrorService,
+			NetworkService,
+			StorageService,
+		]
 })
 export class AppModule { }

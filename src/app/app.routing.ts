@@ -12,7 +12,7 @@ import { FindFriendComponent } from './find-friend/find-friend.component';
 import { ProfileUpdateFormComponent } from './profile/profile-update-form/profile-update-form.component';
 import { SignupComponent } from './auth/signup.component';
 
-import { AuthGuard } from './nav-guards/auth-guard';
+import { AuthGuard } from './auth/auth-guard';
 
 const appRoutes: Routes = [
 	{
