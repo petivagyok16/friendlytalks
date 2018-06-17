@@ -1,10 +1,4 @@
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { map, filter } from 'rxjs/operators';
-
-import { StorageService } from './storage.service';
-import { ErrorService } from './../error/error.service';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
@@ -21,9 +15,8 @@ export class NetworkService {
   }
 
   public get<T>(path: string, param: string | number = '', queryParams: Object = {}, etag?: string): Promise<T> {
-    const requestOptions = this.generateOptions(etag);
     const builtUrl = this.buildUrl(path, param, queryParams);
-    return this.http.get<T>(builtUrl, requestOptions)
+    return this.http.get<T>(builtUrl)
       .toPromise()
       .catch(this.handleGlobalError);
   }
@@ -33,54 +26,30 @@ export class NetworkService {
    * @param body post request body
    */
   public post<T>(path: string, body: Object = {}): Promise<T> {
-    const requestOptions = this.generateOptions();
     const builtUrl = this.buildUrl(path, null);
-    return this.http.post<T>(builtUrl, body, requestOptions)
+    return this.http.post<T>(builtUrl, body)
       .toPromise()
       .catch(this.handleGlobalError);
   }
 
   public patch<T>(path: string, body: Object = {}): Promise<T> {
-    const requestOptions = this.generateOptions();
     const builtUrl = this.buildUrl(path, null);
-    return this.http.patch<T>(builtUrl, body, requestOptions)
+    return this.http.patch<T>(builtUrl, body)
       .toPromise()
       .catch(this.handleGlobalError);
   }
 
   public put<T>(path: string, body: Object = null): Promise<T> {
-    const requestOptions = this.generateOptions();
-    return this.http.put<T>(path, body, requestOptions)
+    return this.http.put<T>(path, body)
       .toPromise()
       .catch(this.handleGlobalError);
   }
 
   public delete<T>(path: string, param: string | number = '', queryParams: Object = {}): Promise<T> {
-    const requestOptions = this.generateOptions();
     const builtUrl = this.buildUrl(path, param, queryParams);
-    return this.http.delete<T>(builtUrl, requestOptions)
+    return this.http.delete<T>(builtUrl)
       .toPromise()
       .catch(this.handleGlobalError);
-  }
-
-  private generateOptions(etag?: string) {
-    let headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-
-      if (this._token) {
-        headers = Object.assign(headers, headers.set('Authorization', `Bearer ${this._token}`));
-      }
-
-      if (etag) {
-        headers = Object.assign(headers, headers.set('If-None-Match', etag));
-      }
-
-      const options = {
-        headers: headers,
-      };
-
-    return options;
   }
 
   private buildUrl(path: string, param: string | number, queryParams: Object = {}): string {

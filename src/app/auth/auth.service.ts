@@ -12,17 +12,17 @@ import { Error } from './../error/error';
 export class AuthService {
 
 	public authenticatedUser: BehaviorSubject<User> = new BehaviorSubject(undefined);
-	public redirectUrl: string = '';
+	public redirectUrl = '';
 
 	constructor(
 		private networkService: NetworkService,
 		private storageService: StorageService
 	) { }
-	
+
 	public isAuthenticated() {
 		return !(this.authenticatedUser.getValue() === null || this.authenticatedUser.getValue() === undefined);
 	}
-	
+
 	public getUser(): User {
 		return this.authenticatedUser.getValue();
 	}
@@ -75,6 +75,11 @@ export class AuthService {
         }
         throw error;
       });
+	}
+
+	public getBearerToken() {
+    const value = localStorage.getItem('token');
+    return 'Bearer ' + value;
   }
 
 	public logout() {

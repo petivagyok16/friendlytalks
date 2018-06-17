@@ -2,11 +2,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AuthService } from './auth.service';
 import { LogoutComponent } from './logout.component';
 import { SigninComponent } from './signin.component';
 import { SignupComponent } from './signup.component';
+
+import { AuthGuard } from './auth-guard';
+import { HttpInterceptorService } from './http-interceptor.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
 	imports: [
@@ -25,9 +29,9 @@ import { SignupComponent } from './signup.component';
 		SignupComponent
 	],
 	providers: [
-		AuthService
+		AuthService,
+		AuthGuard,
+		{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true, deps: [AuthService] },
 	]
 })
-export class AuthModule {
-
-}
+export class AuthModule { }
