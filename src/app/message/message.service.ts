@@ -1,8 +1,6 @@
 import { EditedMessage } from './../models/editedMessage';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
 import { Message } from '../models/message';
 import { NetworkService } from './../shared/network.service';
@@ -15,7 +13,7 @@ export class MessageService {
 	constructor(private networkService: NetworkService) { }
 
 	public addMessage<T>(message: Message): Promise<T> {
-		return this.networkService.post<T>(`${this.apiUrl}/add`, message)
+		return this.networkService.post<T>(`${this.apiUrl}`, message)
 			.catch((error: Error) => {
 				console.error(error);
 				throw error;
