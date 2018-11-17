@@ -1,4 +1,4 @@
-## Sidenote: This project was created by me in 2016 when i first started to search for a job as a programmer. I did not change too many things since then, so this project does not show my actual Angular knowledge. I'd do differently a lot of things at this moment, and yet i dont want to delete it, because this is my first bigger full stack application.
+### Sidenote: This project was created by me in 2016 when i first started to search for a job as a programmer. I did not change too many things since then, so this project does not show my actual Angular knowledge. I'd do differently a lot of things at this moment, and yet i dont want to delete it, because this is the very first, working full stack application in my carreer.
 
 # Friendlytalks
 
